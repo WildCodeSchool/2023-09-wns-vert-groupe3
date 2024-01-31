@@ -1,16 +1,17 @@
 
 .home {
-   background: rgb(245, 233, 233);
+   background: #f5f6fa;
    height: 100vh;
 }
 
 .header {
    display: flex;
    justify-content: center;
-   background: rgb(0, 0, 0);
+   background: #192a56
 }
 
 .title {
    color: white;
-   padding: 30px;
+   font-size: 1.5rem;
+   padding: 20px 10px;
 }

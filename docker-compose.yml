@@ -37,7 +37,7 @@ services:
       retries: 20
       # start_period: 30s
     volumes:
-      - pgdata_wildrent:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  pgdata_wildrent:
+  pgdata:

@@ -6,7 +6,7 @@ export default function Home() {
    return (
       <main className={styles.home}>
          <header className={styles.header}>
-               <h1 className={styles.title}>Home works !</h1>
+               <p className={styles.title}>Home works</p>
          </header>
       </main>
    );
