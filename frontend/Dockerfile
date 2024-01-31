@@ -15,5 +15,3 @@ COPY tsconfig.json tsconfig.json
 COPY src src
 
 CMD pnpm dev
-# On peut inscrire cette commande dans le docker-compose qui sera prioritaire. La commande dockerfile sera écrasé par la commande dans docker-compose.
-
