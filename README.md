@@ -33,7 +33,7 @@
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+This project is a web application for a rental company. It is a school project for the Wild Code School. The goal is to create a web application with a backend and a frontend. The backend is a GraphQL API with a PostgreSQL database. The frontend is a Next.js application with TailwindCSS and Radix UI.s
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
@@ -50,20 +50,56 @@ Give examples
 
 ### Installing <a name = "installing"></a>
 
-Install dependencies bases on your project type -
-
-For backend :
-
-```
-cd /backend
-pnpm i
+Check if Docker is installed on your machine:
+```bash
+docker --version
 ```
 
-For frontend :
-
+Check if Docker Compose is installed on your machine:
+```bash
+docker-compose --version
 ```
-cd /frontend
-pnpm i
+
+Check if pnpm is installed on your machine:
+```bash
+pnpm --version
+```
+
+Clone the repository:
+```bash
+git clone https://github.com/WildCodeSchool/2023-09-wns-vert-groupe3.git
+```
+
+Go to the project "backend" folder or "frontend" folder:
+```bash
+cd backend
+
+cd frontend
+```
+
+Install the dependencies:
+```bash
+pnpm install
+```
+
+--------------------
+
+Go to branch `dev` and create a new branch from it:
+```bash
+git checkout dev
+git checkout -b <your-branch-name>
+```
+
+--------------------
+
+Run the containers:
+```bash
+docker-compose up 
+```
+
+Rebuild the containers and run them :
+```bash
+docker-compose up --build
 ```
 
 ## 🎈 Usage <a name="usage"></a>
@@ -78,8 +114,8 @@ pnpm i
 
 - [Docker](https://www.docker.com/) - Containerization
 - [Docker Compose](https://docs.docker.com/compose/) - Containerization
-- [GraphQL](https://expressjs.com/) - Server Framework
-- [TypeORM](https://www.mongodb.com/) - ORM
+- [GraphQL](https://graphql.org/) - Query Language
+- [TypeORM](https://typeorm.io/) - ORM
 - [Next.js 13](https://nextjs.org) - Web Framework for frontend
 - [TailwindCSS](https://tailwindcss.com/) - CSS Framework
 - [Radix UI](https://radix-ui.com/) - UI Components
