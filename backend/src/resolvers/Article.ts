@@ -5,6 +5,6 @@ import { Query, Resolver } from "type-graphql";
 export class ArticleResolver {
    @Query(() => [Article])
    async getAllArticles() {
-      return await Article.find();
+      return "All articles";
    }
 }
