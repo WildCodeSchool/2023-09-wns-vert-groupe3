@@ -1,4 +1,3 @@
-
 import { Article } from "../entities/article";
 import { Query, Resolver } from "type-graphql";
 
