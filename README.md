@@ -44,10 +44,6 @@ These instructions will get you a copy of the project up and running on your loc
 Install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) on your machine.
 Install [pnpm](https://pnpm.io/) on your machine.
 
-```
-Give examples
-```
-
 ### Installing <a name = "installing"></a>
 
 Check if Docker is installed on your machine:
