@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node-dev --watch ./src src/index.ts"  },
+    "start": "ts-node-dev --watch ./src src/index.ts",
+    "lint": "echo '----- Checking Backend...' && npx prettier --debug-check . && eslint --ext .js . && echo '----- Done!'",
+    "fix": "prettier --write . && eslint --fix --ext .js ."  
+   },
+   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
