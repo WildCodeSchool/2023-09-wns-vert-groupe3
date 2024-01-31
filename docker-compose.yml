@@ -1,5 +1,5 @@
+version: "3.8"
 services:
-
   backend:
     build: ./backend
     ports:
@@ -16,14 +16,24 @@ services:
         condition: service_healthy
 
   frontend:
-    build: ./frontend
-    ports:
-      - 3000:3000
+    container_name: frontend
+    build:
+      context: ./frontend
+      target: dev
+    restart: always
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     volumes:
-      - ./frontend/src:/app/src
+      - ./frontend/.:/app
+      - /app/node_modules
+      - /app/.next
     depends_on:
       backend:
         condition: service_healthy
+    ports:
+      - 3000:3000
 
   db:
     image: postgres
@@ -31,7 +41,7 @@ services:
     environment:
       POSTGRES_PASSWORD: example
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d postgres -U postgres" ]
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 20

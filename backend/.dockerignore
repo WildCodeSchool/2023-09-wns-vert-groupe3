@@ -1,0 +1,20 @@
+# Ignore Docker image files and other similar files and folders
+*Dockerfile*
+.git
+.results
+.gitignore
+.dockerignore
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore build artifacts
+dist/
+build/
+.next/
+
+# Ignore package-lock.json file
+package-lock.json
+
+# Ignore mis files
+README.md

@@ -1,17 +1,16 @@
-FROM node:lts-alpine
-
+FROM node:20-alpine AS base
 WORKDIR /app
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
+RUN corepack enable pnpm
 
-COPY package.json package.json
-RUN pnpm install
+# Install dependencies only when needed
+FROM base AS deps
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm i --frozen-lockfile
 
-COPY public public
-# COPY codegen.ts codegen.ts
-COPY .eslintrc.json .eslintrc.json
-COPY next-env.d.ts next-env.d.ts
-COPY next.config.js next.config.js
-COPY tsconfig.json tsconfig.json
+FROM deps AS dev
+COPY . .
+CMD ["pnpm", "run", "dev"]
 
-COPY src src
-
-CMD pnpm dev
+# [TODO] Add production stage
