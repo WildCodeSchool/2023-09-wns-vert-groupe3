@@ -5,7 +5,7 @@ const dataSource = new DataSource({
   host: "db",
   port: 5432,
   username: "postgres",
-  password: "example",
+  password: "wildrent",
   database: "postgres",
   entities: ["src/entities/*.ts"],
   synchronize: true,
