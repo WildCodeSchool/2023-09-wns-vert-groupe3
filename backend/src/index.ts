@@ -3,12 +3,12 @@ import { buildSchema } from "type-graphql";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import dataSource from "../config/datasource";
-import ProductResolver from "./resolvers/product.resolver";
+import { CategoryResolver, ProductResolver } from "./resolvers";
 
 const start = async () => {
   await dataSource.initialize();
   const schema = await buildSchema({
-    resolvers: [ProductResolver],
+    resolvers: [ProductResolver, CategoryResolver],
   });
 
   const server = new ApolloServer({

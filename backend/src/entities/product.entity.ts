@@ -65,5 +65,6 @@ export class InputCreateProduct {
   @Min(0)
   quantity: number;
 
-
+  @Field()
+  categoryId: number; 
 }
