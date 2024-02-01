@@ -1,5 +1,7 @@
 {
   "conventionalCommits.scopes": [
-    "backend"
-  ]
+    "backend",
+    "frontend"
+  ],
+  "typescript.preferences.importModuleSpecifier": "non-relative"
 }
