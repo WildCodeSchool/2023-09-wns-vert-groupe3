@@ -1,4 +1,4 @@
-import { InputCreateProduct, Product } from "../entities/product.entity";
+import { InputCreateProduct, Product } from "../entities";
 import ProductService from "../services/product.service";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 

@@ -1,5 +1,5 @@
+import { Category, InputCreateProduct, Product } from "../entities";
 import datasource from "../../config/datasource";
-import { InputCreateProduct, Product } from "../entities/product.entity";
 import { Repository } from "typeorm";
 
 export default class ProductService {
@@ -12,8 +12,18 @@ export default class ProductService {
     return this.db.find();
   }
 
-  async addProduct({ name, description, price, quantity }: InputCreateProduct) {
-    const newProduct = this.db.create({ name, description, price, quantity });
+  async addProduct({ name, description, price, quantity, categoryId }: InputCreateProduct) {
+    const category = await datasource.getRepository(Category).findOneBy({
+        id: categoryId
+      });
+
+    // Check if category exist
+    if (!category) {
+      throw new Error(`Category with ID ${categoryId} not found`);
+    }
+
+    const newProduct = this.db.create({ name, description, price, quantity, category });
+
     return await this.db.save(newProduct);
   }
 
