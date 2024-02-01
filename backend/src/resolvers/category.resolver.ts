@@ -1,5 +1,4 @@
 import { Category, InputCreateCategory } from "../entities";
-import ProductService from "../services/product.service";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import CategoryService from "../services/category.service";
 
@@ -7,7 +6,7 @@ import CategoryService from "../services/category.service";
 export default class CategoryResolver {
   @Query(() => [Category])
   async categories() {
-    return await new ProductService().getAllProducts();
+    return await new CategoryService().getAllCategories();
   }
 
   @Mutation(() => Category)
@@ -15,5 +14,4 @@ export default class CategoryResolver {
     const newCategory = await new CategoryService().addCategory(infos);
     return newCategory;
   }
-  
 }
