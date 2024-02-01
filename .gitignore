@@ -1,5 +1,7 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Ignore all node_modules directories in the project
+node_modules 
 
 # misc
 .DS_Store
 *.pem
+node_modules
