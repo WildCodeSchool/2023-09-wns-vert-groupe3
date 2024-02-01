@@ -1,6 +1,6 @@
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, InputType, ObjectType } from "type-graphql";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { IsDate, IsInt, Min } from "class-validator";
+import { IsDate, IsInt, Length, Min } from "class-validator";
 import { Category } from "./category.entity";
 
 @ObjectType()
@@ -16,6 +16,7 @@ export class Product {
 
   @Field()
   @Column()
+  @Length(3, 20)
   description: string;
 
   @Field(() => Number)
@@ -37,10 +38,32 @@ export class Product {
   // One Product has only 1 Category
   // A Category can contain multiple products
   // ManyToOne Relationship
-  @Field(() => Category, { nullable: false})
+  @Field(() => Category, { nullable: true })
   @ManyToOne(() => Category, (category) => category.products, {
     onDelete: "SET NULL"
   })
   category: Category;
+
+}
+
+@InputType()
+export class InputCreateProduct {
+  @Field()
+  name: string;
+
+  @Field()
+  @Length(3, 20)
+  description: string;
+
+  @Field()
+  @IsInt()
+  @Min(0)
+  price: number;
+
+  @Field()
+  @IsInt()
+  @Min(0)
+  quantity: number;
+
 
 }
