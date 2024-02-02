@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        montserrat: ["var(--font_montserrat)"],
+      },
       colors: {
         primary: "#5461FC",
         success: "#5CB85C",
