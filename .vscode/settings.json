@@ -1,7 +1,13 @@
 {
   "conventionalCommits.scopes": [
     "backend",
-    "frontend"
+    "frontend",
+    "root",
+    "many"
+  ],
+  "eslint.workingDirectories": [
+    "./backend",
+    "./frontend"
   ],
   "typescript.preferences.importModuleSpecifier": "non-relative"
 }

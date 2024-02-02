@@ -1,15 +1,68 @@
+/* -------------------------------------------------------------------------- */
+/*                                BASE CSS CODE                               */
+/* -------------------------------------------------------------------------- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-
-}
+/* :root {} */
 
 html {
-
+  color: theme('colors.hightcontrast');
+  background-color: theme('colors.theme');
 }
 
 body {
+  font-family: "montserrat", sans-serif;
+}
 
+p {
+  word-break: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  word-break: break-word;
+  /* ADD SPECIFIC FONT FOR TITLES ?? */
+}
+
+/* -------------------------------------------------------------------------- */
+/*                               GLOBAL CSS CODE                              */
+/* -------------------------------------------------------------------------- */
+.default-padding {
+  padding: 0 5rem;
+}
+.default-margin {
+  margin: 0 5rem;
+}
+@media (max-width: 868px) {
+  .default-padding {
+    padding: 0 2.5rem;
+  }
+  .default-margin {
+    margin: 0 2.5rem;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*                               SCROLLBAR STYLE                              */
+/* -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: theme('colors.theme');
+}
+::-webkit-scrollbar-thumb {
+  padding: 5px;
+  border: 3px solid theme('colors.theme');
+  border-radius: 10px;
+  background: theme("colors.primary");
+}
+::-webkit-scrollbar-thumb:hover {
+  background: theme("colors.pink.100");
 }

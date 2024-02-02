@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import ProductCard from '@/components/ProductCard';
-import "./globals.css";
+import { Montserrat } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+import "./globals.css";
+import MainHeader from "@/components/headers/MainHeader";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font_montserrat",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Wildrent",
@@ -16,10 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
-      <body className={inter.className}>
-        <main>{children}</main>
-        <ProductCard {...ProductCard} />
+    <html lang="fr" data-theme='dark' className={`${montserrat.variable}`}>
+      <body className="flex flex-col min-h-screen">
+        <MainHeader />
+        <main className="grow bg-neutral mx-10 px-14 pt-10 pb-20 rounded-t-3xl">
+          {children}
+        </main>
       </body>
     </html>
   );

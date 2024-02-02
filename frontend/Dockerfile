@@ -6,8 +6,8 @@ RUN corepack enable pnpm
 
 # Install dependencies only when needed
 FROM base AS deps
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm i --frozen-lockfile
+COPY package.json ./
+RUN pnpm i
 
 FROM deps AS dev
 COPY . .
