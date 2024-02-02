@@ -27,4 +27,21 @@ export default class ProductService {
     return await this.db.save(newProduct);
   }
 
+  async deleteProduct(productId: number): Promise<boolean> {
+    try {
+        const productToDelete = await this.db.findOne({ where: { id: productId } });
+
+        if (!productToDelete) {
+            throw new Error(`Product with ID ${productId} not found`);
+        }
+
+        await this.db.remove(productToDelete);
+
+        return true;
+    } catch (error) {
+        console.error("Error deleting product:", error);
+        return false;
+    }
+  }
+  
 }
