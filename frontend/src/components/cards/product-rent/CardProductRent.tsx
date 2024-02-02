@@ -5,13 +5,10 @@ import {
   PRODUCT_UNAVAILABLE_DATES,
   USER_REQUESTED_RENT_DATES,
 } from "@/data/fakeData";
-import CardProductRentAvailabilityViewer from "@/components/cards/product-rent/CardProductRentAvailabilityViewer";
+
 import { convertToCurrency } from "@/utils/currency";
 import { isDateRangeOverlap } from "@/utils/date";
-
-console.log("USER_REQUESTED_RENT_DATES", USER_REQUESTED_RENT_DATES);
-console.log("PRODUCT_UNAVAILABLE_DATES", PRODUCT_UNAVAILABLE_DATES);
-console.log("PRODUCT_INFORMATIONS", PRODUCT_INFORMATION);
+import CardProductRentAvailabilityViewer from "@/components/cards/product-rent/CardProductRentAvailabilityViewer";
 
 export default function CardProductRent() {
   const isUnavailable = isDateRangeOverlap(USER_REQUESTED_RENT_DATES, PRODUCT_UNAVAILABLE_DATES);

@@ -1,4 +1,6 @@
+import { PRODUCT_INFORMATION } from "@/data/fakeData";
 import CardProductRent from "@/components/cards/product-rent/CardProductRent";
+import ProductCard from "@/components/ProductCard";
 
 
 export default function HomeHotProductsSection() {
