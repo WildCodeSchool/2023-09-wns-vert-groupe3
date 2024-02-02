@@ -1,5 +1,5 @@
 import { Field, ID, InputType, ObjectType } from "type-graphql";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { IsDate, IsInt, Length, Min } from "class-validator";
 import { Category } from "./category.entity";
 
@@ -19,6 +19,10 @@ export class Product {
   @Length(3, 20)
   description: string;
 
+  @Field()
+  @Column()
+  picture: string;
+
   @Field(() => Number)
   @Column()
   @IsInt()
@@ -34,6 +38,11 @@ export class Product {
   @CreateDateColumn()
   @IsDate()
   created_at: Date;
+
+  @Field()
+  @UpdateDateColumn()
+  @IsDate()
+  updated_at: Date;
 
   // One Product has only 1 Category
   // A Category can contain multiple products
@@ -56,6 +65,9 @@ export class InputCreateProduct {
   description: string;
 
   @Field()
+  picture: string;
+
+  @Field()
   @IsInt()
   @Min(0)
   price: number;
@@ -67,4 +79,30 @@ export class InputCreateProduct {
 
   @Field()
   categoryId: number; 
+}
+
+@InputType()
+export class InputUpdateProduct {
+  @Field({ nullable: true })
+  name?: string;
+
+  @Field({ nullable: true })
+  @Length(3, 20)
+  description?: string;
+  
+  @Field({ nullable: true})
+  picture?: string;
+
+  @Field({ nullable: true })
+  @IsInt()
+  @Min(0)
+  price?: number;
+
+  @Field({ nullable: true })
+  @IsInt()
+  @Min(0)
+  quantity?: number;
+
+  @Field({ nullable: true })
+  categoryId?: number;
 }

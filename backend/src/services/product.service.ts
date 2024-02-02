@@ -1,4 +1,4 @@
-import { Category, InputCreateProduct, Product } from "../entities";
+import { Category, InputCreateProduct, InputUpdateProduct, Product } from "../entities";
 import datasource from "../../config/datasource";
 import { Repository } from "typeorm";
 
@@ -16,7 +16,7 @@ export default class ProductService {
     });
   }
 
-  async addProduct({ name, description, price, quantity, categoryId }: InputCreateProduct) {
+  async addProduct({ name, description, picture, price, quantity, categoryId }: InputCreateProduct) {
     const category = await datasource.getRepository(Category).findOneBy({
         id: categoryId
       });
@@ -26,15 +26,36 @@ export default class ProductService {
       throw new Error(`Category with ID ${categoryId} not found`);
     }
 
-    const newProduct = this.db.create({ name, description, price, quantity, category });
+    const newProduct = this.db.create({ name, description, picture, price, quantity, category });
 
     return await this.db.save(newProduct);
+  }
+
+  async updateProduct(id: number, { name, description, picture, price, quantity, categoryId }: InputUpdateProduct) {
+    try {
+      const category = await datasource.getRepository(Category).findOneByOrFail({
+          id: categoryId
+      });
+  
+      // Check if category exist
+      if (!category) {
+        throw new Error(`Category with ID ${categoryId} not found`);
+      }
+      const productToUpdate = await this.db.save({ id, name, description, picture, price, quantity, category });
+      // console.log(productToUpdate);
+      return productToUpdate;
+      
+    } catch (error) {
+      console.error("Error while updating product :", error);
+      return false;
+    }
   }
 
   async deleteProduct(productId: number): Promise<boolean> {
     try {
         const productToDelete = await this.db.findOne({ where: { id: productId } });
 
+        // Check if the productToDelete id exist
         if (!productToDelete) {
             throw new Error(`Product with ID ${productId} not found`);
         }

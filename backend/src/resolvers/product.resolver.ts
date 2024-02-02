@@ -1,4 +1,4 @@
-import { InputCreateProduct, Product } from "../entities";
+import { InputCreateProduct, InputUpdateProduct, Product } from "../entities";
 import ProductService from "../services/product.service";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 
@@ -13,6 +13,16 @@ export default class ProductResolver {
   async addProduct(@Arg("infos") infos: InputCreateProduct) {
     const newProduct = await new ProductService().addProduct(infos);
     return newProduct;
+  }
+
+  @Mutation(() => Product)
+  async updateProduct(
+    @Arg("id") id: number,
+    @Arg("infos") infos: InputUpdateProduct
+    ) {
+
+    const productToUpdate = await new ProductService().updateProduct(id, infos);    
+    return productToUpdate;
   }
   
   @Mutation(() => Boolean)
