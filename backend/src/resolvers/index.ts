@@ -1,4 +1,3 @@
-
 import ProductResolver from './product.resolver';
 import CategoryResolver from './category.resolver';
 

@@ -21,4 +21,15 @@ export default class CategoryService {
     return await this.db.save(newCategory);
   }
 
+  async find(id: number) {
+    return await this.db.findOne({
+      where: {
+        id
+      },
+      relations: {
+        products: true
+      }
+    });
+  }
+
 }

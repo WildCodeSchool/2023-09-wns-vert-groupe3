@@ -12,11 +12,11 @@ export class Product {
 
   @Field()
   @Column()
+  @Length(5, 50, { message: "Name have to be between 5 and 50 characters"})
   name: string;
 
   @Field()
   @Column()
-  @Length(3, 20)
   description: string;
 
   @Field()
@@ -26,7 +26,7 @@ export class Product {
   @Field(() => Number)
   @Column()
   @IsInt()
-  @Min(0)
+  @Min(0, { message: "price have to be positive" })
   price: number;
 
   @Field(() => Number)
@@ -49,60 +49,52 @@ export class Product {
   // ManyToOne Relationship
   @Field(() => Category, { nullable: true })
   @ManyToOne(() => Category, (category) => category.products, {
-    onDelete: "SET NULL"
+    cascade: true,
+    onDelete: "CASCADE"
   })
   category: Category;
 
 }
 
+// INPUTS
 @InputType()
 export class InputCreateProduct {
   @Field()
   name: string;
 
   @Field()
-  @Length(3, 20)
   description: string;
 
   @Field()
   picture: string;
 
   @Field()
-  @IsInt()
-  @Min(0)
   price: number;
 
   @Field()
-  @IsInt()
-  @Min(0)
   quantity: number;
 
   @Field()
-  categoryId: number; 
+  category: number; 
 }
 
 @InputType()
 export class InputUpdateProduct {
   @Field({ nullable: true })
-  name?: string;
+  name: string;
 
   @Field({ nullable: true })
-  @Length(3, 20)
-  description?: string;
-  
+  description: string;
+
   @Field({ nullable: true})
-  picture?: string;
+  picture: string;
 
   @Field({ nullable: true })
-  @IsInt()
-  @Min(0)
-  price?: number;
+  price: number;
 
   @Field({ nullable: true })
-  @IsInt()
-  @Min(0)
-  quantity?: number;
+  quantity: number;
 
   @Field({ nullable: true })
-  categoryId?: number;
+  category: number;
 }
