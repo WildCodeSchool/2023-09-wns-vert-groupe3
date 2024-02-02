@@ -4,7 +4,6 @@ import React from 'react';
 export type ProductCardProps = {
   id?: number;
   name: string;
-  created_at?: Date;
   price: number;
   description: string;
   quantity: Float32Array;
@@ -21,20 +20,28 @@ const ProductCard = ({
   price,
   quantity,
   location,
+  category,
+
 }: ProductCardProps) => {
   return (
     <div>
+
       <div>
         {name}
       </div>
       <div>
         {description}
       </div>
-      <div>{price}</div>
+      <div>
+        {price}
+      </div>
+      <div>
+        {quantity}
+      </div>
+      <div>
+        {location}
+      </div>
 
-      <div>{quantity}</div>
-
-      <div>{location}</div>
     </div>
   );
 };

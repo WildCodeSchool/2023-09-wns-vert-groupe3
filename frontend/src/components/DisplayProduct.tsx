@@ -5,14 +5,12 @@ import ProductCard, { ProductCardProps } from "./ProductCard";
 
 type DisplayProductsType = {
   products: ProductCardProps[];
-  title: string;
 };
 
-const DisplayProducts = ({ products, title }: DisplayProductsType) => {
+const DisplayProducts = ({ products }: DisplayProductsType) => {
   return (
     <>
-      <h2>{title}</h2>
-      <section className="recent-products">
+      <section>
         {products.map((product) => (
           <div key={product.id}>
             <Link href={`/product/${product.id}`}>
@@ -28,7 +26,7 @@ const DisplayProducts = ({ products, title }: DisplayProductsType) => {
             <button
               onClick={() => {
                 console.log("delete");
-                axios.delete(`http://localhost:4000/product/${product.id}`);
+                //axios.delete(`http://localhost:4000/product/${product.id}`);
               }}
             >
               Delete
