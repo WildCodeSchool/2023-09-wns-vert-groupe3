@@ -1,5 +1,5 @@
-interface DaysInMonthType {
-  (month: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11, year: number): number;
+export interface DaysInMonthType {
+  (month: NumberOfMonths, year: number): number;
 }
 
 /**
@@ -37,4 +37,43 @@ export const isDateRangeOverlap = (dateRange: { start: Date, end: Date }, unavai
     d.getDate() >= dateRange.start.getDate() &&
     d.getDate() <= dateRange.end.getDate()
   );
+};
+
+/**
+ * Returns an array of months between two dates
+ *
+ * @param dateRange - object with start and end date
+ * @returns {Date[]} - array of months
+ * 
+ * @example getMonthsBetweenDates({ start: new Date(2024, 0, 1), end: new Date(2024, 3, 1) }) 
+ * //returns [new Date(2024, 0, 1), new Date(2024, 1, 1), new Date(2024, 2, 1), new Date(2024, 3, 1)]
+ * 
+ */
+export const getMonthsBetweenDates = (dateRange: { start: Date, end: Date }): Date[] => {
+  const months: Date[] = [];
+  let currentDate = new Date(dateRange.start);
+
+  while (currentDate <= dateRange.end) {
+    months.push(new Date(currentDate));
+    currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+  }
+
+  return months;
+};
+
+/**
+ * Returns the previous and next month for a given date
+ *
+ * @param {Date} date - a date
+ * @returns {object} - object with previous and next month
+ * 
+ * @example getPrevAndNextMonth(new Date(2024, 0, 1)) 
+ * //returns { prev: new Date(2023, 11, 1), next: new Date(2024, 1, 1) }
+ * 
+ */
+export const getPrevAndNextDates = (date: Date): { prev: Date, next: Date } => {
+  const prev = new Date(date.getFullYear(), date.getMonth() - 1);
+  const next = new Date(date.getFullYear(), date.getMonth() + 1);
+
+  return { prev, next };
 };

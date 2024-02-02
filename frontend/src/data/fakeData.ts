@@ -14,7 +14,7 @@ export const PRODUCT_INFORMATION = {
 };
 export const USER_REQUESTED_RENT_DATES = {
   start: new Date(Date.parse("2024-02-01")),
-  end: new Date(Date.parse("2024-02-05"))
+  end: new Date(Date.parse("2024-02-07"))
 };
 export const PRODUCT_UNAVAILABLE_DATES = [
   new Date(Date.parse("2024-02-09")),
