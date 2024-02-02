@@ -9,7 +9,11 @@ export default class ProductService {
   }
 
   async getAllProducts() {
-    return this.db.find();
+    return this.db.find({
+      relations: {
+        category: true,
+      }
+    });
   }
 
   async addProduct({ name, description, price, quantity, categoryId }: InputCreateProduct) {

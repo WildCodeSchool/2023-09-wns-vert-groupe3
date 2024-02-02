@@ -9,7 +9,11 @@ export default class CategoryService {
   }
 
   async getAllCategories() {
-    return this.db.find();
+    return this.db.find({
+      relations: {
+        products: true,
+      }
+    });
   }
 
   async addCategory({ name }: InputCreateCategory) {
