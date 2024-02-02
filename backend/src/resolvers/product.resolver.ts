@@ -15,4 +15,15 @@ export default class ProductResolver {
     return newProduct;
   }
   
+  @Mutation(() => Boolean)
+  async deleteProduct(@Arg("productId") productId: number): Promise<boolean> {
+    try {
+      await new ProductService().deleteProduct(productId);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
 }
