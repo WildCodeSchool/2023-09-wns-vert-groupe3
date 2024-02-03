@@ -46,56 +46,89 @@ Install [pnpm](https://pnpm.io/) on your machine.
 
 ### Installing <a name = "installing"></a>
 
-Check if Docker is installed on your machine:
+#### Check if Docker is installed on your machine:
+
 ```bash
 docker --version
 ```
 
-Check if Docker Compose is installed on your machine:
+#### Check if Docker Compose is installed on your machine:
+
 ```bash
-docker-compose --version
+docker compose --version
 ```
 
-Check if pnpm is installed on your machine:
+#### Check if pnpm is installed on your machine:
+
 ```bash
 pnpm --version
 ```
 
-Clone the repository:
+#### Clone the repository:
+
 ```bash
 git clone https://github.com/WildCodeSchool/2023-09-wns-vert-groupe3.git
 ```
 
-Go to the project "backend" folder or "frontend" folder:
+#### Go to the project "backend" folder or "frontend" folder:
+
 ```bash
 cd backend
 
 cd frontend
 ```
 
-Install the dependencies:
+#### Install the dependencies:
+
 ```bash
 pnpm install
 ```
 
---------------------
+---
 
-Go to branch `dev` and create a new branch from it:
+#### Go to branch `dev` and create a new branch from it:
+
 ```bash
 git checkout dev
+
 git checkout -b <your-branch-name>
 ```
 
---------------------
+---
 
-Run the containers:
+#### Run the containers:
+
 ```bash
-docker-compose up 
+docker compose up
 ```
 
-Rebuild the containers and run them :
+#### Rebuild the containers and run them :
+
 ```bash
-docker-compose up --build
+docker compose up --build
+```
+
+#### Watch applications files changes [and rebuilds on package.json changes] :
+
+(La commande suivante est optionnelle, elle permet de surveiller les changements de fichiers et de reconstruire les conteneurs en cas de changement dans le fichier package.json)
+
+**_[Cependant, si utilisée, il faut la lancer dans un autre terminal que celui où les conteneurs sont lancés (sans le couper) !!]_**
+
+> Bug connu :
+> Sur windows, en watch mode, si le conteneur est arrêté et que plus tard on souhaite le relancer avec le watch mode, la commande `docker compose watch` peut renvoyer une erreur de ce type :
+>
+> ```BASH
+> cannot take exclusive lock for project "<project name>": process with PID <pid> is still running
+> ```
+>
+> Pour régler ce problème, supprimer le contenu du fichier `docker-compose` situé dans :
+> `C:\Users\<user_name>\AppData\Local\docker-compose`
+>
+> Ce bug fait déjà l'object d'une issue sur le repo de docker :
+> https://github.com/docker/compose/issues/11066
+
+```bash
+docker compose watch
 ```
 
 ## 🎈 Usage <a name="usage"></a>

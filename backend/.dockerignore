@@ -1,20 +1,34 @@
-# Ignore Docker image files and other similar files and folders
-*Dockerfile*
-.git
-.results
-.gitignore
-.dockerignore
+**/.dockerignore
+**/docker-compose*
+**/Dockerfile*
 
-# Ignore node_modules directory
-node_modules/
+**/.gitignore
+**/.git
 
-# Ignore build artifacts
-dist/
-build/
-.next/
+**/node_modules
+**/.next
+**/build
+**/.cache
+**/charts
 
-# Ignore package-lock.json file
-package-lock.json
+**/obj
+**/dist
+**/.classpath
+**/.toolstarget
 
-# Ignore mis files
+**/.vs
+**/.vscode
+**/.project
+**/.settings
+**/*.*proj.user
+
+**/.env
+**/secrets.dev.yaml
+**/values.dev.yaml
+
+**/compose*
+**/*.dbmdl
+**/*.jfm
+
+LICENSE
 README.md
