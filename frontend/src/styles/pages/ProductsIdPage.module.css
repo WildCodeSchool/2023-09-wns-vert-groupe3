@@ -1,8 +1,11 @@
-.productsIdPage{
-   background: rgb(219, 219, 219);
+.productsIdPage {
+   border: 1px solid rgba(0, 0, 0, 0.313);
 }
 
-.title{
+.title {
    text-align: center;
    font-size: 1.5rem;
+   padding: 1.5rem;
+   background: rgb(219, 219, 219);
+   border-bottom: 1px solid rgba(0, 0, 0, 0.313);
 }
