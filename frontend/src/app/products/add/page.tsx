@@ -17,22 +17,27 @@ const ProductsAddPage = () => {
          <form className={styles.form}/* onSubmit={handleSubmit(onSubmit)} */>
             <label>
                Titre de l&apos;annonce: <br />
-               <input className="text-field" /* {...register("title")} */ />
-            </label>
-            <br />
-            <label>
-               Prix: <br />
-               <input className="text-field" /* {...register("price")}  *//>
+               <input className="text-field" /* {...register("name")} */ />
             </label>
             <br />
             <label>
                Description: <br />
-               <input className="text-field"/*  {...register("description")} */ />
+               <input className="text-field" /* {...register("description")}  *//>
             </label>
             <br />
             <label>
-               Ville: <br />
-               <input className="text-field" /* {...register("location")}  *//>
+               Prix: <br />
+               <input className="text-field"/*  {...register("price")} */ />
+            </label>
+            <br />
+            <label>
+               Quantité: <br />
+               <input className="text-field" /* {...register("quantity")}  *//>
+            </label>
+            <br />
+            <label>
+               Ajouter une image: <br />
+               <input className="text-field" /* {...register("picture")}  *//>
             </label>
             <br />
             <select /* {...register("category")} */>

@@ -107,3 +107,8 @@ h6 {
   background-color: #0b006f;
   color: white;
 }
+
+input {
+  height: 30px;
+  width: 100%;
+}
