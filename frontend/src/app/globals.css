@@ -7,6 +7,17 @@
 
 /* :root {} */
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
 html {
   color: theme('colors.hightcontrast');
   background-color: theme('colors.theme');
@@ -65,4 +76,34 @@ h6 {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: theme("colors.pink.100");
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                               ELEMENTS STYLE                              */
+/* -------------------------------------------------------------------------- */
+
+
+/********** Buttons *********/
+
+.button {
+  min-width: 80px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 2px solid #08004b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #08004b;
+  background-color: white;
+  cursor: pointer;
+}
+
+.button-primary {
+  background-color: #0b006f;
+  color: white;
 }
