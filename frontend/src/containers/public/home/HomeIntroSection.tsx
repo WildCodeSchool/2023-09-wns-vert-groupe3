@@ -22,5 +22,6 @@ export default function HomeIntroSection() {
         </div>
       </div>
     </section>
+    
   );
 }
