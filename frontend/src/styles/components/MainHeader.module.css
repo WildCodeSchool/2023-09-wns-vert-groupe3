@@ -1,1 +1,33 @@
-/* .mainHeader {} */
+/* .mainHeader {
+   border: 1px solid red;
+} */
+
+.header {
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: space-between;
+}
+
+.leftLinks {
+   display: flex;
+   flex-flow: row nowrap;
+   align-items: center;
+}
+
+.rightLinks {
+   display: flex;
+   /* justify-content: center; */
+   align-items: center;
+   flex-flow: row nowrap;
+   gap: 15px;
+}
+
+.allArticles{
+   padding: 10px;
+   border: 1px solid;
+   border-radius: 10px;
+}
+
+.availability {
+   margin-left: 50px;
+}
