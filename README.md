@@ -121,7 +121,7 @@ docker compose up --build
 > cannot take exclusive lock for project "<project name>": process with PID <pid> is still running
 > ```
 >
-> Pour régler ce problème, supprimer le contenu du fichier `docker-compose` situé dans :
+> Pour régler ce problème, supprimer le contenu du dossier `docker-compose` situé dans :
 > `C:\Users\<user_name>\AppData\Local\docker-compose`
 >
 > Ce bug fait déjà l'object d'une issue sur le repo de docker :
