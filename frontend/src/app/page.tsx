@@ -3,9 +3,9 @@ import HomeHotProductsSection from "@/containers/public/home/HomeHotProductsSect
 
 export default function Home() {
   return (
-    <>
+    <main>
       <HomeIntroSection />
       <HomeHotProductsSection />
-    </>
+    </main>
   );
 }
