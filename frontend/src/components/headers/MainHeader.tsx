@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../../styles/components/MainHeader.module.css"
+import { FaPlus } from "react-icons/fa6";
+import { IoSearchSharp } from "react-icons/io5";
 
 export default function MainHeader() {
   return (
@@ -17,7 +19,9 @@ export default function MainHeader() {
             <h1 className="text-3xl font-bold uppercase">Wildrent</h1>
           </Link>
           <div className={styles.availability}>
-            Availability fields todo !
+            {/* Availability fields todo ! */}
+            <input type="text" />
+            <IoSearchSharp className={styles.logo} size={35} />
           </div>
         </div>
         {/* <div className="middleLinks">
@@ -26,13 +30,15 @@ export default function MainHeader() {
           <Link href="/products">
             <span className={styles.allArticles}>Tous les articles</span>
           </Link>
+
           <Link href="/products/add">
-            <Image
+            <FaPlus size={35} />
+            {/* <Image
               src="/images/header/plus.svg"
               alt="plus"
               width={30}
               height={30}
-            />
+            /> */}
           </Link>
           <Link href="/">
             <Image
