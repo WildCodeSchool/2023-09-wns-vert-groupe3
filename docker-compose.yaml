@@ -32,6 +32,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
+    env_file: .env.dev
     environment:
       NODE_ENV: development
     develop:
