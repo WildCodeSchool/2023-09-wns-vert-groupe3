@@ -1,8 +1,7 @@
+import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-
-import "./globals.css";
-import MainHeader from "@/components/headers/MainHeader";
+// import "@/styles/globals.css"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -15,15 +14,10 @@ export const metadata: Metadata = {
   description: "Wildrent is a platform for renting out equipements.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="fr" data-theme='dark' className={`${montserrat.variable}`}>
       <body className="flex flex-col min-h-screen">
-        <MainHeader />
         <main className="grow bg-neutral mx-10 px-14 pt-10 pb-20 rounded-t-3xl">
           {children}
         </main>
@@ -31,3 +25,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+export default Layout;
