@@ -65,7 +65,12 @@ services:
       test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
       retries: 10
     volumes:
-      - pgdata_wildrent:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
 
 volumes:
-  pgdata_wildrent:
+  pgdata:
