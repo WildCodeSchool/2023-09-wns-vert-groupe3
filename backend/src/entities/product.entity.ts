@@ -1,6 +1,13 @@
-import { Field, ID, InputType, ObjectType } from "type-graphql";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { IsDate, IsInt, Length, Min } from "class-validator";
+import { Field, ID, InputType, ObjectType } from "type-graphql";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { Category } from "./category.entity";
 
 @ObjectType()
@@ -12,7 +19,7 @@ export class Product {
 
   @Field()
   @Column()
-  @Length(5, 50, { message: "Name have to be between 5 and 50 characters"})
+  @Length(5, 50, { message: "Name have to be between 5 and 50 characters" })
   name: string;
 
   @Field()
@@ -50,10 +57,9 @@ export class Product {
   @Field(() => Category, { nullable: true })
   @ManyToOne(() => Category, (category) => category.products, {
     cascade: true,
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   category: Category;
-
 }
 
 // INPUTS
@@ -75,7 +81,7 @@ export class InputCreateProduct {
   quantity: number;
 
   @Field()
-  category: number; 
+  category: number;
 }
 
 @InputType()
@@ -86,7 +92,7 @@ export class InputUpdateProduct {
   @Field({ nullable: true })
   description: string;
 
-  @Field({ nullable: true})
+  @Field({ nullable: true })
   picture: string;
 
   @Field({ nullable: true })

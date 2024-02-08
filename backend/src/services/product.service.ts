@@ -1,8 +1,13 @@
-import { Category, InputCreateProduct, InputUpdateProduct, Product } from "../entities";
-import datasource from "../../config/datasource";
-import { Repository } from "typeorm";
-import CategoryService from "../services/category.service";
 import { validate } from "class-validator";
+import { Repository } from "typeorm";
+import datasource from "../../config/datasource";
+import {
+  Category,
+  InputCreateProduct,
+  InputUpdateProduct,
+  Product,
+} from "../entities";
+import CategoryService from "../services/category.service";
 
 export default class ProductService {
   db: Repository<Product>;
@@ -16,14 +21,14 @@ export default class ProductService {
     return this.db.find({
       relations: {
         category: true,
-      }
+      },
     });
   }
 
   async findById(id: number) {
     return await this.db.findOne({
       where: { id },
-      relations: { category: true}
+      relations: { category: true },
     });
   }
 
@@ -33,9 +38,10 @@ export default class ProductService {
       +data.category
     );
     if (!categoryToLink) {
-      throw new Error(`Category with ID ${categoryToLink} not found`);
+      throw new Error(`Category with ID ${data.category} not found`);
     }
-    const newProduct = this.db.create({ ...InputCreateProduct, category: categoryToLink });
+
+    const newProduct = this.db.create({ ...data, category: categoryToLink });
     return await this.db.save(newProduct);
   }
 
@@ -67,6 +73,4 @@ export default class ProductService {
     }
     return await this.db.remove(productToDelete);
   }
-
-  
 }

@@ -1,6 +1,6 @@
-import ProductService from "../services/product.service";
-import { InputCreateProduct, InputUpdateProduct, Product } from "../entities";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { InputCreateProduct, InputUpdateProduct, Product } from "../entities";
+import ProductService from "../services/product.service";
 
 @Resolver()
 export default class ProductResolver {
@@ -25,13 +25,13 @@ export default class ProductResolver {
   @Mutation(() => Product)
   async updateProduct(
     @Arg("id") id: number,
-    @Arg("infos") data: InputUpdateProduct) {
-
+    @Arg("infos") data: InputUpdateProduct
+  ) {
     const productToUpdate = await new ProductService().update(id, { ...data });
     console.log(productToUpdate);
     return productToUpdate;
   }
-  
+
   @Mutation(() => Boolean)
   async deleteProduct(@Arg("productId") productId: number): Promise<boolean> {
     try {
@@ -42,5 +42,4 @@ export default class ProductResolver {
       return false;
     }
   }
-
 }
