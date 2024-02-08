@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import styles from "../../styles/components/MainHeader.module.css"
 import { FaPlus } from "react-icons/fa6";
 import { IoSearchSharp } from "react-icons/io5";
+
+import styles from "./MainHeader.module.css"
 
 export default function MainHeader() {
   return (
