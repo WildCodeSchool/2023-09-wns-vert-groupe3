@@ -1,6 +1,6 @@
-import { Category, InputCreateCategory } from "../entities";
-import datasource from "../../config/datasource";
 import { Repository } from "typeorm";
+import datasource from "../../config/datasource";
+import { Category, InputCreateCategory } from "../entities";
 
 export default class CategoryService {
   db: Repository<Category>;
@@ -12,7 +12,7 @@ export default class CategoryService {
     return this.db.find({
       relations: {
         products: true,
-      }
+      },
     });
   }
 
@@ -24,12 +24,21 @@ export default class CategoryService {
   async find(id: number) {
     return await this.db.findOne({
       where: {
-        id
+        id: id,
       },
       relations: {
-        products: true
-      }
+        products: true,
+      },
     });
   }
 
+  async deleteCategory(id: number) {
+    const categoryToDelete = await this.find(id);
+
+    if (!categoryToDelete) {
+      throw new Error(`Category with id ${id} not found`);
+    }
+
+    await this.db.remove(categoryToDelete);
+  }
 }
