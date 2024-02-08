@@ -24,8 +24,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - 4000:4000
 
   frontend:
     container_name: frontend
@@ -52,8 +50,6 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    ports:
-      - 3000:3000
 
   db:
     image: postgres
@@ -67,5 +63,15 @@ services:
     volumes:
       - pgdata_wildrent:/var/lib/postgresql/data
 
-volumes:
-  pgdata_wildrent:
+  e2e:
+    build: ./e2e
+    volumes:
+      - ./e2e/playwright-report:/app/playwright-report
+      - ./e2e/test-results:/app/test-results
+    container_name: e2e
+    depends_on:
+      frontend:
+        condition: service_healthy
+    environment:
+      NODE_ENV: test
+    command: ["bash", "-c", "cd /tests && npm install && npm test"]
