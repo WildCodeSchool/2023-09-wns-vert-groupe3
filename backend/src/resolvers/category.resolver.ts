@@ -6,8 +6,18 @@ import CategoryService from "../services/category.service";
 export default class CategoryResolver {
   @Query(() => [Category])
   async categories() {
-    return await new CategoryService().getAllCategories();
+    return await Category.find()
   }
+
+
+
+//   @Query(() => [Category])
+//   async categories() {
+//     return await new CategoryService().getAllCategories();
+//   }
+
+
+
 
   @Mutation(() => Category)
   async addCategory(@Arg("infos") infos: InputCreateCategory) {

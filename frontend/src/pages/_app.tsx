@@ -1,13 +1,13 @@
-import dynamic from "next/dynamic";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import type { AppProps } from "next/app";
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import dynamic from "next/dynamic";
 
 import Layout from "@/components/Layout";
 
-import "@/styles/globals.css"
+import "@/styles/globals.css";
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  uri: "process.env.NEXT_PUBLIC_BACKEND_URL",
   cache: new InMemoryCache(),
 });
 
