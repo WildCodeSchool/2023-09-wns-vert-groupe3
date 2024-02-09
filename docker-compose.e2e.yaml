@@ -35,6 +35,11 @@ services:
     env_file: .env.dev
     environment:
       NODE_ENV: development
+    healthcheck:
+      test: 'curl --fail --request POST --header ''content-type: application/json'' --url ''http://localhost:3000/api/healthcheck'' || exit 1'
+        
+        
+      retries: 10
     develop:
       watch:
         - path: ./frontend/package.json
@@ -55,6 +60,42 @@ services:
     ports:
       - 3000:3000
 
+  e2e:
+    build:
+      context: ./e2e
+      dockerfile: Dockerfile
+    volumes:
+      - ./e2e/playwright-report:/app/playwright-report
+      - ./e2e/test-results:/app/test-results
+    depends_on:
+      frontend:
+        condition: service_healthy
+
+  imagesupload:
+    build:
+      context: ./imagesupload
+      dockerfile: Dockerfile.dev
+    develop:
+      watch:
+        - path: ./imagesupload/package.json
+          target: /app
+          action: rebuild
+        - path: ./imagesupload/pnpm-lock.yaml
+          target: /app
+          action: rebuild
+        - path: ./imagesupload/src
+          target: /app/src
+          action: sync
+    volumes:
+      - ./imagesupload/uploads:/app/uploads
+    ports:
+      - 8000:8000
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+
   db:
     image: postgres
     container_name: db
@@ -62,10 +103,11 @@ services:
     environment:
       POSTGRES_PASSWORD: wildrent
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -d postgres -U postgres" ]
       retries: 10
     volumes:
-      - pgdata_wildrent:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+
 
 volumes:
-  pgdata_wildrent:
+  pgdata:
