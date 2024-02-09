@@ -24,7 +24,7 @@ export default class CategoryService {
   async find(id: number) {
     return await this.db.findOne({
       where: {
-        id: id,
+        id,
       },
       relations: {
         products: true,

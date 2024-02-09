@@ -1,11 +1,11 @@
 import { Field, ID, InputType, ObjectType } from "type-graphql";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./product.entity";
 
 
 @ObjectType()
 @Entity()
-export class Category {
+export class Category extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,7 +16,7 @@ export class Category {
 
   // A category can contain multiple ads
   @OneToMany(() => Product, (products) => products.category)
-  @Field(() => [Product], { nullable: true })
+//   @Field(() => [Product], { nullable: true })
   products: Product[];
 }
 
