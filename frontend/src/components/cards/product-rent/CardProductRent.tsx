@@ -1,4 +1,6 @@
 import { FaHeart } from "react-icons/fa6";
+import { useQuery } from '@apollo/client';
+import { GET_PRODUCTS } from '@/lib/graphql/queries';
 
 import {
   PRODUCT_INFORMATION,
@@ -11,6 +13,12 @@ import { isDateRangeOverlap } from "@/utils/date";
 import CardProductRentAvailabilityViewer from "@/components/cards/product-rent/CardProductRentAvailabilityViewer";
 
 export default function CardProductRent() {
+
+  const { loading, error } = useQuery(GET_PRODUCTS);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+
   const isUnavailable = isDateRangeOverlap(USER_REQUESTED_RENT_DATES, PRODUCT_UNAVAILABLE_DATES);
 
   return (
@@ -42,7 +50,7 @@ export default function CardProductRent() {
               {/* ITEM MAIN INFOS */}
               <div className="flex flex-col border-l-4 border-warning px-3 py-1">
                 <h1 className="text-lg font-semibold text-hightcontrast">
-                  {PRODUCT_INFORMATION?.title || <em>NO TITLE...</em>}
+                  {GET_PRODUCTS?.name || <em>NO TITLE...</em>}
                 </h1>
                 {PRODUCT_INFORMATION?.tags && (
                   <ul className="flex gap-1">
