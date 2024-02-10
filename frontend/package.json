@@ -6,22 +6,36 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --log-level warn --write \"./src/**/*.{tsx,ts,css}\""
   },
   "dependencies": {
+    "@radix-ui/colors": "^3.0.0",
+    "@radix-ui/react-tooltip": "^1.0.7",
+    "framer-motion": "^11.0.3",
+    "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.1.0"
+    "react-hook-form": "^7.50.1",
+    "react-icons": "^5.0.1",
+    "tw-colors": "^3.3.1"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@apollo/client": "^3.9.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "autoprefixer": "^10.0.1",
-    "postcss": "^8",
-    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.17",
+    "axios": "^1.6.7",
     "eslint": "^8",
-    "eslint-config-next": "14.1.0"
-  }
+    "eslint-config-next": "14.1.0",
+    "graphql": "^16.8.1",
+    "postcss": "^8.4.33",
+    "prettier": "^3.2.4",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "sass": "^1.70.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@8.15.1+sha256.245fe901f8e7fa8782d7f17d32b6a83995e2ae03984cb5b62b8949bfdc27c7b5"
 }
