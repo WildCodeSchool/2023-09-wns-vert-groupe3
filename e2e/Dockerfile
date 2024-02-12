@@ -10,4 +10,4 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 FROM deps as build
 COPY . .
-CMD ["pnpx", "playwright", "test"]
+CMD ["pnpm", "playwright", "test"]
