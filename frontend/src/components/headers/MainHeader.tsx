@@ -8,7 +8,13 @@ import styles from "../../styles/components/MainHeader.module.scss";
 
 export default function MainHeader() {
   const [searchActive, setSearchActive] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
   const toggleSearch = () => setSearchActive(!searchActive);
+
+  const handleInputChange = (e: any) => {
+    setSearchValue(e.target.value);
+  };
 
   return (
     <main className={styles.mainHeader}>
@@ -34,6 +40,8 @@ export default function MainHeader() {
             <input
               type="text"
               placeholder={searchActive ? "Rechercher..." : ""}
+              value={searchActive ? searchValue : ""}
+              onChange={handleInputChange}
               readOnly={!searchActive}
               className={`${
                 searchActive ? "w-60 pl-8 pr-4" : "w-9"
@@ -59,7 +67,10 @@ export default function MainHeader() {
             {searchActive && (
               <div
                 className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                onClick={() => setSearchActive(false)}
+                onClick={() => {
+                  setSearchActive(false);
+                  setSearchValue("");
+                }}
               >
                 <FaTimes className="cursor-pointer text-black" />
               </div>
