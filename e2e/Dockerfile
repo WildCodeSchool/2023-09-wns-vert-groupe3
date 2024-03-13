@@ -1,7 +1,4 @@
-ARG NODE_VERSION=20.11.0
-
-FROM node:${NODE_VERSION}-alpine as base
-RUN apk add --no-cache libc6-compat curl
+FROM mcr.microsoft.com/playwright as base
 RUN corepack enable pnpm
 WORKDIR /app
 
@@ -13,4 +10,4 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 FROM deps as build
 COPY . .
-CMD ["pnpm", "run", "dev"]
+CMD ["pnpm", "playwright", "test"]

@@ -1,4 +1,4 @@
-import { FaHeart } from "react-icons/fa6";
+import { LikeButton, Provider } from "@lyket/react";
 
 import {
   PRODUCT_INFORMATION,
@@ -6,9 +6,9 @@ import {
   USER_REQUESTED_RENT_DATES,
 } from "@/data/fakeData";
 
+import CardProductRentAvailabilityViewer from "@/components/cards/product-rent/CardProductRentAvailabilityViewer";
 import { convertToCurrency } from "@/utils/currency";
 import { isDateRangeOverlap } from "@/utils/date";
-import CardProductRentAvailabilityViewer from "@/components/cards/product-rent/CardProductRentAvailabilityViewer";
 
 
 export type CardProductRentProps = {
@@ -44,9 +44,13 @@ const CardProductRent = ({
             <section className="flex flex-col gap-3">
               {/* ITEM FIRST ICONS */}
               <div className="flex items-center justify-end gap-3">
-                <div className="flex aspect-square w-6 flex-col items-center justify-center rounded-full bg-zinc-100 text-danger">
-                  <FaHeart />
-                </div>
+                <Provider apiKey="pt_d4c8b1b99dc99af8a7f81085b52c3c">
+                  <LikeButton
+                    namespace="testing-react"
+                    id="everybody-like-now"
+                    component={LikeButton.templates.Twitter}
+                  />
+                </Provider>
                 {isUnavailable ? (
                   <div className="flex items-center justify-center rounded bg-danger px-3 py-1">
                     <p className="text-sm font-semibold text-white">
