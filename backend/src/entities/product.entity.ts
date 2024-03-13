@@ -1,11 +1,18 @@
-import { IsInt, Length, Min } from "class-validator";
+import { IsDate, IsInt, Length, Min } from "class-validator";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { Category } from "./category.entity";
 
 @ObjectType()
 @Entity()
-export class Product extends BaseEntity {
+export class Product {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
@@ -34,19 +41,19 @@ export class Product extends BaseEntity {
   @IsInt()
   quantity: number;
 
-  //   @Field()
-  //   @CreateDateColumn()
-  //   @IsDate()
-  //   created_at: Date;
+  @Field()
+  @CreateDateColumn()
+  @IsDate()
+  created_at: Date;
 
-  //   @Field()
-  //   @UpdateDateColumn()
-  //   @IsDate()
-  //   updated_at: Date;
+  @Field()
+  @UpdateDateColumn()
+  @IsDate()
+  updated_at: Date;
 
-  //   One Product has only 1 Category
-  //   A Category can contain multiple products
-  //   ManyToOne Relationship
+  // One Product has only 1 Category
+  // A Category can contain multiple products
+  // ManyToOne Relationship
   @Field(() => Category, { nullable: true })
   @ManyToOne(() => Category, (category) => category.products, {
     cascade: true,

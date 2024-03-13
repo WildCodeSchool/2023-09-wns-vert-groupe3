@@ -1,6 +1,12 @@
+import { validate } from "class-validator";
 import { Repository } from "typeorm";
 import datasource from "../../config/datasource";
-import { Category, InputCreateProduct, Product } from "../entities";
+import {
+  Category,
+  InputCreateProduct,
+  InputUpdateProduct,
+  Product,
+} from "../entities";
 import CategoryService from "../services/category.service";
 
 export default class ProductService {
@@ -39,26 +45,26 @@ export default class ProductService {
     return await this.db.save(newProduct);
   }
 
-  //   async update(id: number, data: InputUpdateProduct) {
-  //     const categoryToLink = await new CategoryService().find(data.category);
-  //     if (!categoryToLink) {
-  //       throw new Error("category doesnt exist");
-  //     }
-  //     const productToUpdate = await this.findById(id);
-  //     if (!productToUpdate) {
-  //       throw new Error("Product doesnt exist");
-  //     }
-  //     const producToSave = this.db.merge(productToUpdate, {
-  //       ...data,
-  //       category: categoryToLink,
-  //     });
-  //     const errors = await validate(producToSave);
-  //     if (errors.length !== 0) {
-  //       console.log(errors);
-  //       throw new Error("Error when validate");
-  //     }
-  //     return await this.db.save(producToSave);
-  //   }
+    async update(id: number, data: InputUpdateProduct) {
+      const categoryToLink = await new CategoryService().find(data.category);
+      if (!categoryToLink) {
+        throw new Error("category doesnt exist");
+      }
+      const productToUpdate = await this.findById(id);
+      if (!productToUpdate) {
+        throw new Error("Product doesnt exist");
+      }
+      const producToSave = this.db.merge(productToUpdate, {
+        ...data,
+        category: categoryToLink,
+      });
+      const errors = await validate(producToSave);
+      if (errors.length !== 0) {
+        console.log(errors);
+        throw new Error("Error when validate");
+      }
+      return await this.db.save(producToSave);
+    }
 
   async deleteProduct(id: number) {
     const productToDelete = await this.findById(id);

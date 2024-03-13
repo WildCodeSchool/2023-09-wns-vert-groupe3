@@ -1,6 +1,4 @@
 import { FaHeart } from "react-icons/fa6";
-import { useQuery } from '@apollo/client';
-import { GET_PRODUCTS } from '@/lib/graphql/queries';
 
 import {
   PRODUCT_INFORMATION,
@@ -12,12 +10,28 @@ import { convertToCurrency } from "@/utils/currency";
 import { isDateRangeOverlap } from "@/utils/date";
 import CardProductRentAvailabilityViewer from "@/components/cards/product-rent/CardProductRentAvailabilityViewer";
 
-export default function CardProductRent() {
 
-  const { loading, error } = useQuery(GET_PRODUCTS);
+export type CardProductRentProps = {
+  id: number;
+  name: string;
+  description: string;
+  picture: string;
+  price: number;
+  quantity: number;
+  created_at: string;
+  updated_at: string;
+  category: {
+    id: number;
+    name: string;
+  }
+}
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+const CardProductRent = ({
+  name,
+  description,
+  picture,
+  price,
+}: CardProductRentProps) => {
 
   const isUnavailable = isDateRangeOverlap(USER_REQUESTED_RENT_DATES, PRODUCT_UNAVAILABLE_DATES);
 
@@ -50,7 +64,7 @@ export default function CardProductRent() {
               {/* ITEM MAIN INFOS */}
               <div className="flex flex-col border-l-4 border-warning px-3 py-1">
                 <h1 className="text-lg font-semibold text-hightcontrast">
-                  {GET_PRODUCTS?.name || <em>NO TITLE...</em>}
+                  {name || <em>NO TITLE...</em>}
                 </h1>
                 {PRODUCT_INFORMATION?.tags && (
                   <ul className="flex gap-1">
@@ -69,7 +83,7 @@ export default function CardProductRent() {
 
             <section className="flex h-10 flex-col gap-3">
               <p className="text-base font-medium opacity-70">
-                {PRODUCT_INFORMATION?.description || <em>NO DESCRIPTION...</em>}
+                {description || <em>NO DESCRIPTION...</em>}
               </p>
             </section>
           </div>
@@ -90,3 +104,6 @@ export default function CardProductRent() {
     </article>
   );
 }
+
+
+export default CardProductRent;
