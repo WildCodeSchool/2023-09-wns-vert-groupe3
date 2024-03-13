@@ -8,8 +8,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Goto client and run tests
-        run: cd e2e && pnpm i && npx playwright test
+      - name: Goto e2e and run tests playwright
+        run: docker compose up --build && cd e2e && pnpm i && pnpm exec playwright test --exit-code-from e2e
   docker:
       needs: test-e2e
       if: github.ref == 'refs/heads/dev'
