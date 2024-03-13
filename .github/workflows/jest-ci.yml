@@ -29,19 +29,5 @@ jobs:
           with:
             push: true
             context: "{{defaultContext}}:client"
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2:latest          
-          
-          
-
-
-
-# on:
-#   pull_request
-
-# test-client:
-# runs-on: ubuntu-latest
-# steps:
-#     - name: Check out code
-#       uses: actions/checkout@v2
-#     - name: Goto client and run tests
-#       run: cd client && npm i && npm test
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2:latest
+            
