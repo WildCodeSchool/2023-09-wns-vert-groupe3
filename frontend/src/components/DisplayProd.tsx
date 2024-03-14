@@ -6,7 +6,7 @@ type DisplayProdType = {
 
 const DisplayProd = ({ products }: DisplayProdType) => {
     return (
-        <div>
+        <div className="grid grid-cols-2 gap-6">
             {products.map((product) => (
                 <CardProductRent key={product.id} {...product} />
             ))}
