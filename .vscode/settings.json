@@ -3,11 +3,9 @@
     "backend",
     "frontend",
     "root",
-    "many"
+    "many",
+    "test-e2e"
   ],
-  "eslint.workingDirectories": [
-    "./backend",
-    "./frontend"
-  ],
+  "eslint.workingDirectories": ["./backend", "./frontend"],
   "typescript.preferences.importModuleSpecifier": "non-relative"
 }
