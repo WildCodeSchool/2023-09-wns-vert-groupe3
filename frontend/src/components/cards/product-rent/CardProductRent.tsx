@@ -10,11 +10,30 @@ import CardProductRentAvailabilityViewer from "@/components/cards/product-rent/C
 import { convertToCurrency } from "@/utils/currency";
 import { isDateRangeOverlap } from "@/utils/date";
 
-export default function CardProductRent() {
-  const isUnavailable = isDateRangeOverlap(
-    USER_REQUESTED_RENT_DATES,
-    PRODUCT_UNAVAILABLE_DATES,
-  );
+
+export type CardProductRentProps = {
+  id: number;
+  name: string;
+  description: string;
+  picture: string;
+  price: number;
+  quantity: number;
+  created_at: string;
+  updated_at: string;
+  category: {
+    id: number;
+    name: string;
+  }
+}
+
+const CardProductRent = ({
+  name,
+  description,
+  picture,
+  price,
+}: CardProductRentProps) => {
+
+  const isUnavailable = isDateRangeOverlap(USER_REQUESTED_RENT_DATES, PRODUCT_UNAVAILABLE_DATES);
 
   return (
     <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
@@ -49,7 +68,7 @@ export default function CardProductRent() {
               {/* ITEM MAIN INFOS */}
               <div className="flex flex-col border-l-4 border-warning px-3 py-1">
                 <h1 className="text-lg font-semibold text-hightcontrast">
-                  {PRODUCT_INFORMATION?.title || <em>NO TITLE...</em>}
+                  {name || <em>NO TITLE...</em>}
                 </h1>
                 {PRODUCT_INFORMATION?.tags && (
                   <ul className="flex gap-1">
@@ -68,7 +87,7 @@ export default function CardProductRent() {
 
             <section className="flex h-10 flex-col gap-3">
               <p className="text-base font-medium opacity-70">
-                {PRODUCT_INFORMATION?.description || <em>NO DESCRIPTION...</em>}
+                {description || <em>NO DESCRIPTION...</em>}
               </p>
             </section>
           </div>
@@ -89,3 +108,6 @@ export default function CardProductRent() {
     </article>
   );
 }
+
+
+export default CardProductRent;

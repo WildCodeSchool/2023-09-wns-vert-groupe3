@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from "@apollo/client";
 import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 
@@ -6,8 +6,17 @@ import Layout from "@/components/Layout";
 
 import "@/styles/globals.css";
 
+const httpLink = createHttpLink({
+  uri: process.env.NEXT_PUBLIC_BACKEND_URL,
+});
+
+// const client = new ApolloClient({
+//   uri: "process.env.NEXT_PUBLIC_BACKEND_URL",
+//   cache: new InMemoryCache(),
+// });
+
 const client = new ApolloClient({
-  uri: "process.env.NEXT_PUBLIC_BACKEND_URL",
+  link: httpLink,
   cache: new InMemoryCache(),
 });
 
