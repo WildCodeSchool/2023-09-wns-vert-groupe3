@@ -1,6 +1,19 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Field,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from "type-graphql";
 import { InputCreateProduct, InputUpdateProduct, Product } from "../entities";
 import ProductService from "../services/product.service";
+
+@ObjectType()
+class deleteProductResponse {
+  @Field(() => String, { nullable: true })
+  response?: string;
+}
 
 @Resolver()
 export default class ProductResolver {
@@ -32,14 +45,16 @@ export default class ProductResolver {
     return productToUpdate;
   }
 
-  @Mutation(() => Boolean)
-  async deleteProduct(@Arg("productId") productId: number): Promise<boolean> {
+  @Mutation(() => deleteProductResponse)
+  async deleteProduct(
+    @Arg("productId") productId: number
+  ): Promise<deleteProductResponse> {
     try {
       await new ProductService().deleteProduct(productId);
-      return true;
+      return { response: "Product has been deleted" };
     } catch (error) {
       console.error(error);
-      return false;
+      return { response: "Failed to delete product" };
     }
   }
 }

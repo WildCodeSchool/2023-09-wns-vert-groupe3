@@ -1,6 +1,19 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Field,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from "type-graphql";
 import { Category, InputCreateCategory } from "../entities";
 import CategoryService from "../services/category.service";
+
+@ObjectType()
+class DeleteCategoryResponse {
+  @Field(() => String, { nullable: true })
+  response?: string;
+}
 
 @Resolver()
 export default class CategoryResolver {
@@ -15,16 +28,17 @@ export default class CategoryResolver {
     return newCategory;
   }
 
-  @Mutation(() => String)
-  async deleteCategoryById(@Arg("id") id: number) {
+  @Mutation(() => DeleteCategoryResponse)
+  async deleteCategoryById(
+    @Arg("id") id: number
+  ): Promise<DeleteCategoryResponse> {
     const categoryService = new CategoryService();
 
     try {
       await categoryService.deleteCategory(id);
-      return "The Category has been deleted";
+      return { response: "Category has been deleted" };
     } catch (error) {
-      console.error("Error deleting category:", error);
-      throw new Error("Failed to delete category.");
+      return { response: "Error deleting category" };
     }
   }
 }
