@@ -16,6 +16,3 @@ const DisplayProd = ({ products }: DisplayProdType) => {
 
 export default DisplayProd;
 
-
-
-
