@@ -7,3 +7,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 pnpm-lock.yaml
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
