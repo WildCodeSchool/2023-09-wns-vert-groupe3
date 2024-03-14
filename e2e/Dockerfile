@@ -14,3 +14,5 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 FROM dependencies as build
 COPY . .
 CMD ["pnpm", "playwright", "test"]
+
+
