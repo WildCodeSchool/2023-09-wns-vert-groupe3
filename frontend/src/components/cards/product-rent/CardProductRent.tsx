@@ -71,9 +71,11 @@ const CardProductRent = ({
                 <h1 className="text-lg font-semibold text-hightcontrast">
                   {name || <em>NO TITLE...</em>}
                 </h1>
-                <p className="w-max rounded bg-blue-200 px-2 py-1 text-sm">
-                  {category.name}
-                </p>
+                {category && (
+                  <p className="w-max rounded bg-blue-200 px-2 py-1 text-sm">
+                    {category.name}
+                  </p>
+                )}
               </div>
             </section>
 
