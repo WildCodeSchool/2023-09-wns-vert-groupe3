@@ -17,10 +17,10 @@ export const metadata: Metadata = {
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <html lang="fr" data-theme='light' className={`${montserrat.variable}`}>
+    <html lang="fr" data-theme='dark' className={`${montserrat.variable}`}>
       <body className="flex flex-col min-h-screen">
         <MainHeader />
-        <main className="grow bg-neutral mx-10 px-14 pt-10 pb-20 rounded-t-3xl">
+        <main className="grow bg-neutral mx-6 md:mx-10 px-7 md:px-14 pt-10 pb-20 rounded-t-3xl">
           {children}
         </main>
       </body>
