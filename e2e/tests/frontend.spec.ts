@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("Find URL and title", async ({ page }) => {
   await page.goto("http://frontend:3000/", { timeout: 60000 });
+  await page.pause()
   await expect(
     page.getByRole("heading", {
       name: "Louez aujourd'hui, venez le récupérer dans l'heure",
