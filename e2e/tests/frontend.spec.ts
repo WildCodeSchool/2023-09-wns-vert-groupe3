@@ -10,9 +10,9 @@ test("Find URL and title", async ({ page }) => {
 });
 
 test("Find all pages", async ({ page }) => {
-  await page.goto("http://frontend:3000/products", { timeout: 80000 });
-  await page.goto("http://frontend:3000/products/add", { timeout: 80000 });
-  await page.goto("http://frontend:3000/cart", { timeout: 80000 });
+  await page.goto("http://frontend:3000/products");
+  await page.goto("http://frontend:3000/cart");
+  await page.goto("http://frontend:3000/profile");
 });
 
 // cmd execute test : pnpm exec playwright test

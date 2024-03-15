@@ -1,7 +1,6 @@
 import { LikeButton, Provider } from "@lyket/react";
 
 import {
-  PRODUCT_INFORMATION,
   PRODUCT_UNAVAILABLE_DATES,
   USER_REQUESTED_RENT_DATES,
 } from "@/data/fakeData";
@@ -9,7 +8,6 @@ import {
 import CardProductRentAvailabilityViewer from "@/components/cards/product-rent/CardProductRentAvailabilityViewer";
 import { convertToCurrency } from "@/utils/currency";
 import { isDateRangeOverlap } from "@/utils/date";
-
 
 export type CardProductRentProps = {
   id: number;
@@ -23,17 +21,20 @@ export type CardProductRentProps = {
   category: {
     id: number;
     name: string;
-  }
-}
+  };
+};
 
 const CardProductRent = ({
   name,
   description,
   picture,
   price,
+  category,
 }: CardProductRentProps) => {
-
-  const isUnavailable = isDateRangeOverlap(USER_REQUESTED_RENT_DATES, PRODUCT_UNAVAILABLE_DATES);
+  const isUnavailable = isDateRangeOverlap(
+    USER_REQUESTED_RENT_DATES,
+    PRODUCT_UNAVAILABLE_DATES,
+  );
 
   return (
     <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
@@ -70,17 +71,10 @@ const CardProductRent = ({
                 <h1 className="text-lg font-semibold text-hightcontrast">
                   {name || <em>NO TITLE...</em>}
                 </h1>
-                {PRODUCT_INFORMATION?.tags && (
-                  <ul className="flex gap-1">
-                    {PRODUCT_INFORMATION.tags.map((tag, index) => (
-                      <li
-                        key={index}
-                        className="rounded bg-neutral-200 px-3 py-1"
-                      >
-                        <p className="text-sm">{tag}</p>
-                      </li>
-                    ))}
-                  </ul>
+                {category && (
+                  <p className="w-max rounded bg-blue-200 px-2 py-1 text-sm">
+                    {category.name}
+                  </p>
                 )}
               </div>
             </section>
@@ -94,8 +88,8 @@ const CardProductRent = ({
           <div className="flex grow basis-0 flex-col items-start justify-end">
             <section className="flex flex-col items-start justify-center">
               <p className="text-sm font-medium">
-                {convertToCurrency(100).in("USD").valueWithSymbol} (+
-                {convertToCurrency(1.5).in("USD").valueWithSymbol} par jours)
+                {convertToCurrency(price).in("EUR").valueWithSymbol} (+
+                {convertToCurrency(2.5).in("EUR").valueWithSymbol} par jours)
               </p>
               <p className="text-sm opacity-70">+ Item info, item info</p>
             </section>
@@ -107,7 +101,6 @@ const CardProductRent = ({
       </div>
     </article>
   );
-}
-
+};
 
 export default CardProductRent;
