@@ -3,11 +3,11 @@ services:
   backend:
     build: ./backend
     ports:
-      - 4001:4001
+      - 4001:4000
     volumes:
       - ./backend/src:/app/src
     healthcheck:
-      test: 'curl --fail --request POST --header ''content-type: application/json'' --url ''http://localhost:4001'' --data ''{"query":"query { __typename }"}'' || exit 1'
+      test: 'curl --fail --request POST --header ''content-type: application/json'' --url ''http://localhost:4000'' --data ''{"query":"query { __typename }"}'' || exit 1'
       interval: 5s
       timeout: 5s
       retries: 10
@@ -46,12 +46,12 @@ services:
       - ./imagesupload/src:/app/src
       - ./imagesupload/uploads:/app/uploads
     ports:
-      - 8000:8000
+      - 8001:8000
 
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - 8081:8080
       
 volumes:
   pgdata:
