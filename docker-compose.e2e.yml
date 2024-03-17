@@ -26,7 +26,7 @@ services:
   db:
     image: postgres
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: wildrent
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
       interval: 10s
@@ -35,7 +35,7 @@ services:
 
   imagesupload:
     build: ./imagesupload
-    
+
   e2e:
     build: ./e2e
     volumes:
