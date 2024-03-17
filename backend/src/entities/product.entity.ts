@@ -1,6 +1,8 @@
 import { IsDate, IsInt, Length, Min } from "class-validator";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 import {
+   BaseEntity,
+   // BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -12,7 +14,7 @@ import { Category } from "./category.entity";
 
 @ObjectType()
 @Entity()
-export class Product {
+export class Product extends BaseEntity{
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
