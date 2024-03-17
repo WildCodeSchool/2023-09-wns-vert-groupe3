@@ -19,7 +19,7 @@ services:
     build: ./frontend
     env_file: .env.dev
     ports:
-      - 3000:3000
+      - 3001:3000
     volumes:
       - ./frontend/src:/app/src
     depends_on:
