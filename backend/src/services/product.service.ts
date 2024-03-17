@@ -1,6 +1,6 @@
 import { validate } from "class-validator";
 import { Repository } from "typeorm";
-import datasource from "../../config/datasource";
+import datasource from "../config/datasource";
 import {
   Category,
   InputCreateProduct,

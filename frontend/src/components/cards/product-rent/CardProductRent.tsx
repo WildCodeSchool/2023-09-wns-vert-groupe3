@@ -3,11 +3,12 @@ import { LikeButton, Provider } from "@lyket/react";
 import {
   PRODUCT_UNAVAILABLE_DATES,
   USER_REQUESTED_RENT_DATES,
-} from "@/data/fakeData";
+} from "../../../data/fakeData";
 
-import CardProductRentAvailabilityViewer from "@/components/cards/product-rent/CardProductRentAvailabilityViewer";
-import { convertToCurrency } from "@/utils/currency";
-import { isDateRangeOverlap } from "@/utils/date";
+import CardProductRentAvailabilityViewer from "../../../components/cards/product-rent/CardProductRentAvailabilityViewer";
+// import { convertToCurrency } from "@/utils/currency";
+import { isDateRangeOverlap } from "utils/date";
+import { convertToCurrency } from "utils/currency";
 
 export type CardProductRentProps = {
   id: number;

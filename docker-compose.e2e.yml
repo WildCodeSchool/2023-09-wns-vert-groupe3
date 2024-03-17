@@ -32,7 +32,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
-    env_file: .env.dev
+    env_file: .env.test
     environment:
       NODE_ENV: development
     healthcheck:

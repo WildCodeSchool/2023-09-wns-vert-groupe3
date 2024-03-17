@@ -10,13 +10,13 @@ import {
   daysInMonth,
   getMonthsBetweenDates,
   getPrevAndNextDates,
-} from "@/utils/date";
+} from "utils/date";
 import {
   PRODUCT_UNAVAILABLE_DATES,
   USER_REQUESTED_RENT_DATES,
-} from "@/data/fakeData";
+} from "data/fakeData";
 
-import Tooltip from "@/components/ui/Tooltip";
+import Tooltip from "components/ui/Tooltip";
 
 // Function to get the month view for the rent availability viewer
 function getRentMonthView(dateRange?: { start: Date; end: Date }) {
@@ -63,11 +63,11 @@ export default function CardProductRentAvailabilityViewer() {
               <TooltipProvider delayDuration={100} skipDelayDuration={100}>
                 {Array.from({ length: daysInActiveMonth }, (_, i) => i + 1).map(
                   (day, index) => {
-                    console.log(
-                      monthView.toLocaleDateString("fr-FR", {
-                        month: "long",
-                      }),
-                    );
+                  //   console.log(
+                  //     monthView.toLocaleDateString("fr-FR", {
+                  //       month: "long",
+                  //     }),
+                  //   );
 
                     const date = new Date(
                       monthView.getFullYear(),

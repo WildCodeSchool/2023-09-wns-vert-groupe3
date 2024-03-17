@@ -8,15 +8,15 @@ const app = express();
 const port = 8000;
 app.use(cors());
 
-app.get("/", (_: any, res: any) => {
+app.get("/", (_, res) => {
    res.send("Hello World!");
 });
 
 const storage = multer.diskStorage({
-   destination: function (_req: any, _file, cb) {
+   destination: function (req, file, cb) {
       cb(null, path.join(__dirname, "../uploads/"));
    },
-   filename: function (_req: any, file: any, cb) {
+   filename: function (req, file, cb) {
       cb(null, Date.now() + "-" + file.originalname);
    },
 });
@@ -35,7 +35,7 @@ app.post("/upload", upload.single("file"), (req: any, res: Response) => {
    });
 });
 
-app.get("/files/:filename", (req: any, res: any) => {
+app.get("/files/:filename", (req, res) => {
    let file = path.join(__dirname + "/../uploads", req.params.filename);
    console.log("file", file);
    fs.readFile(file, (err, content) => {
