@@ -2,6 +2,7 @@
 FROM node:lts-alpine
 
 RUN corepack enable pnpm
+RUN corepack prepare pnpm@8.15.4 --activate
 WORKDIR /app
 
 COPY tsconfig.json tsconfig.json
