@@ -1,14 +1,13 @@
 import { IsDate, IsInt, Length, Min } from "class-validator";
-import { Field, ID, InputType, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 import {
    BaseEntity,
-   // BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+   Column,
+   CreateDateColumn,
+   Entity,
+   ManyToOne,
+   PrimaryGeneratedColumn,
+   UpdateDateColumn,
 } from "typeorm";
 import { Category } from "./category.entity";
 
@@ -62,47 +61,4 @@ export class Product extends BaseEntity{
     onDelete: "CASCADE",
   })
   category: Category;
-}
-
-// INPUTS
-@InputType()
-export class InputCreateProduct {
-  @Field()
-  name: string;
-
-  @Field()
-  description: string;
-
-  @Field()
-  picture: string;
-
-  @Field()
-  price: number;
-
-  @Field()
-  quantity: number;
-
-  @Field()
-  category: number;
-}
-
-@InputType()
-export class InputUpdateProduct {
-  @Field({ nullable: true })
-  name: string;
-
-  @Field({ nullable: true })
-  description: string;
-
-  @Field({ nullable: true })
-  picture: string;
-
-  @Field({ nullable: true })
-  price: number;
-
-  @Field({ nullable: true })
-  quantity: number;
-
-  @Field({ nullable: true })
-  category: number;
 }

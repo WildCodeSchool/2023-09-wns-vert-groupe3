@@ -3,11 +3,10 @@ import { Repository } from "typeorm";
 import datasource from "../config/datasource";
 import {
   Category,
-  InputCreateProduct,
-  InputUpdateProduct,
   Product,
 } from "../entities";
 import CategoryService from "../services/category.service";
+import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 
 export default class ProductService {
   db: Repository<Product>;
