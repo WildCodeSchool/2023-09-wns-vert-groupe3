@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from "../../styles/pages/ProductsAddPage.module.scss"
 import { useForm } from 'react-hook-form'
-import { InputsProducts } from '@/types/inputsProducts'
+import { InputsProducts } from 'types/inputsProducts'
 
 // const {
 //    register,
@@ -12,7 +12,7 @@ const ProductsAddPage = () => {
    return (
       <main className={styles.productsAddPage}>
          <div>
-            <h2 className={styles.title}>Products add page !</h2>
+            products add page !
          </div>
          <form className={styles.form}/* onSubmit={handleSubmit(onSubmit)} */>
             <label>

@@ -5,7 +5,7 @@ const ProfilePage = () => {
    return (
       <main className={styles.profilePage}>
          <div>
-            <h2 className={styles.title}>Welcome to the profile page !</h2>
+            profile page !
          </div>
       </main>
    )
