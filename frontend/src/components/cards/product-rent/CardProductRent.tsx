@@ -48,13 +48,13 @@ const CardProductRent = ({
             <section className="flex flex-col gap-3">
               {/* ITEM FIRST ICONS */}
               <div className="flex items-center justify-end gap-3">
-                <Provider apiKey="pt_d4c8b1b99dc99af8a7f81085b52c3c">
+                {/* <Provider apiKey="pt_d4c8b1b99dc99af8a7f81085b52c3c"> */}
                   <LikeButton
                     namespace="testing-react"
                     id="everybody-like-now"
                     component={LikeButton.templates.Twitter}
                   />
-                </Provider>
+                {/* </Provider> */}
                 {isUnavailable ? (
                   <div className="flex items-center justify-center rounded bg-danger px-3 py-1">
                     <p className="text-sm font-semibold text-white">
