@@ -9,20 +9,20 @@ import { Category, Product } from "../src/entities";
 const start = async () => {
    await dataSource.initialize();
 
-   // creating products
+   // if no categories, create some categories
    const categories = await Category.find();
    if (categories.length === 0) {
       await Category.save([
-         { name: "Skiing" },
-         { name: "Hiking" },
+         { name: "Ski" },
+         { name: "Randonnée" },
          { name: "Camping" },
-         { name: "Fishing" },
-         { name: "Climbing" },
+         { name: "Pêche" },
+         { name: "Escalade" },
          { name: "Rafting" },
       ]);
    }
 
-   // if no products, create some
+   // if no products, create some products
    const products = await Product.find();
    if (products.length === 0) {
 
@@ -31,7 +31,7 @@ const start = async () => {
       const snowboard = new Product()
       snowboard.category = categories[0];
       snowboard.name = "Snowboard";
-      snowboard.description = "This snowboard is for rent";
+      snowboard.description = "Ceci est une description d'un snowboard à louer !";
       snowboard.picture =
          "https://www.burton.com/blogs/media/images/goofy-vs-regular-guide-stance-options_CXYu2zj.width-990.jpg";
       snowboard.price = 309;
@@ -40,8 +40,8 @@ const start = async () => {
 
       const tent = new Product()
       tent.category = categories[2];
-      tent.name = "Tent";
-      tent.description = "This tent is for rent";
+      tent.name = "Tente";
+      tent.description = "Ceci est une description d'une tente à louer !";
       tent.picture =
          "https://m.media-amazon.com/images/I/71r6GIY+vaL._AC_SL1500_.jpg";
       tent.price = 89;
@@ -50,8 +50,8 @@ const start = async () => {
 
       const climbing = new Product()
       climbing.category = categories[4];
-      climbing.name = "Material Climbing";
-      climbing.description = "This material climbing is for rent";
+      climbing.name = "Materiel d'escalade";
+      climbing.description = "Ceci est une description de matériel d'escalade à louer !";
       climbing.picture =
          "https://blog.snowleader.com/wp-content/uploads/2020/12/visuel-ambiance-escalade-homme.jpg";
       climbing.price = 149;
@@ -60,12 +60,12 @@ const start = async () => {
 
       const backpack = new Product()
       backpack.category = categories[1];
-      backpack.name = "Backpack";
-      backpack.description = "This backpack is for rent";
+      backpack.name = "Sac de voyage";
+      backpack.description = "Ceci est une description d'un sac de voyage à louer !";
       backpack.picture =
          "backpack.jpg";
       backpack.price = 59;
-      backpack.quantity =11;
+      backpack.quantity = 11;
       await backpack.save();
    }
 
@@ -85,3 +85,4 @@ const start = async () => {
 };
 
 start();
+

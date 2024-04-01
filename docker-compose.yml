@@ -17,6 +17,11 @@ services:
 
   frontend:
     build: ./frontend
+    restart: always
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     env_file: .env.dev
     ports:
       - 3001:3000
@@ -39,7 +44,7 @@ services:
       timeout: 5s
       retries: 20
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata_new1:/var/lib/postgresql/data
   imagesupload:
     build: ./imagesupload
     volumes:
@@ -54,4 +59,4 @@ services:
       - 8081:8080
       
 volumes:
-  pgdata:
+  pgdata_new1:
