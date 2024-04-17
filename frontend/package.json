@@ -10,7 +10,6 @@
     "format": "prettier --log-level warn --write \"./src/**/*.{tsx,ts,css}\""
   },
   "dependencies": {
-    "@lyket/react": "^2.1.0",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.7",
