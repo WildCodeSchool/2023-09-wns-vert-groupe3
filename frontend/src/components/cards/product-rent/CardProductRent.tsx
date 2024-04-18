@@ -1,4 +1,3 @@
-import { LikeButton, Provider } from "@lyket/react";
 import styles from "styles/components/CartProductRent.module.scss"
 
 import {
@@ -9,6 +8,9 @@ import {
 import CardProductRentAvailabilityViewer from "../../../components/cards/product-rent/CardProductRentAvailabilityViewer";
 import { isDateRangeOverlap } from "utils/date";
 import { convertToCurrency } from "utils/currency";
+import { useState } from "react";
+
+import Heart from "react-animated-heart";
 
 export type CardProductRentProps = {
   id: number;
@@ -37,6 +39,8 @@ const CardProductRent = ({
     PRODUCT_UNAVAILABLE_DATES,
   );
 
+  const [isClick, setClick] = useState(false);
+
   return (
     <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
       <div className="flex gap-4">
@@ -48,13 +52,7 @@ const CardProductRent = ({
             <section className="flex flex-col gap-3">
               {/* ITEM FIRST ICONS */}
               <div className="flex items-center justify-end gap-3">
-                {/* <Provider apiKey="pt_d4c8b1b99dc99af8a7f81085b52c3c"> */}
-                  <LikeButton
-                    namespace="testing-react"
-                    id="everybody-like-now"
-                    component={LikeButton.templates.Twitter}
-                  />
-                {/* </Provider> */}
+                <Heart isClick={isClick} onClick={() => setClick(!isClick)} />
                 {isUnavailable ? (
                   <div className="flex items-center justify-center rounded bg-danger px-3 py-1">
                     <p className="text-sm font-semibold text-white">

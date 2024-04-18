@@ -1,3 +1,4 @@
+import LoadingProgress from 'components/ui/LoadingProgress';
 import React from 'react'
 import styles from "../styles/pages/ProductsPage.module.scss"
 import DisplayProd from '../components/DisplayProd';
@@ -9,17 +10,17 @@ const ProductsPage = () => {
    console.log('data :', data);
    
 
-if (loading) return <p>Loading...</p>;
-if (error) return <p>Error: {error.message}</p>;
+  if (loading) return <LoadingProgress />;
+  if (error) return <p>Error: {error.message}</p>;
 
-const products = data.getAllproducts;
-   return (
-      <main className={styles.productsPage}>
-         <div>
-            <DisplayProd products={products} />
-         </div>
-      </main>
-   )
-}
+  const products = data.getAllproducts;
+  return (
+    <main className={styles.productsPage}>
+      <div>
+        <DisplayProd products={products} />
+      </div>
+    </main>
+  );
+};
 
 export default ProductsPage;
