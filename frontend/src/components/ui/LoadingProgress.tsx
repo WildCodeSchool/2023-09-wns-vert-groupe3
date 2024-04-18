@@ -1,4 +1,4 @@
-import styles from "@/styles/pages/ProductsPage.module.scss";
+import styles from "styles/pages/ProductsPage.module.scss";
 import * as Progress from "@radix-ui/react-progress";
 import React from "react";
 
