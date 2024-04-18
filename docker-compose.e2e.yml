@@ -1,43 +1,28 @@
-services:
+version: "1.0"
 
+services:
   backend:
     build: ./backend
     healthcheck:
       test: 'curl --fail --request POST --header ''content-type: application/json'' --url ''http://localhost:4000'' --data ''{"query":"query { __typename }"}'' || exit 1'
-      interval: 5s
-      timeout: 5s
       retries: 10
     depends_on:
       db:
         condition: service_healthy
+    ports:
+      - 4000:4000
 
   frontend:
     build: ./frontend
-    env_file: .env.test
+    env_file: .env.dev
     healthcheck:
-      test: "curl --fail --request GET --url 'http://localhost:3000' || exit 1"
-      interval: 5s
-      timeout: 5s
+      test: 'curl --fail --request GET --header ''content-type: application/json'' --url ''http://localhost:3000/api/healthcheck'' || exit 1'      
       retries: 10
     depends_on:
       backend:
         condition: service_healthy
-
-  db:
-    image: postgres
-    restart: always
     ports:
-      - "5433:5432"
-    environment:
-      POSTGRES_PASSWORD: wildrent
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 20
-
-  imagesupload:
-    build: ./imagesupload
+      - 3000:3000
 
   e2e:
     build: ./e2e
@@ -47,3 +32,32 @@ services:
     depends_on:
       frontend:
         condition: service_healthy
+        
+  imagesupload:
+    build: ./imagesupload
+    volumes:
+      - ./imagesupload/uploads:/app/uploads
+    ports:
+      - 8000:8000
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: wildrent
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      retries: 10
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+
