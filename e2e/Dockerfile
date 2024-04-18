@@ -10,3 +10,4 @@ RUN pnpm i
 
 COPY . .
 CMD pnpm playwright test
+
