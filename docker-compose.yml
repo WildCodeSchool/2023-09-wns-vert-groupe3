@@ -3,7 +3,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - 4001:4000
+      - 4000:4000
     volumes:
       - ./backend/src:/app/src
     healthcheck:
@@ -24,7 +24,7 @@ services:
       - WATCHPACK_POLLING=true
     env_file: .env.dev
     ports:
-      - 3001:3000
+      - 3000:3000
     volumes:
       - ./frontend/src:/app/src
     depends_on:
@@ -51,12 +51,12 @@ services:
       - ./imagesupload/src:/app/src
       - ./imagesupload/uploads:/app/uploads
     ports:
-      - 8001:8000
+      - 8000:8000
 
   adminer:
     image: adminer
     ports:
-      - 8081:8080
+      - 8080:8080
       
 volumes:
   pgdata_new1:
