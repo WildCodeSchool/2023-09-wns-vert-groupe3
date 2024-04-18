@@ -1,14 +1,12 @@
-import styles from "styles/components/CartProductRent.module.scss"
-
 import {
   PRODUCT_UNAVAILABLE_DATES,
   USER_REQUESTED_RENT_DATES,
 } from "../../../data/fakeData";
 
-import CardProductRentAvailabilityViewer from "../../../components/cards/product-rent/CardProductRentAvailabilityViewer";
-import { isDateRangeOverlap } from "utils/date";
-import { convertToCurrency } from "utils/currency";
 import { useState } from "react";
+import { convertToCurrency } from "utils/currency";
+import { isDateRangeOverlap } from "utils/date";
+import CardProductRentAvailabilityViewer from "../../../components/cards/product-rent/CardProductRentAvailabilityViewer";
 
 import Heart from "react-animated-heart";
 
@@ -49,6 +47,11 @@ const CardProductRent = ({
         return "bg-blue-700";
       case "Randonnée":
         return "bg-green-600";
+      case "Escalade":
+        return "bg-amber-950";
+      case "Camping":
+        return "bg-yellow-600	";
+
       default:
         return "bg-slate-500";
     }
@@ -57,9 +60,14 @@ const CardProductRent = ({
   return (
     <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
       <div className="flex gap-4">
-        <section className="aspect-square h-full rounded-lg bg-zinc-300">
-        <img className={styles.picture} src={picture} alt={picture}/>
-         </section>
+        <section className="aspect-square h-full w-2/3 overflow-hidden rounded-lg bg-zinc-300">
+          <img
+            className="h-full w-full object-cover"
+            src={picture}
+            alt={picture}
+          />
+        </section>
+
         <div className="flex grow flex-col gap-10 text-hightcontrast">
           <div className="flex flex-col gap-3">
             <section className="flex flex-col gap-3">
