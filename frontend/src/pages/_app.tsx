@@ -1,13 +1,12 @@
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from "@apollo/client";
 import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
+import Layout from "components/Layout";
 
-import Layout from "@/components/Layout";
-
-import "@/styles/globals.css";
+import "styles/globals.css";
 
 const httpLink = createHttpLink({
-  uri: process.env.NEXT_PUBLIC_BACKEND_URL,
+   uri: process.env.NEXT_PUBLIC_BACKEND_URL,
 });
 
 // const client = new ApolloClient({
@@ -16,18 +15,18 @@ const httpLink = createHttpLink({
 // });
 
 const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
+   link: httpLink,
+   cache: new InMemoryCache(),
 });
 
 function App({ Component, pageProps }: AppProps) {
-  return (
-    <ApolloProvider client={client}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ApolloProvider>
-  );
+   return (
+      <ApolloProvider client={client}>
+         <Layout >
+            <Component {...pageProps} />
+         </Layout>
+      </ApolloProvider>
+   );
 }
 
 // Disabling SSR

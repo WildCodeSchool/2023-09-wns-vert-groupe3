@@ -1,17 +1,13 @@
-FROM mcr.microsoft.com/playwright:v1.41.2-jammy AS base
+FROM mcr.microsoft.com/playwright
+
 RUN corepack enable pnpm
+RUN corepack prepare pnpm@8.15.4 --activate
 WORKDIR /app
 
-# Mise à jour de pnpm
-RUN corepack prepare pnpm@8.15.4 --activate
+COPY package.json package.json
 
-FROM base as dependencies
+RUN pnpm i
 
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
-    --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
-
-FROM dependencies as build
 COPY . .
-CMD ["pnpm", "playwright", "test"]
+CMD pnpm playwright test
+

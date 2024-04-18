@@ -84,14 +84,6 @@ export default function MainHeader() {
           <Link href="/products/add">
             <FaPlus className="text-black" size={35} />
           </Link>
-          <Link href="/">
-            <Image
-              src="/images/header/settings.svg"
-              alt="settings"
-              width={30}
-              height={30}
-            />
-          </Link>
           <Link href="/cart">
             <Image
               src="/images/header/cart.svg"

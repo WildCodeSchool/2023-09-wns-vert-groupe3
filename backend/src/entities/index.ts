@@ -1,10 +1,7 @@
-import { Product, InputCreateProduct, InputUpdateProduct } from './product.entity';
-import { Category, InputCreateCategory } from './category.entity';
+import { Product } from './product.entity';
+import { Category } from './category.entity';
 
 export {
-  Product,
-  InputCreateProduct,
-  InputUpdateProduct,
-  Category,
-  InputCreateCategory
+   Product,
+   Category
 };

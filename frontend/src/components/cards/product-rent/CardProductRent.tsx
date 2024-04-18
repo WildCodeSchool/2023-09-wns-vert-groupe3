@@ -1,11 +1,13 @@
+import styles from "styles/components/CartProductRent.module.scss"
+
 import {
   PRODUCT_UNAVAILABLE_DATES,
   USER_REQUESTED_RENT_DATES,
-} from "@/data/fakeData";
+} from "../../../data/fakeData";
 
-import CardProductRentAvailabilityViewer from "@/components/cards/product-rent/CardProductRentAvailabilityViewer";
-import { convertToCurrency } from "@/utils/currency";
-import { isDateRangeOverlap } from "@/utils/date";
+import CardProductRentAvailabilityViewer from "../../../components/cards/product-rent/CardProductRentAvailabilityViewer";
+import { isDateRangeOverlap } from "utils/date";
+import { convertToCurrency } from "utils/currency";
 import { useState } from "react";
 
 import Heart from "react-animated-heart";
@@ -42,7 +44,9 @@ const CardProductRent = ({
   return (
     <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
       <div className="flex gap-4">
-        <section className="aspect-square h-full rounded-lg bg-zinc-300" />
+        <section className="aspect-square h-full rounded-lg bg-zinc-300">
+        <img className={styles.picture} src={picture} alt={picture}/>
+         </section>
         <div className="flex grow flex-col gap-10 text-hightcontrast">
           <div className="flex flex-col gap-3">
             <section className="flex flex-col gap-3">

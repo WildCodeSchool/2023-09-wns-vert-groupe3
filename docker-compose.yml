@@ -1,97 +1,62 @@
-version: "3.8"
 services:
+
   backend:
-    container_name: backend
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.dev
-    environment:
-      NODE_ENV: development
-    develop:
-      watch:
-        - path: ./backend/package.json
-          target: /app
-          action: rebuild
-        - path: ./backend/pnpm-lock.yaml
-          target: /app
-          action: rebuild
-        - path: ./backend
-          target: /app
-          action: sync
+    build: ./backend
+    ports:
+      - 4001:4000
+    volumes:
+      - ./backend/src:/app/src
     healthcheck:
       test: 'curl --fail --request POST --header ''content-type: application/json'' --url ''http://localhost:4000'' --data ''{"query":"query { __typename }"}'' || exit 1'
+      interval: 5s
+      timeout: 5s
       retries: 10
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - 4000:4000
 
   frontend:
-    container_name: frontend
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    env_file: .env.dev
+    build: ./frontend
+    restart: always
     environment:
-      NODE_ENV: development
-    develop:
-      watch:
-        - path: ./frontend/package.json
-          target: /app
-          action: rebuild
-        - path: ./frontend/pnpm-lock.yaml
-          target: /app
-          action: rebuild
-        - path: ./frontend/next.config.js
-          target: /app
-          action: rebuild
-        - path: ./frontend
-          target: /app
-          action: sync
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    env_file: .env.dev
+    ports:
+      - 3001:3000
+    volumes:
+      - ./frontend/src:/app/src
     depends_on:
       backend:
         condition: service_healthy
-    ports:
-      - 3000:3000
 
-  imagesupload:
-    build:
-      context: ./imagesupload
-      dockerfile: Dockerfile.dev
-    develop:
-      watch:
-        - path: ./imagesupload/package.json
-          target: /app
-          action: rebuild
-        - path: ./imagesupload/pnpm-lock.yaml
-          target: /app
-          action: rebuild
-        - path: ./imagesupload/src
-          target: /app/src
-          action: sync
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_PASSWORD: wildrent
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
     volumes:
+      - pgdata_new1:/var/lib/postgresql/data
+  imagesupload:
+    build: ./imagesupload
+    volumes:
+      - ./imagesupload/src:/app/src
       - ./imagesupload/uploads:/app/uploads
     ports:
-      - 8000:8000
+      - 8001:8000
 
   adminer:
     image: adminer
     ports:
-      - 8080:8080
-
-  db:
-    image: postgres
-    container_name: db
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: wildrent
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d postgres -U postgres" ]
-      retries: 10
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-
+      - 8081:8080
+      
 volumes:
-  pgdata:
+  pgdata_new1:

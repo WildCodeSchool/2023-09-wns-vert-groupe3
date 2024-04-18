@@ -5,7 +5,7 @@ const CartPage = () => {
    return (
       <main className={styles.cartPage}>
          <div>
-            <h2 className={styles.title}>Welcome to the cart page !</h2>
+            cart page !
          </div>
       </main>
    )

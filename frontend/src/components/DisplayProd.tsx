@@ -5,6 +5,8 @@ type DisplayProdType = {
 }
 
 const DisplayProd = ({ products }: DisplayProdType) => {
+   console.log('products : ', products);
+   
     return (
         <div className="grid grid-cols-2 gap-6">
             {products.map((product) => (
