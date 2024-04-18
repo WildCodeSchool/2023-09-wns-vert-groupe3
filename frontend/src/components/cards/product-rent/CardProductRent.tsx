@@ -41,6 +41,19 @@ const CardProductRent = ({
 
   const [isClick, setClick] = useState(false);
 
+  const getCategoryColor = (categoryName: string) => {
+    switch (categoryName) {
+      case "Ski":
+        return "bg-sky-300";
+      case "Plongée":
+        return "bg-blue-700";
+      case "Randonnée":
+        return "bg-green-600";
+      default:
+        return "bg-slate-500";
+    }
+  };
+
   return (
     <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
       <div className="flex gap-4">
@@ -73,7 +86,9 @@ const CardProductRent = ({
                   {name || <em>NO TITLE...</em>}
                 </h1>
                 {category && (
-                  <p className="w-max rounded bg-blue-200 px-2 py-1 text-sm">
+                  <p
+                    className={`w-max rounded px-2 py-1 text-sm ${getCategoryColor(category.name)}`}
+                  >
                     {category.name}
                   </p>
                 )}
