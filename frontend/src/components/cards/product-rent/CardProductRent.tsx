@@ -42,16 +42,15 @@ const CardProductRent = ({
   const getCategoryColor = (categoryName: string) => {
     switch (categoryName) {
       case "Ski":
-        return "bg-sky-300";
+        return "bg-gradient-to-br from-sky-500 via-sky-500 to-indigo-500";
       case "Plongée":
-        return "bg-blue-700";
+        return "bg-gradient-to-br from-blue-700 via-blue-700 to-indigo-500";
       case "Randonnée":
-        return "bg-green-600";
+        return "bg-gradient-to-br from-green-600 via-green-600 to-indigo-500";
       case "Escalade":
-        return "bg-amber-950";
+        return "bg-gradient-to-br from-amber-800 via-amber-800 to-indigo-500";
       case "Camping":
-        return "bg-yellow-600";
-
+        return "bg-gradient-to-br from-yellow-600 via-yellow-600 to-indigo-500";
       default:
         return "bg-slate-500";
     }
@@ -75,7 +74,6 @@ const CardProductRent = ({
             alt={picture}
           />
         </section>
-
         <div className="flex grow flex-col gap-10 text-hightcontrast">
           <div className="flex flex-col gap-3">
             <section className="flex flex-col gap-3">
