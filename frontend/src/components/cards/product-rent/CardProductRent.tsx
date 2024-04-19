@@ -50,11 +50,19 @@ const CardProductRent = ({
       case "Escalade":
         return "bg-amber-950";
       case "Camping":
-        return "bg-yellow-600	";
+        return "bg-yellow-600";
 
       default:
         return "bg-slate-500";
     }
+  };
+
+  const [isHovered, setIsHovered] = useState(false);
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHovered(false);
   };
 
   return (
@@ -95,7 +103,9 @@ const CardProductRent = ({
                 </h1>
                 {category && (
                   <p
-                    className={`w-max rounded px-2 py-1 text-sm ${getCategoryColor(category.name)}`}
+                    className={` w-max cursor-pointer rounded px-2 py-1 text-sm transition-all duration-200 ease-in ${getCategoryColor(category.name)} ${isHovered ? "bg-indigo-500" : ""}`}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   >
                     {category.name}
                   </p>
