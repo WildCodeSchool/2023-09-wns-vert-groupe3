@@ -27,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: ./backend
+          context: "{{defaultContext}}:client"
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2_backend:latest
   docker-frontend:
     needs: test-e2e
@@ -46,5 +46,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: ./frontend
+          context: "{{defaultContext}}:client"
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2_frontend:latest
