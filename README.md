@@ -4,7 +4,7 @@
   </a>
 </p>
 
-<h3 align="center">Wildrentte</h3>
+<h3 align="center">Wildrent</h3>
 
 <div align="center">
 
