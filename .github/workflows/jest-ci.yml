@@ -12,7 +12,7 @@ jobs:
         run: docker compose -f docker-compose.e2e.yml up --build --exit-code-from e2e
   docker:
     needs: test-e2e
-    # if: github.ref == 'refs/heads/dev'
+    #if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
       - name: 🔧 Set up QEMU
@@ -24,24 +24,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: 🛠 Build and push Backend image
+      - name: 🛠 Build and push
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: ./backend
-          file: ./backend/Dockerfile
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2_backend:latest
-      - name: 🛠 Build and push Frontend image
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2_frontend:latest
-      - name: 🛠 Build and push E2E image
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          context: ./e2e
-          file: ./e2e/Dockerfile
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2_e2e:latest
+          context: "{{defaultContext}}"
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2:latest
