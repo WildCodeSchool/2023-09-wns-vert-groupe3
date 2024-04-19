@@ -28,5 +28,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: .
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2:latest
