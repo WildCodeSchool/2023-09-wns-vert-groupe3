@@ -19,10 +19,18 @@ const FilterPage = () => {
   if (error) return `Error! ${error.message}`;
 
   const productsByCategory = data.getProductsByCategoryId;
+  const categoryName = productsByCategory[0]?.category?.name;
 
   return (
     <main className={styles.productsPage}>
       <div>
+        <h3 className="mb-16 mt-0.5 text-2xl">
+          Voici les produits correspondants pour la catégorie :
+          <span className="ml-2 h-full rounded-lg bg-indigo-500 py-1 pe-2 ps-2">
+            {categoryName}
+          </span>
+        </h3>
+
         <DisplayProd
           key={categoryId?.toString()}
           products={productsByCategory}
