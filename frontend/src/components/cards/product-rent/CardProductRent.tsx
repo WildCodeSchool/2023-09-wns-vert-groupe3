@@ -110,7 +110,7 @@ const CardProductRent = ({
                   <button
                     type="button"
                     onClick={handleButtonClick}
-                    className={` w-max cursor-pointer rounded px-2 py-1 text-sm transition-all duration-200 ease-in ${getCategoryColor(category.name)} ${isHovered ? "bg-indigo-500" : ""}`}
+                    className={` w-max cursor-pointer rounded px-2 py-1 text-sm ${isHovered ? "bg-indigo-500" : getCategoryColor(category.name)}`}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                   >
