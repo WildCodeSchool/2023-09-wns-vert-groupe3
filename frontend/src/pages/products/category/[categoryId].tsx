@@ -1,12 +1,18 @@
 import { useQuery } from "@apollo/client";
 import DisplayProd from "components/DisplayProd";
 import LoadingProgress from "components/ui/LoadingProgress";
+import { useRouter } from "next/router";
 import { GET_PRODUCTS_BY_CATEGORY_ID } from "../../../lib/graphql/queries";
 import styles from "../../../styles/pages/ProductsPage.module.scss";
 
-const FilterPage = ({ categoryId }: { categoryId: number }) => {
+const FilterPage = () => {
+  const router = useRouter();
+  const { categoryId } = router.query;
+
   const { loading, error, data } = useQuery(GET_PRODUCTS_BY_CATEGORY_ID, {
-    variables: { categoryId: categoryId },
+    variables: {
+      categoryId: Number(categoryId),
+    },
   });
 
   if (loading) return <LoadingProgress />;
@@ -17,9 +23,10 @@ const FilterPage = ({ categoryId }: { categoryId: number }) => {
   return (
     <main className={styles.productsPage}>
       <div>
-        {productsByCategory?.map((product: any) => (
-          <DisplayProd key={product.id} products={product} />
-        ))}
+        <DisplayProd
+          key={categoryId?.toString()}
+          products={productsByCategory}
+        />
       </div>
     </main>
   );

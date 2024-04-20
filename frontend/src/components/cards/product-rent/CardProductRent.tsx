@@ -3,6 +3,7 @@ import {
   USER_REQUESTED_RENT_DATES,
 } from "../../../data/fakeData";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { convertToCurrency } from "utils/currency";
 import { isDateRangeOverlap } from "utils/date";
@@ -64,12 +65,18 @@ const CardProductRent = ({
     setIsHovered(false);
   };
 
+  const router = useRouter();
+
+  const handleButtonClick = () => {
+    router.push(`/products/category/${category.id}`);
+  };
+
   return (
     <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
       <div className="flex gap-4">
-        <section className="aspect-square h-full w-2/3 overflow-hidden rounded-lg bg-zinc-300">
+        <section className="aspect-square h-80 w-80 overflow-hidden rounded-lg bg-zinc-300">
           <img
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-center"
             src={picture}
             alt={picture}
           />
@@ -100,13 +107,15 @@ const CardProductRent = ({
                   {name || <em>NO TITLE...</em>}
                 </h1>
                 {category && (
-                  <p
+                  <button
+                    type="button"
+                    onClick={handleButtonClick}
                     className={` w-max cursor-pointer rounded px-2 py-1 text-sm transition-all duration-200 ease-in ${getCategoryColor(category.name)} ${isHovered ? "bg-indigo-500" : ""}`}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                   >
                     {category.name}
-                  </p>
+                  </button>
                 )}
               </div>
             </section>
