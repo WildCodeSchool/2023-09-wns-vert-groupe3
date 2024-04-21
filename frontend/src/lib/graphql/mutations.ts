@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const GET_PRODUCTS = gql`
-  query GetAllproducts {
-    getAllproducts {
+export const ADD_PRODUCT = gql`
+  mutation Mutation($infos: InputCreateProduct!) {
+    addProduct(infos: $infos) {
       id
       name
       description
@@ -12,18 +12,9 @@ export const GET_PRODUCTS = gql`
       created_at
       updated_at
       category {
-        id
         name
+        id
       }
-    }
-  }
-`;
-
-export const GET_ALL_CATEGORIES = gql`
-  query Query {
-    getAllCategories {
-      id
-      name
     }
   }
 `;
