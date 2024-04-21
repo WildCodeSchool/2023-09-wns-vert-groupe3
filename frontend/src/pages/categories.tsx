@@ -30,7 +30,7 @@ const AllCategoriesPage = () => {
         onValueChange={handleSelectChange}
       >
         <Select.Trigger
-          className="inline-flex w-32 items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="inline-flex w-64 items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           aria-label="Sélectionnez une catégorie"
         >
           <Select.Value
@@ -58,7 +58,7 @@ const AllCategoriesPage = () => {
             />
           </svg>
         </Select.Trigger>
-        <Select.Content className="max-h-60 overflow-y-auto rounded-md bg-white shadow-md">
+        <Select.Content className="max-h-60 w-64 overflow-y-auto rounded-md bg-white shadow-md">
           <Select.Viewport className="p-2">
             {categories.map((category: any) => (
               <Select.Item
