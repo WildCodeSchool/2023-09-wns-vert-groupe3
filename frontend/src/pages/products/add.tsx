@@ -1,5 +1,7 @@
 import { useMutation } from "@apollo/client";
+import CategorySelect from "components/CategorySelect";
 import { ADD_PRODUCT } from "lib/graphql/mutations";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
 
@@ -9,14 +11,18 @@ type InputCreateProduct = {
   picture: string;
   price: number;
   quantity: number;
-  category: {
-    id: number;
-    name: string;
-  };
+  category: string;
 };
 
 const ProductsAddPage = () => {
   const { register, handleSubmit, setValue } = useForm<InputCreateProduct>();
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
+  const [selectedCategoryName, setSelectedCategoryName] = useState<string>("");
+
+  const handleCategoryChange = (categoryId: string, categoryName: string) => {
+    setSelectedCategoryId(categoryId);
+    setSelectedCategoryName(categoryName);
+  };
 
   const [
     createNewProduct,
@@ -31,16 +37,12 @@ const ProductsAddPage = () => {
 
   const onSubmit = async (formData: InputCreateProduct) => {
     try {
+      formData.category = selectedCategoryId;
+      setValue("category", formData.category);
+
       await createNewProduct({
         variables: {
-          adData: {
-            name: formData.name,
-            description: formData.description,
-            picture: formData.picture,
-            price: Number.parseInt(formData.price.toString()),
-            quantity: Number.parseInt(formData.quantity.toString()),
-            category: formData.category,
-          },
+          adData: formData,
         },
       });
     } catch (err) {
@@ -84,8 +86,16 @@ const ProductsAddPage = () => {
         </label>
         <br />
 
+        <label>
+          Catégorie: <br />
+          <CategorySelect
+            selectedCategoryId={selectedCategoryId}
+            selectedCategoryName={selectedCategoryName}
+            onCategoryChange={handleCategoryChange}
+          />
+        </label>
         <br />
-        <br />
+
         <button className="button button-primary" type="submit">
           Créer
         </button>
