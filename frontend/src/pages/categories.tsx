@@ -8,6 +8,7 @@ const AllCategoriesPage = () => {
   const [selectedCategoryName, setSelectedCategoryName] = useState<
     string | undefined
   >(undefined);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSelectChange = (name: string) => {
     setSelectedCategoryName(name);
@@ -28,6 +29,8 @@ const AllCategoriesPage = () => {
       <Select.Root
         value={selectedCategoryName}
         onValueChange={handleSelectChange}
+        open={isOpen}
+        onOpenChange={(open) => setIsOpen(open)}
       >
         <Select.Trigger
           className="inline-flex w-64 items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
@@ -45,10 +48,11 @@ const AllCategoriesPage = () => {
           </Select.Value>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-black"
+            className={`h-5 w-5 text-black ${isOpen ? "-rotate-180" : ""}`}
             viewBox="0 0 20 20"
             fill="none"
             stroke="currentColor"
+            style={{ transition: "transform 0.3s ease-out" }}
           >
             <path
               strokeLinecap="round"
