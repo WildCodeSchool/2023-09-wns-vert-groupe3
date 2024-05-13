@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 
-const githubClientId = process.env.ID_GITHUB || "";
+const githubClientId = process.env.GITHUB_ID || "";
 const githubClientSecret = process.env.GITHUB_SECRET || "";
 
 export const authOptions = {
@@ -13,7 +13,7 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
-  secret: "ArtTf+Rd1lqGSIO4cFRAcm9DrvWSpr0jLzZusmtZzps=",
+  secret: process.env.JWT_SECRET,
 };
 
 export default NextAuth(authOptions);

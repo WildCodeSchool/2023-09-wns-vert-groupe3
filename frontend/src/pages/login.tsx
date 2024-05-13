@@ -1,17 +1,29 @@
 import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import { useState } from "react";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 
 const LoginPage = () => {
   const { data: session } = useSession();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const eyeIcon = showPassword ? <HiEyeOff /> : <HiEye />;
 
   if (session) {
     return (
       <>
         <div className="mb-4 flex items-center">
           <p className="mr-6">Bienvenue {session.user?.name}.</p>
-          <img
-            src={session.user?.image}
+          <Image
+            src={session.user?.image || ""}
             alt="user image profile"
-            className="w-16 rounded-full"
+            className="rounded-full"
+            width={48}
+            height={48}
           />
         </div>
         <p>Enregistré avec l&apos;adresse : {session.user?.email}</p>
@@ -29,7 +41,7 @@ const LoginPage = () => {
             href="#"
             className="mb-6 flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
           >
-            <img src="../../public/wildrent-logo.png" alt="WILDRENT LOGO" />
+            <Image src="/wildrent-logo.png" alt="test" width={50} height={50} />
           </a>
           <div className="w-full rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800">
             <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
@@ -46,20 +58,29 @@ const LoginPage = () => {
                     name="email"
                     id="email"
                     className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                    placeholder="name@company.com"
+                    placeholder="name@domain.com"
                   />
                 </div>
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                     Mot de passe
                   </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      placeholder="••••••••"
+                      className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {eyeIcon}
+                    </button>
+                  </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-start">
