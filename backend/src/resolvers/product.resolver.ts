@@ -1,7 +1,7 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Product } from "../entities";
-import ProductService from "../services/product.service";
 import { InputCreateProduct, InputUpdateProduct } from "../inputs";
+import ProductService from "../services/product.service";
 
 @Resolver()
 export default class ProductResolver {
@@ -15,6 +15,13 @@ export default class ProductResolver {
     const oneProduct = await new ProductService().findById(id);
     console.log(oneProduct);
     return oneProduct;
+  }
+
+  @Query(() => [Product])
+  async getProductsByCategoryId(@Arg("categoryId") categoryId: number) {
+    const productsByCategoryId =
+      await new ProductService().findProductsByCategoryId(categoryId);
+    return productsByCategoryId;
   }
 
   @Mutation(() => Product)
