@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
+import Button from "components/Button";
+import Tabs, { TabItem } from "components/Tabs";
 import Image from "next/image";
-import Tabs, { TabItem } from "@/components/Tabs";
-import Button from "@/components/Button";
 
 const ProductsIdPage = () => {
   return (

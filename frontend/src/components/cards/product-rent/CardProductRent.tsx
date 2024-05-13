@@ -1,14 +1,13 @@
-import styles from "styles/components/CartProductRent.module.scss"
-
 import {
   PRODUCT_UNAVAILABLE_DATES,
   USER_REQUESTED_RENT_DATES,
 } from "../../../data/fakeData";
 
-import CardProductRentAvailabilityViewer from "../../../components/cards/product-rent/CardProductRentAvailabilityViewer";
-import { isDateRangeOverlap } from "utils/date";
-import { convertToCurrency } from "utils/currency";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { convertToCurrency } from "utils/currency";
+import { isDateRangeOverlap } from "utils/date";
+import CardProductRentAvailabilityViewer from "../../../components/cards/product-rent/CardProductRentAvailabilityViewer";
 
 import Heart from "react-animated-heart";
 
@@ -41,12 +40,47 @@ const CardProductRent = ({
 
   const [isClick, setClick] = useState(false);
 
+  const getCategoryColor = (categoryName: string) => {
+    switch (categoryName) {
+      case "Ski":
+        return "bg-gradient-to-br from-sky-500 via-sky-500 to-indigo-500";
+      case "Plongée":
+        return "bg-gradient-to-br from-blue-700 via-blue-700 to-indigo-500";
+      case "Randonnée":
+        return "bg-gradient-to-br from-green-600 via-green-600 to-indigo-500";
+      case "Escalade":
+        return "bg-gradient-to-br from-amber-800 via-amber-800 to-indigo-500";
+      case "Camping":
+        return "bg-gradient-to-br from-yellow-600 via-yellow-600 to-indigo-500";
+      default:
+        return "bg-slate-500";
+    }
+  };
+
+  const [isHovered, setIsHovered] = useState(false);
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const router = useRouter();
+
+  const handleButtonClick = () => {
+    router.push(`/products/category/${category.id}`);
+  };
+
   return (
     <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
       <div className="flex gap-4">
-        <section className="aspect-square h-full rounded-lg bg-zinc-300">
-        <img className={styles.picture} src={picture} alt={picture}/>
-         </section>
+        <section className="aspect-square h-80 w-80 overflow-hidden rounded-lg bg-zinc-300">
+          <img
+            className="h-full w-full object-cover object-center"
+            src={picture}
+            alt={picture}
+          />
+        </section>
         <div className="flex grow flex-col gap-10 text-hightcontrast">
           <div className="flex flex-col gap-3">
             <section className="flex flex-col gap-3">
@@ -73,9 +107,15 @@ const CardProductRent = ({
                   {name || <em>NO TITLE...</em>}
                 </h1>
                 {category && (
-                  <p className="w-max rounded bg-blue-200 px-2 py-1 text-sm">
+                  <button
+                    type="button"
+                    onClick={handleButtonClick}
+                    className={` w-max cursor-pointer rounded px-2 py-1 text-sm ${isHovered ? "bg-indigo-500" : getCategoryColor(category.name)}`}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
                     {category.name}
-                  </p>
+                  </button>
                 )}
               </div>
             </section>
