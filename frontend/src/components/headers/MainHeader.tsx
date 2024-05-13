@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { FaPlus, FaTimes } from "react-icons/fa";
+import { FaPlus, FaShoppingBag, FaTimes, FaUserCircle } from "react-icons/fa";
+
 import { IoMdSearch } from "react-icons/io";
 
 import styles from "../../styles/components/MainHeader.module.scss";
@@ -75,25 +76,28 @@ export default function MainHeader() {
         </div>
         <div className={styles.rightLinks}>
           <Link href="/products">
-            <span className={styles.allArticles}>Tous les articles</span>
+            <button className={styles.allArticles}>
+              <span>Tous les articles</span>
+            </button>
           </Link>
           <Link href="/products/add">
-            <FaPlus className="text-black" size={35} />
-          </Link>
-          <Link href="/cart">
-            <Image
-              src="/images/header/cart.svg"
-              alt="cart"
-              width={30}
-              height={30}
+            <FaPlus
+              className="text-white ease-out hover:rotate-12 hover:scale-90 hover:text-indigo-500"
+              size={32}
             />
           </Link>
+          <Link href="/cart">
+            <div className="relative ease-out hover:scale-90 hover:text-indigo-500">
+              <FaShoppingBag size={32} className="relative" />
+              <div className="absolute -bottom-3 -right-3 flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white">
+                0
+              </div>
+            </div>
+          </Link>
           <Link href="/profile">
-            <Image
-              src="/images/header/avatar.webp"
-              alt="avatar"
-              width={40}
-              height={40}
+            <FaUserCircle
+              className="text-white ease-out hover:scale-90 hover:text-indigo-500"
+              size={32}
             />
           </Link>
         </div>
