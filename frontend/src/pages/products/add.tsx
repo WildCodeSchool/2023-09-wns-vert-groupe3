@@ -20,7 +20,7 @@ const ProductsAddPage = () => {
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>("");
 
   const handleCategoryChange = (categoryId: string, categoryName: string) => {
-    setSelectedCategoryId(categoryId);
+    setSelectedCategoryId(String(categoryId));
     setSelectedCategoryName(categoryName);
   };
 
@@ -42,7 +42,14 @@ const ProductsAddPage = () => {
 
       await createNewProduct({
         variables: {
-          adData: formData,
+          infos: {
+            name: formData.name,
+            description: formData.description,
+            picture: formData.picture,
+            price: formData.price,
+            quantity: formData.quantity,
+            category: String(formData.category),
+          }
         },
       });
     } catch (err) {

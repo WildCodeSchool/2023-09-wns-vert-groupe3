@@ -10,6 +10,7 @@ export const ADD_PRODUCT = gql`
     quantity
     category {
       id
+      name
     }
   }
 }

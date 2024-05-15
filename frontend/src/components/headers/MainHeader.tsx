@@ -45,8 +45,8 @@ export default function MainHeader() {
               onChange={handleInputChange}
               readOnly={!searchActive}
               className={`${
-                searchActive ? "w-60 pl-8 pr-4" : "w-9"
-              }  overflow-hidden rounded-full border transition-all duration-300 focus:border-blue-500 focus:outline-none ${
+                searchActive ? "w-60 pl-8 pr-7" : "w-9"
+              }  overflow-hidden rounded-full	border text-black transition-all duration-300 focus:border-blue-500 focus:outline-none ${
                 styles.searchInput
               } ${!searchActive && "cursor-pointer"}`}
               style={{
@@ -55,15 +55,11 @@ export default function MainHeader() {
                 borderWidth: "2px",
               }}
             />
-
             <div
               className="absolute inset-y-0 left-0 flex items-center pl-2.5"
               onClick={toggleSearch}
             >
-              <IoMdSearch
-                className="cursor-pointer text-black"
-                style={{ marginTop: "2px" }}
-              />
+              <IoMdSearch className="cursor-pointer stroke-2 text-black" />
             </div>
             {searchActive && (
               <div

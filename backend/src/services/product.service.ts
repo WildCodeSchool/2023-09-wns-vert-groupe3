@@ -1,12 +1,9 @@
 import { validate } from "class-validator";
 import { Repository } from "typeorm";
 import datasource from "../config/datasource";
-import {
-  Category,
-  Product,
-} from "../entities";
-import CategoryService from "../services/category.service";
+import { Category, Product } from "../entities";
 import { InputCreateProduct, InputUpdateProduct } from "../inputs";
+import CategoryService from "../services/category.service";
 
 export default class ProductService {
   db: Repository<Product>;
@@ -29,6 +26,14 @@ export default class ProductService {
       where: { id },
       relations: { category: true },
     });
+  }
+
+  async findProductsByCategoryId(categoryId: number): Promise<Product[]> {
+    const products = await this.db.find({
+      where: { category: { id: categoryId } },
+      relations: ["category"],
+    });
+    return products;
   }
 
   async create(data: InputCreateProduct) {
