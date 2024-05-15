@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
 import { toast } from "react-toastify";
+import Button from "components/Button";
 
 type InputCreateProduct = {
   name: string;
@@ -16,7 +17,7 @@ type InputCreateProduct = {
 };
 
 const ProductsAddPage = () => {
-  const { register, handleSubmit, setValue } = useForm<InputCreateProduct>();
+  const { register, handleSubmit, setValue, reset } = useForm<InputCreateProduct>();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>("");
 
@@ -55,6 +56,9 @@ const ProductsAddPage = () => {
       });
 
       toast.success("Produit ajouté avec succès !");
+      reset();
+      setSelectedCategoryId("");
+      setSelectedCategoryName("");
     } catch (err) {
       console.error("Error creating product:", err);
       toast.error("Erreur lors de la création du produit");
@@ -107,9 +111,9 @@ const ProductsAddPage = () => {
         </label>
         <br />
 
-        <button className="button button-primary" type="submit">
+        <Button type="submit">
           Créer
-        </button>
+        </Button>
       </form>
     </main>
   );
