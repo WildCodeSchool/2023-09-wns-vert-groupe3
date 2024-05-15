@@ -1,59 +1,116 @@
-import React from 'react'
-import styles from "../../styles/pages/ProductsAddPage.module.scss"
-import { useForm } from 'react-hook-form'
-import { InputsProducts } from 'types/inputsProducts'
+import { useMutation } from "@apollo/client";
+import CategorySelect from "components/CategorySelect";
+import { ADD_PRODUCT } from "lib/graphql/mutations";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import styles from "../../styles/pages/ProductsAddPage.module.scss";
+import { toast } from "react-toastify";
+import Button from "components/Button";
 
-// const {
-//    register,
-//    handleSubmit
-// } = useForm<InputsProducts>()
+type InputCreateProduct = {
+  name: string;
+  description: string;
+  picture: string;
+  price: string;
+  quantity: string;
+  category: string;
+};
 
 const ProductsAddPage = () => {
-   return (
-      <main className={styles.productsAddPage}>
-         <div>
-            products add page !
-         </div>
-         <form className={styles.form}/* onSubmit={handleSubmit(onSubmit)} */>
-            <label>
-               Titre de l&apos;annonce: <br />
-               <input className="text-field" /* {...register("name")} */ />
-            </label>
-            <br />
-            <label>
-               Description: <br />
-               <input className="text-field" /* {...register("description")}  */ />
-            </label>
-            <br />
-            <label>
-               Prix: <br />
-               <input className="text-field"/*  {...register("price")} */ />
-            </label>
-            <br />
-            <label>
-               Quantité: <br />
-               <input className="text-field" /* {...register("quantity")}  */ />
-            </label>
-            <br />
-            <label>
-               Ajouter une image: <br />
-               <input className="text-field" /* {...register("picture")}  */ />
-            </label>
-            <br />
-            <div>Catégorie:</div> <br />
-            <select className={styles.categories} /* {...register("category")} */>
-               {/* {data?.allCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                  {category.name}
-                  </option>
-               ))} */}
-            </select>
-            <br />
-            <br />
+  const { register, handleSubmit, setValue, reset } = useForm<InputCreateProduct>();
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
+  const [selectedCategoryName, setSelectedCategoryName] = useState<string>("");
 
-            <input className="button button-primary" type="submit" />
-         </form>
-      </main>)
-}
+  const handleCategoryChange = (categoryId: string, categoryName: string) => {
+    setSelectedCategoryId(categoryId);
+    setSelectedCategoryName(categoryName);
+  };
 
-export default ProductsAddPage
+  const [
+    createNewProduct,
+    { loading: createProductLoading, error: createProductError },
+  ] = useMutation(ADD_PRODUCT);
+
+  const onSubmit = async (formData: InputCreateProduct) => {
+    try {
+      formData.category = selectedCategoryId;
+      setValue("category", formData.category);
+
+      const variables = {
+        ...formData,
+        price: parseFloat(formData.price),
+        quantity: parseInt(formData.quantity, 10),
+        category: parseInt(formData.category, 10),
+      }
+
+      await createNewProduct({
+        variables: {
+          infos: variables,
+        },
+      });
+
+      toast.success("Produit ajouté avec succès !");
+      reset();
+      setSelectedCategoryId("");
+      setSelectedCategoryName("");
+    } catch (err) {
+      console.error("Error creating product:", err);
+      toast.error("Erreur lors de la création du produit");
+    }
+  };
+
+  return (
+    <main className={styles.productsAddPage}>
+      <h3 className="mb-6 flex items-center justify-center text-3xl">
+        Ajouter un nouveau produit
+      </h3>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <label>
+          Nom de l&apos;annonce: <br />
+          <input className="text-field" {...register("name")} />
+        </label>
+        <br />
+        <label>
+          Description: <br />
+          <input className="text-field" {...register("description")} />
+        </label>
+        <br />
+        <label>
+          Prix: <br />
+          <input className="text-field" {...register("price")} type="number" />
+        </label>
+        <br />
+        <label>
+          Quantité: <br />
+          <input
+            className="text-field"
+            {...register("quantity")}
+            type="number"
+          />
+        </label>
+        <br />
+        <label>
+          Ajouter une image: <br />
+          <input className="text-field" {...register("picture")} />
+        </label>
+        <br />
+
+        <label>
+          Catégorie: <br />
+          <CategorySelect
+            selectedCategoryId={selectedCategoryId}
+            selectedCategoryName={selectedCategoryName}
+            onCategoryChange={handleCategoryChange}
+          />
+        </label>
+        <br />
+
+        <Button type="submit">
+          Créer
+        </Button>
+      </form>
+    </main>
+  );
+};
+
+export default ProductsAddPage;
