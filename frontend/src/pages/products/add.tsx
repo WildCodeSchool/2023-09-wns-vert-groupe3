@@ -4,6 +4,7 @@ import { ADD_PRODUCT } from "lib/graphql/mutations";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
+import { toast } from "react-toastify";
 
 type InputCreateProduct = {
   name: string;
@@ -52,8 +53,11 @@ const ProductsAddPage = () => {
           infos: variables,
         },
       });
+
+      toast.success("Produit ajouté avec succès !");
     } catch (err) {
       console.error("Error creating product:", err);
+      toast.error("Erreur lors de la création du produit");
     }
   };
 
