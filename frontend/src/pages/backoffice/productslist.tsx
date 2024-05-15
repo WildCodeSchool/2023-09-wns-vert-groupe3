@@ -1,52 +1,48 @@
-import { useQuery } from '@apollo/client';
-import DeleteModal from 'components/modal/DeleteModal';
+import { useMutation, useQuery } from '@apollo/client';
+// import DeleteModal from 'components/modal/DeleteModal';
 import LoadingProgress from 'components/ui/LoadingProgress';
 import { PRODUCT_UNAVAILABLE_DATES, USER_REQUESTED_RENT_DATES } from 'data/fakeData';
+import { DELETE_PRODUCT } from 'lib/graphql/mutations';
 import { GET_PRODUCTS } from 'lib/graphql/queries';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
-import { toast } from 'react-toastify';
+// import { InputsProducts } from 'types/inputsProducts';
 import getCategoryColor from 'utils/categoryColors';
 import { isDateRangeOverlap } from 'utils/date';
 
 const productslist = () => {
    const [showModalDelete, setShowModalDelete] = useState(false);
-   const [selectedArticle, setSelectedArticle] = useState(null);
+   const [selectedArticle, setSelectedArticle] = useState<any>(null);
    const router = useRouter();
 
+   const [deleteProduct, { loading: deleteProductLoading, error: deleteProductError }] = useMutation(DELETE_PRODUCT);
+
+   const handleDelete = async (productId: string) => {
+      console.log("Product id : ", productId);
+      console.log("TypeOf productid: ", typeof(productId));
+      
+      const productIdNumber = parseFloat(productId);
+      try {
+         await deleteProduct({
+            variables: {
+               productId: productIdNumber
+            },
+         });
+         console.log('Product deleted !');
+         
+      } catch (error) {
+         console.error('Error deleting product:', error);
+      }
+   };
+
    const { data, loading, error } = useQuery(GET_PRODUCTS);
-   
+
    if (loading) return <LoadingProgress />;
    if (error) return <p>Error: {error.message}</p>;
-   
-   console.log('data :', data);
 
+   // console.log('data :', data);
    const articles = data.getAllproducts
-
-   console.log(articles);
-   
-   
-   const fakeArticles = [
-      {
-         id: 1,
-         name: 'Sac de voyage',
-         category: 'Randonnée',
-         quantity: '5',
-         price: '179,00€',
-         picture:
-            'https://www.trekmag.com/media/Conseils/s-b-vonlanthen-D75_5tWZDQ4-unsplash.jpg',
-      },
-      {
-         id: 2,
-         name: 'Combinaison de plongée',
-         category: 'Plongée',
-         quantity: '13',
-         price: '219,00€',
-         picture:
-            'https://boutique.boulogneplongee.fr/7492-home_default_2x/seac-masterdry-combinaison-semi-etanche-femme-taille-m-n33.jpg',
-      }
-   ]
-   
+   // console.log(articles);
 
    const isUnavailable = isDateRangeOverlap(
       USER_REQUESTED_RENT_DATES,
@@ -57,9 +53,9 @@ const productslist = () => {
       router.push(`/products/add`)
    };
 
-   const openModalDelete = (articleName: any) => {
+   const openModalDelete = (article: any) => {
+      setSelectedArticle(article); 
       console.log('delete');
-      setSelectedArticle(articleName)
       setShowModalDelete(true)
    }
 
@@ -97,9 +93,6 @@ const productslist = () => {
                               <th scope="col" className="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">
                                  Disponibilité
                               </th>
-                              {/* <th scope="col" className="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">
-                                 Quantité
-                              </th> */}
                               <th scope="col" className="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">
                                  Quantité
                               </th>
@@ -109,7 +102,7 @@ const productslist = () => {
                            </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200 bg-white">
-                           {articles.map((article :any) => (
+                           {articles.map((article: any) => (
                               <tr key={article.id}>
                                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6 name-cell" >
                                     <div className="flex items-center">
@@ -147,18 +140,49 @@ const productslist = () => {
                                           Editer<span className="sr-only">, {article.name}</span>
                                        </a>
                                     </div>
-                                    <div onClick={() => openModalDelete(article.name)} className='cursor-pointer'>
+                                    <div onClick={() => openModalDelete(article)} className='cursor-pointer'>
                                        <a className="text-indigo-600 hover:text-red-600 font-semibold">
                                           Supprimer<span className="sr-only">, {article.name}</span>
                                        </a>
                                     </div>
                                  </td>
-                                 {showModalDelete && selectedArticle && <DeleteModal setShowModalDelete={setShowModalDelete} nameArticle={selectedArticle}/>}
+                                 {showModalDelete &&
+
+
+
+                                    <div id="popup-modal" tabIndex={-1} className="bg-black bg-opacity-15 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                       <div className="relative p-4 w-full max-w-md max-h-full">
+                                          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                             <button onClick={() => setShowModalDelete(false)} type="button" className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
+                                                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                   <path stroke="currentColor" stroke-linecap="round" strokeLinejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                </svg>
+                                                <span className="sr-only">Close modal</span>
+                                             </button>
+                                             <div className="p-4 md:p-5 text-center">
+                                                <svg className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                   <path stroke="currentColor" stroke-linecap="round" strokeLinejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                </svg>
+                                                <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Confirmez-vous la suppression de tous les articles "{selectedArticle?.name}" ?</h3>
+                                                <button onClick={() => {
+                                                   handleDelete(selectedArticle?.id);
+                                                   setShowModalDelete(false)
+                                                }} data-modal-hide="popup-modal" type="button" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                   Oui, je suis sûr
+                                                </button>
+                                                <button onClick={() => setShowModalDelete(false)} data-modal-hide="popup-modal" type="button" className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Annuler</button>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+
+
+
+                                 }
                               </tr>
                            ))}
                         </tbody>
                      </table>
-                     {/* <DeleteModal /> */}
                   </div>
                </div>
             </div>
