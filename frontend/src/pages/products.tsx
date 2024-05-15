@@ -1,14 +1,12 @@
-import LoadingProgress from 'components/ui/LoadingProgress';
-import React from 'react'
-import styles from "../styles/pages/ProductsPage.module.scss"
-import DisplayProd from '../components/DisplayProd';
-import { useQuery } from '@apollo/client';
-import { GET_PRODUCTS } from '../lib/graphql/queries';
+import { useQuery } from "@apollo/client";
+import LoadingProgress from "components/ui/LoadingProgress";
+import DisplayProd from "../components/DisplayProd";
+import { GET_PRODUCTS } from "../lib/graphql/queries";
+import styles from "../styles/pages/ProductsPage.module.scss";
 
 const ProductsPage = () => {
-   const { data, loading, error } = useQuery(GET_PRODUCTS);
-   console.log('data :', data);
-   
+  const { data, loading, error } = useQuery(GET_PRODUCTS);
+  //  console.log('data :', data);
 
   if (loading) return <LoadingProgress />;
   if (error) return <p>Error: {error.message}</p>;

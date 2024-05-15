@@ -19,6 +19,15 @@ export const GET_PRODUCTS = gql`
   }
 `;
 
+export const GET_ALL_CATEGORIES = gql`
+ query GetAllCategories {
+  getAllCategories {
+    id
+    name
+  }
+}
+`;
+
 export const GET_PRODUCTS_BY_CATEGORY_ID = gql`
   query Query($categoryId: Float!) {
     getProductsByCategoryId(categoryId: $categoryId) {
