@@ -1,5 +1,8 @@
+import { useQuery } from '@apollo/client';
 import DeleteModal from 'components/modal/DeleteModal';
+import LoadingProgress from 'components/ui/LoadingProgress';
 import { PRODUCT_UNAVAILABLE_DATES, USER_REQUESTED_RENT_DATES } from 'data/fakeData';
+import { GET_PRODUCTS } from 'lib/graphql/queries';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
@@ -7,12 +10,28 @@ import getCategoryColor from 'utils/categoryColors';
 import { isDateRangeOverlap } from 'utils/date';
 
 const productslist = () => {
+   const [showModalDelete, setShowModalDelete] = useState(false);
+   const [selectedArticle, setSelectedArticle] = useState(null);
+   const router = useRouter();
+
+   const { data, loading, error } = useQuery(GET_PRODUCTS);
+   
+   if (loading) return <LoadingProgress />;
+   if (error) return <p>Error: {error.message}</p>;
+   
+   console.log('data :', data);
+
+   const articles = data.getAllproducts
+
+   console.log(articles);
+   
+   
    const fakeArticles = [
       {
          id: 1,
          name: 'Sac de voyage',
-         categorie: 'Randonnée',
-         quantite: '5',
+         category: 'Randonnée',
+         quantity: '5',
          price: '179,00€',
          picture:
             'https://www.trekmag.com/media/Conseils/s-b-vonlanthen-D75_5tWZDQ4-unsplash.jpg',
@@ -20,24 +39,19 @@ const productslist = () => {
       {
          id: 2,
          name: 'Combinaison de plongée',
-         categorie: 'Plongée',
-         quantite: '13',
+         category: 'Plongée',
+         quantity: '13',
          price: '219,00€',
          picture:
             'https://boutique.boulogneplongee.fr/7492-home_default_2x/seac-masterdry-combinaison-semi-etanche-femme-taille-m-n33.jpg',
       }
    ]
+   
 
    const isUnavailable = isDateRangeOverlap(
       USER_REQUESTED_RENT_DATES,
       PRODUCT_UNAVAILABLE_DATES,
    );
-
-   const [showModalDelete, setShowModalDelete] = useState(false)
-   const [selectedArticle, setSelectedArticle] = useState(null);
-
-
-   const router = useRouter();
 
    const handleButtonClick = () => {
       router.push(`/products/add`)
@@ -95,7 +109,7 @@ const productslist = () => {
                            </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200 bg-white">
-                           {fakeArticles.map((article) => (
+                           {articles.map((article :any) => (
                               <tr key={article.id}>
                                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6 name-cell" >
                                     <div className="flex items-center">
@@ -109,12 +123,12 @@ const productslist = () => {
                                  </td>
                                  <td className="whitespace-nowrap px-3 py-4 text-lg">
                                     <span className="inline-flex rounded-full px-2 text-lg font-bold leading-5 text-green-800 p-4">
-                                       {article.categorie && (
+                                       {article.category.name && (
                                           <div
                                              // onClick={handleButtonClick}
-                                             className={` w-max rounded px-2 py-1 text-sm ${getCategoryColor(article.categorie)}`}
+                                             className={` w-max rounded px-2 py-1 text-sm ${getCategoryColor(article.category.name)}`}
                                           >
-                                             {article.categorie}
+                                             {article.category.name}
                                           </div>
                                        )}
                                     </span>
@@ -126,7 +140,7 @@ const productslist = () => {
                                     <td className="whitespace-nowrap px-3 py-4 text-lg text-red-600">Indisponible</td>
                                  ) : <td className="whitespace-nowrap px-3 py-4 text-lg">Disponible</td>
                                  }
-                                 <td className="whitespace-nowrap px-3 py-4 text-lg">{article.quantite}</td>
+                                 <td className="whitespace-nowrap px-3 py-4 text-lg">{article.quantity}</td>
                                  <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-lg font-medium sm:pr-6">
                                     <div>
                                        <a href="#" className="text-indigo-600 hover:text-indigo-900 font-semibold">
