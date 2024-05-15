@@ -31,12 +31,6 @@ const ProductsAddPage = () => {
     { loading: createProductLoading, error: createProductError },
   ] = useMutation(ADD_PRODUCT);
 
-  if (createProductLoading)
-    return <p className="text-black">Chargement des produits...</p>;
-  if (createProductError) {
-    return <p className="text-black">Erreur lors de la création du produit</p>;
-  }
-
   const onSubmit = async (formData: InputCreateProduct) => {
     try {
       formData.category = selectedCategoryId;
