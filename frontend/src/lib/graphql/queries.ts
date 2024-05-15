@@ -20,22 +20,12 @@ export const GET_PRODUCTS = gql`
 `;
 
 export const GET_ALL_CATEGORIES = gql`
-  query Query {
-    getAllCategories {
-      id
-      name
-      description
-      picture
-      price
-      quantity
-      created_at
-      updated_at
-      category {
-        id
-        name
-      }
-    }
+ query GetAllCategories {
+  getAllCategories {
+    id
+    name
   }
+}
 `;
 
 export const GET_PRODUCTS_BY_CATEGORY_ID = gql`

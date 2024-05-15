@@ -9,8 +9,8 @@ type InputCreateProduct = {
   name: string;
   description: string;
   picture: string;
-  price: number;
-  quantity: number;
+  price: string;
+  quantity: string;
   category: string;
 };
 
@@ -20,7 +20,7 @@ const ProductsAddPage = () => {
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>("");
 
   const handleCategoryChange = (categoryId: string, categoryName: string) => {
-    setSelectedCategoryId(String(categoryId));
+    setSelectedCategoryId(categoryId);
     setSelectedCategoryName(categoryName);
   };
 
@@ -40,16 +40,16 @@ const ProductsAddPage = () => {
       formData.category = selectedCategoryId;
       setValue("category", formData.category);
 
+      const variables = {
+        ...formData,
+        price: parseFloat(formData.price),
+        quantity: parseInt(formData.quantity, 10),
+        category: parseInt(formData.category, 10),
+      }
+
       await createNewProduct({
         variables: {
-          infos: {
-            name: formData.name,
-            description: formData.description,
-            picture: formData.picture,
-            price: formData.price,
-            quantity: formData.quantity,
-            category: String(formData.category),
-          }
+          infos: variables,
         },
       });
     } catch (err) {
