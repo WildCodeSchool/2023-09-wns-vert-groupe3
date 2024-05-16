@@ -10,7 +10,7 @@ type InputCreateCategory = {
 };
 
 const CategoryAddPage = () => {
-    const { register, handleSubmit, reset } = useForm<InputCreateCategory>();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<InputCreateCategory>();
 
     const [createNewCategory] = useMutation(ADD_CATEGORY);
 
@@ -37,7 +37,8 @@ const CategoryAddPage = () => {
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <label>
             Nom de la catégorie: <br />
-            <input className="text-field" {...register("name")} />
+            <input className="text-field" {...register("name", { required: "Le nom de la catégorie est obligatoire" })} />
+            {errors.name && <p>{errors.name.message}</p>}
           </label>
           <br />
           <Button type="submit">
