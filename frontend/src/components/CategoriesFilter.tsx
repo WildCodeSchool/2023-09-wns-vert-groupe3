@@ -3,7 +3,7 @@ import * as Select from "@radix-ui/react-select";
 import { GET_ALL_CATEGORIES } from "lib/graphql/queries";
 import { useState } from "react";
 
-const AllCategoriesPage = () => {
+const CategoriesFilter = () => {
   const { loading, error, data } = useQuery(GET_ALL_CATEGORIES);
   const [selectedCategoryName, setSelectedCategoryName] = useState<
     string | undefined
@@ -15,17 +15,17 @@ const AllCategoriesPage = () => {
   };
 
   if (loading)
-    return <p className="text-black">Chargement des catégories...</p>;
+    return <p className="text-black">Chargement des articles</p>;
   if (error)
     return (
-      <p className="text-black">Erreur lors du chargement des catégories</p>
+      <p className="text-black">Erreur lors du chargement des articles</p>
     );
 
   const categories = data?.getAllCategories || [];
 
   return (
-    <div className="py-4">
-      <h1 className="mb-4 text-2xl font-semibold">Toutes les catégories</h1>
+    <div className="py-4 z-20 relative">
+      <h1 className="mb-4 text-2xl font-semibold">Filtrer les articles</h1>
       <Select.Root
         value={selectedCategoryName}
         onValueChange={handleSelectChange}
@@ -63,7 +63,7 @@ const AllCategoriesPage = () => {
           </svg>
         </Select.Trigger>
         <Select.Content className="max-h-60 w-64 overflow-y-auto rounded-md bg-white shadow-md">
-          <Select.Viewport className="p-2">
+          <Select.Viewport className="p-2 absolute">
             {categories.map((category: any) => (
               <Select.Item
                 key={category.id}
@@ -80,4 +80,4 @@ const AllCategoriesPage = () => {
   );
 };
 
-export default AllCategoriesPage;
+export default CategoriesFilter;

@@ -1,21 +1,25 @@
+import CategoriesFilter from "components/CategoriesFilter";
 import CardProductRent, {
-  CardProductRentProps,
+   CardProductRentProps,
 } from "./cards/product-rent/CardProductRent";
 
 type DisplayProdType = {
-  products: CardProductRentProps[];
+   products: CardProductRentProps[];
 };
 
 const DisplayProd = ({ products }: DisplayProdType) => {
-  console.log("products : ", products);
+   console.log("products : ", products);
 
-  return (
-    <div className="grid grid-cols-2 gap-6">
-      {products.map((product) => (
-        <CardProductRent key={product.id} {...product} />
-      ))}
-    </div>
-  );
+   return (
+      <>
+         <CategoriesFilter />
+         <div className="grid grid-cols-2 gap-6">
+            {products.map((product) => (
+               <CardProductRent key={product.id} {...product} />
+            ))}
+         </div>
+      </>
+   );
 };
 
 export default DisplayProd;

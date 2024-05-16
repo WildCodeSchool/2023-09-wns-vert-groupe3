@@ -68,7 +68,7 @@ const productslist = () => {
       <div className="px-4 sm:px-6 lg:px-8">
          <div className="sm:flex sm:items-center">
             <div className="sm:flex-auto">
-               <h1 className="text-2xl font-semibold text-gray-900">Liste de tous les articles</h1>
+               <h1 className="text-2xl font-semibold text-gray-900">Gestion de tous les articles</h1>
             </div>
             <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
                <button onClick={() => handleButtonClick()}
