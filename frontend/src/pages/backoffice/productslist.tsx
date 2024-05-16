@@ -19,11 +19,11 @@ const productslist = () => {
    const [deleteProduct, { loading: deleteProductLoading, error: deleteProductError }] = useMutation(DELETE_PRODUCT);
 
    const handleDelete = async (productId: string) => {
-      console.log("Product id : ", productId);
+      // console.log("Product id : ", productId);
 
-      console.log("TypeOf productid: ", typeof (productId));
+      // console.log("TypeOf productid: ", typeof (productId));
       const productIdNumber = parseFloat(productId);
-      console.log("TypeOf productid !!!: ", typeof(productIdNumber));
+      // console.log("TypeOf productid !!!: ", typeof(productIdNumber));
 
       try {
          await deleteProduct({
