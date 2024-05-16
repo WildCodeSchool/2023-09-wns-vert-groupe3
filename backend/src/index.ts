@@ -8,26 +8,21 @@ import dataSource from "./config/datasource";
 import { CategoryResolver, ProductResolver, UserResolver } from "./resolvers";
 
 // Delete too
+import * as argon2 from "argon2";
 import { User } from "../src/entities";
 
 const start = async () => {
   await dataSource.initialize();
 
-  /*  DELETE BEFORE PR  */
-  const createAdminUserIfNotExist = async () => {
-    const adminUser = await User.findOne({ where: { role: "admin" } });
-    if (!adminUser) {
-      const newUser = new User();
-      newUser.username = "admin";
-      newUser.email = "admin@admin.com";
-      newUser.hashedPassword = "admin";
-      newUser.role = "admin";
-      await newUser.save();
-    }
-  };
-
-  createAdminUserIfNotExist();
-
+  const adminUser = await User.findOne({ where: { role: "admin" } });
+  if (!adminUser) {
+    const admin = new User();
+    admin.email = "admin@admin.com";
+    admin.username = "admin";
+    admin.hashedPassword = await argon2.hash("password");
+    admin.role = "admin";
+    admin.save();
+  }
   /*  DELETE BEFORE PR  */
 
   // if no categories, create some categories

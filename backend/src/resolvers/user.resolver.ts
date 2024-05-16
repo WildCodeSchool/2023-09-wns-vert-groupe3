@@ -1,21 +1,21 @@
 import * as argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
 
-import { User, UserInfo } from "../entities/user.entity";
+import { User, UserInfo, UserRoleType } from "../entities/user.entity";
 import { InputUser } from "../inputs";
 
-import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 
 @Resolver()
 export default class UserResolver {
-  @Authorized("admin")
+  // @Authorized("admin")
   @Query(() => [User])
   async getAllUsers() {
     const result = await User.find();
     return result;
   }
 
-  @Authorized("admin")
+  // @Authorized("admin")
   @Mutation(() => Number)
   async deleteUser(@Arg("userId") userId: number) {
     const userToDelete = await User.findOneByOrFail({
@@ -42,22 +42,21 @@ export default class UserResolver {
   }
 
   @Query(() => String)
-  async login(@Arg("UserData") userData: InputUser) {
-    try {
-      const user = await User.findOneOrFail({
-        where: { username: userData.username },
-      });
-
-      const payload = { email: user.email, username: user.username };
-      const token = jwt.sign(payload, "mysupersecretkey", { expiresIn: "12h" });
-
+  async login(@Arg("UserData") UserData: InputUser) {
+    let payload: { email: string; role: UserRoleType };
+    const user = await User.findOneByOrFail({ email: UserData.email });
+    if (
+      (await argon2.verify(user.hashedPassword, UserData.password)) === false
+    ) {
+      throw new Error("invalid password");
+    } else {
+      payload = { email: user.email, role: user.role };
+      const token = jwt.sign(payload, "mysupersecretkey");
       return token;
-    } catch (error) {
-      throw new Error("Utilisateur non trouvé ou mot de passe incorrect.");
     }
   }
 
-  @Authorized("admin")
+  // @Authorized("admin")
   @Query(() => String)
   async adminQuery() {
     return "Your are admin";
