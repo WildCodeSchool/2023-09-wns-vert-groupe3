@@ -19,8 +19,8 @@ const productslist = () => {
 
    const handleDelete = async (productId: string) => {
       console.log("Product id : ", productId);
-      
-      console.log("TypeOf productid: ", typeof(productId));
+
+      console.log("TypeOf productid: ", typeof (productId));
       const productIdNumber = parseFloat(productId);
       // console.log("TypeOf productid !!!: ", typeof(productIdNumber));
 
@@ -34,7 +34,7 @@ const productslist = () => {
             }]
          });
          console.log('Product deleted !');
-         
+
       } catch (error) {
          console.error('Error deleting product:', error);
       }
@@ -59,7 +59,7 @@ const productslist = () => {
    };
 
    const openModalDelete = (article: any) => {
-      setSelectedArticle(article); 
+      setSelectedArticle(article);
       console.log('delete');
       setShowModalDelete(true)
    }
@@ -123,8 +123,8 @@ const productslist = () => {
                                     <span className="inline-flex rounded-full px-2 text-lg font-bold leading-5 p-4">
                                        {article.category.name && (
                                           <div
-                                          // onClick={handleButtonClick}
-                                          className={` w-max rounded px-2 py-1 text-sm ${getCategoryColor(article.category.name)}`}
+                                             // onClick={handleButtonClick}
+                                             className={` w-max rounded px-2 py-1 text-sm ${getCategoryColor(article.category.name)}`}
                                           >
                                              {article.category.name}
                                           </div>
@@ -151,10 +151,10 @@ const productslist = () => {
                                        </a>
                                     </div>
                                  </td>
-                                 
+
                                  {showModalDelete &&
 
-
+                                    // TODO: Créer un composant DeleteModal.tsx et l'appeler depuis cet endroit.
 
                                     <div id="popup-modal" tabIndex={-1} className="bg-black bg-opacity-15 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                        <div className="relative p-4 w-full max-w-md max-h-full">
@@ -182,7 +182,7 @@ const productslist = () => {
                                        </div>
                                     </div>
 
-
+                                    // TODO: Fin composant DeleteModal.tsx
 
                                  }
                               </tr>
