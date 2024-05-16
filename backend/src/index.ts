@@ -3,11 +3,32 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { Category, Product } from "../src/entities";
+import { authChecker } from "./authChecker";
 import dataSource from "./config/datasource";
 import { CategoryResolver, ProductResolver, UserResolver } from "./resolvers";
 
+// Delete too
+import { User } from "../src/entities";
+
 const start = async () => {
   await dataSource.initialize();
+
+  /*  DELETE BEFORE PR  */
+  const createAdminUserIfNotExist = async () => {
+    const adminUser = await User.findOne({ where: { role: "admin" } });
+    if (!adminUser) {
+      const newUser = new User();
+      newUser.username = "admin";
+      newUser.email = "admin@admin.com";
+      newUser.hashedPassword = "admin";
+      newUser.role = "admin";
+      await newUser.save();
+    }
+  };
+
+  createAdminUserIfNotExist();
+
+  /*  DELETE BEFORE PR  */
 
   // if no categories, create some categories
   const categories = await Category.find();
@@ -72,6 +93,7 @@ const start = async () => {
 
   const schema = await buildSchema({
     resolvers: [ProductResolver, CategoryResolver, UserResolver],
+    authChecker: authChecker,
   });
 
   const server = new ApolloServer({

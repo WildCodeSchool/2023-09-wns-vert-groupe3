@@ -1,7 +1,10 @@
 import { Field, InputType } from "type-graphql";
 
-@InputType({ description: "New recipe data" })
+@InputType()
 export class InputUser {
+  @Field()
+  username: string;
+
   @Field()
   email: string;
 

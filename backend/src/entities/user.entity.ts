@@ -1,3 +1,4 @@
+import { MinLength } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
@@ -12,11 +13,10 @@ export class User extends BaseEntity {
 
   @Field()
   @Column()
-  firstname: string;
-
-  @Field()
-  @Column()
-  lastname: string;
+  @MinLength(5, {
+    message: "Le nom d'utilisateur doit contenir au moins 5 caractères",
+  })
+  username: string;
 
   @Field()
   @Column({ unique: true })

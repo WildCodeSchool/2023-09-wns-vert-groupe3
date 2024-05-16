@@ -1,8 +1,9 @@
 import * as argon2 from "argon2";
-import { User, UserInfo, UserRoleType } from "../entities/user.entity";
-
-import { InputUser } from "inputs";
 import * as jwt from "jsonwebtoken";
+
+import { User, UserInfo } from "../entities/user.entity";
+import { InputUser } from "../inputs";
+
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 
 @Resolver()
@@ -15,48 +16,51 @@ export default class UserResolver {
   }
 
   @Authorized("admin")
-  @Mutation(() => String)
-  async deleteUser(@Arg("userId") userId: string) {
+  @Mutation(() => Number)
+  async deleteUser(@Arg("userId") userId: number) {
     const userToDelete = await User.findOneByOrFail({
-      id: Number.parseInt(userId),
+      id: userId,
     });
     await userToDelete.remove();
-    return "user removed";
+    return userId;
   }
 
   @Mutation(() => String)
   async register(@Arg("newUserData") newUserData: InputUser) {
     try {
       const newUser = new User();
+      newUser.username = newUserData.username;
       newUser.email = newUserData.email;
       newUser.hashedPassword = await argon2.hash(newUserData.password);
+      newUser.role = "user";
       await newUser.save();
-      return "ok";
+      return "New user was created with success";
     } catch (err) {
       console.log("err", err);
-      return "error while creating new user";
+      return "Error while creating new user";
     }
   }
 
   @Query(() => String)
-  async login(@Arg("UserData") UserData: InputUser) {
-    let payload: { email: string; role: UserRoleType };
-    const user = await User.findOneByOrFail({ email: UserData.email });
-    if (
-      (await argon2.verify(user.hashedPassword, UserData.password)) === false
-    ) {
-      throw new Error("invalid password");
-    } else {
-      payload = { email: user.email, role: user.role };
-      const token = jwt.sign(payload, "mysupersecretkey");
+  async login(@Arg("UserData") userData: InputUser) {
+    try {
+      const user = await User.findOneOrFail({
+        where: { username: userData.username },
+      });
+
+      const payload = { email: user.email, username: user.username };
+      const token = jwt.sign(payload, "mysupersecretkey", { expiresIn: "12h" });
+
       return token;
+    } catch (error) {
+      throw new Error("Utilisateur non trouvé ou mot de passe incorrect.");
     }
   }
 
   @Authorized("admin")
   @Query(() => String)
   async adminQuery() {
-    return "you are admin";
+    return "Your are admin";
   }
 
   @Query(() => UserInfo)
