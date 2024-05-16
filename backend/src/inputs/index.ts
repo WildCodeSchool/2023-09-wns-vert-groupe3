@@ -1,9 +1,11 @@
-import { InputUpdateProduct } from "./InputUpdateProduct";
-import { InputCreateProduct } from "./InputCreateProduct";
+import { InputUser } from "inputs/InputUser";
 import { InputCreateCategory } from "./InputCreateCategory";
+import { InputCreateProduct } from "./InputCreateProduct";
+import { InputUpdateProduct } from "./InputUpdateProduct";
 
 export {
-   InputUpdateProduct,
-   InputCreateProduct,
-   InputCreateCategory
-}
+  InputCreateCategory,
+  InputCreateProduct,
+  InputUpdateProduct,
+  InputUser,
+};

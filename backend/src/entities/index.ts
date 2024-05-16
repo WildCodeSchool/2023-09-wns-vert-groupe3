@@ -1,7 +1,5 @@
-import { Product } from './product.entity';
-import { Category } from './category.entity';
+import { User } from "entities/user.entity";
+import { Category } from "./category.entity";
+import { Product } from "./product.entity";
 
-export {
-   Product,
-   Category
-};
+export { Category, Product, User };
