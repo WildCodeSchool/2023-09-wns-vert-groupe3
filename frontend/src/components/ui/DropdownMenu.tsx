@@ -11,7 +11,7 @@ const DropdownMenu = () => {
             <Link href="/products/add" passHref className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
                Ajouter un article
             </Link>
-            <Link href="/categories/add" passHref className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+            <Link href="/products/category/addCategory" passHref className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
                Ajouter une catégorie
             </Link>
          </div>
