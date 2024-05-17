@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import { createClient } from "redis";
 import { buildSchema } from "type-graphql";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
@@ -9,26 +10,37 @@ import { CategoryResolver, ProductResolver } from "./resolvers";
 
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
 
+export const redisClient = createClient({
+  url: "redis://redis",
+});
+
+redisClient.on("error", (err) => {
+  console.log("Redis CLient Error", err);
+});
+
+redisClient.on("connect", () => {
+  console.log("Redis connected");
+});
 
 const start = async () => {
-   await dataSource.initialize();
-   
-   await fillDatabaseIfEmpty();
+  await redisClient.connect(); 
+  await dataSource.initialize();
 
-   const schema = await buildSchema({
-      resolvers: [ProductResolver, CategoryResolver],
-   });
+  await fillDatabaseIfEmpty();
 
-   const server = new ApolloServer({
-      schema,
-   });
+  const schema = await buildSchema({
+    resolvers: [ProductResolver, CategoryResolver],
+  });
 
-   const { url } = await startStandaloneServer(server, {
-      listen: { port: 4000 },
-   });
+  const server = new ApolloServer({
+    schema,
+  });
 
-   console.log(`🚀  Server ready at: ${url}`);
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: 4000 },
+  });
+
+  console.log(`🚀  Server ready at: ${url}`);
 };
 
 start();
-

@@ -24,6 +24,14 @@
       "experimentalDecorators": true,
       "resolveJsonModule": true,
       "baseUrl": "./src",
+      // "paths": {
+		// 	"@entities": ["entities"],
+		// 	"@inputs": ["inputs"],
+		// 	"@resolvers": ["resolvers"]
+		// }
+      "paths": {
+         "@/*": ["./src/*"]
+       }
    },
    "exclude": [
       "node_modules"
