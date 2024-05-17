@@ -9,7 +9,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button: React.FC<ButtonProps> = ({
   children,
   className,
-  disabled,
+  disabled = false,
   ...props
 }) => {
   return (
@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
         disabled && "cursor-not-allowed bg-opacity-30 hover:bg-opacity-30",
         className,
       )}
-      disabled
+      disabled={disabled}
       {...props}
     >
       {children}

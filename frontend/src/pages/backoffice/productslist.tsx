@@ -2,7 +2,8 @@ import { useMutation, useQuery } from '@apollo/client';
 import DeleteModal from 'components/modal/DeleteModal';
 // import DeleteModal from 'components/modal/DeleteModal';
 import LoadingProgress from 'components/ui/LoadingProgress';
-import { PRODUCT_UNAVAILABLE_DATES, USER_REQUESTED_RENT_DATES } from 'data/fakeData';
+import { useUserDatesResearch } from 'contexts/UserDatesResearchContext';
+import { PRODUCT_UNAVAILABLE_DATES } from 'data/fakeData';
 import { DELETE_PRODUCT } from 'lib/graphql/mutations';
 import { GET_PRODUCTS } from 'lib/graphql/queries';
 import { useRouter } from 'next/router';
@@ -12,6 +13,8 @@ import getCategoryColor from 'utils/categoryColors';
 import { isDateRangeOverlap } from 'utils/date';
 
 const productslist = () => {
+   const { dates: userRequestedRentDates } = useUserDatesResearch();
+
    const [showModalDelete, setShowModalDelete] = useState(false);
    const [selectedArticle, setSelectedArticle] = useState<any>(null);
    const router = useRouter();
@@ -73,7 +76,7 @@ const productslist = () => {
    console.log(articles);
 
    const isUnavailable = isDateRangeOverlap(
-      USER_REQUESTED_RENT_DATES,
+      userRequestedRentDates,
       PRODUCT_UNAVAILABLE_DATES,
    );
 
