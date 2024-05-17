@@ -11,10 +11,8 @@ export default class ProductResolver {
   }
 
   @Query(() => Product, { nullable: true })
-  async oneProductById(@Arg("id") id: number) {
-    const oneProduct = await new ProductService().findById(id);
-    console.log(oneProduct);
-    return oneProduct;
+  async getProductById(@Arg("productId") id: number) {
+    return await new ProductService().findById(id);
   }
 
   @Query(() => [Product])

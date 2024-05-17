@@ -8,6 +8,16 @@ const nextConfig = {
         hostname: "via.placeholder.com",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "**.burton.com",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "**.unsplash.com",
+        pathname: "**",
+      }
     ],
   },
 };

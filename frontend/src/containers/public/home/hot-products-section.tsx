@@ -16,9 +16,7 @@ const HomeHotProductsSection = () => {
     <section className="mt-32 flex flex-col gap-2">
       <h2 className="text-2xl font-bold">Les nouveautés</h2>
       <main className={styles.productsPage}>
-        <div>
-          <DisplayProd products={products} />
-        </div>
+        <DisplayProd products={products} />
       </main>
     </section>
   );
