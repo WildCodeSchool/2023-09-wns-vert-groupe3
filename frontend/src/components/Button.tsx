@@ -1,11 +1,29 @@
 import { cn } from "lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
+  children: React.ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, className, ...props }) => {
-  return <button className={cn("py-3 bg-primary text-white font-bold rounded-xl hover:bg-opacity-80 transition", className)} {...props}>{children}</button>;
+const Button: React.FC<ButtonProps> = ({
+  children,
+  className,
+  disabled,
+  ...props
+}) => {
+  return (
+    <button
+      className={cn(
+        "rounded-xl bg-primary py-3 font-bold text-white transition hover:bg-opacity-80",
+        disabled && "cursor-not-allowed bg-opacity-30 hover:bg-opacity-30",
+        className,
+      )}
+      disabled
+      {...props}
+    >
+      {children}
+    </button>
+  );
 };
 export default Button;

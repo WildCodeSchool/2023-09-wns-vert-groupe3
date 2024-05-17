@@ -7,10 +7,9 @@ import CategoriesFilter from "components/CategoriesFilter";
 
 const ProductsPage = () => {
    const { data, loading, error } = useQuery(GET_PRODUCTS);
-   //  console.log('data :', data);
-
-   if (loading) return <LoadingProgress />;
-   if (error) return <p>Error: {error.message}</p>;
+   
+  if (loading) return <LoadingProgress />;
+  if (error) return <p>Error: {error.message}</p>;
 
    const products = data.getAllproducts;
    return (

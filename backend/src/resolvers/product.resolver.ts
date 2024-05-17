@@ -27,6 +27,11 @@ export default class ProductResolver {
     }
   }
 
+  @Query(() => Product, { nullable: true })
+  async getProductById(@Arg("productId") id: number) {
+    return await new ProductService().findById(id);
+  }
+
   @Query(() => [Product])
   async getProductsByCategoryId(@Arg("categoryId") categoryId: number) {
     const productsByCategoryId =

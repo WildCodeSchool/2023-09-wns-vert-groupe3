@@ -12,13 +12,11 @@ export const PRODUCT_INFORMATION = {
   },
   priceInfo: "+ Item info, item info",
 };
-export const USER_REQUESTED_RENT_DATES = {
-  start: new Date(Date.parse("2024-04-18")),
-  end: new Date(Date.parse("2024-04-21")),
-};
 export const PRODUCT_UNAVAILABLE_DATES = [
-  new Date(Date.parse("2024-04-22")),
-  new Date(Date.parse("2024-02-23")),
-  new Date(Date.parse("2024-02-24")),
-  new Date(Date.parse("2024-02-25")),
+  new Date(Date.parse("2024-05-14")),
+  new Date(Date.parse("2024-05-18")),
+  new Date(Date.parse("2024-05-22")),
+  new Date(Date.parse("2024-05-23")),
+  new Date(Date.parse("2024-05-24")),
+  new Date(Date.parse("2024-05-25")),
 ];
