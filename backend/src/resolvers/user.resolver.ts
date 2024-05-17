@@ -45,6 +45,7 @@ export default class UserResolver {
   async login(@Arg("UserData") UserData: InputUser) {
     let payload: { email: string; role: UserRoleType };
     const user = await User.findOneByOrFail({ email: UserData.email });
+    console.log(user);
     if (
       (await argon2.verify(user.hashedPassword, UserData.password)) === false
     ) {

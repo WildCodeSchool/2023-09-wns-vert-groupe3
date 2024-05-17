@@ -19,7 +19,7 @@ const start = async () => {
     const admin = new User();
     admin.email = "admin@admin.com";
     admin.username = "admin";
-    admin.hashedPassword = await argon2.hash("password");
+    admin.hashedPassword = await argon2.hash("admin");
     admin.role = "admin";
     admin.save();
   }
