@@ -77,7 +77,8 @@ const start = async () => {
     backpack.name = "Sac de voyage";
     backpack.description =
       "Ceci est une description d'un sac de voyage à louer !";
-    backpack.picture = "backpack.jpg";
+    backpack.picture =
+      "https://img.freepik.com/vecteurs-premium/vecteur-icone-image-par-defaut-page-image-manquante-pour-conception-site-web-application-mobile-aucune-photo-disponible_87543-11093.jpg";
     backpack.price = 59;
     backpack.quantity = 11;
     await backpack.save();

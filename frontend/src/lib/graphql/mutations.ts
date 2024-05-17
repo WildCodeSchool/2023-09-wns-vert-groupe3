@@ -15,3 +15,17 @@ export const ADD_PRODUCT = gql`
   }
 }
 `;
+
+export const ADD_CATEGORY = gql`
+  mutation Mutation($infos: InputCreateCategory!) {
+  addCategory(infos: $infos) {
+    id
+    name
+  }
+}
+`;
+export const DELETE_PRODUCT = gql`
+mutation Mutation($productId: Float!) {
+   deleteProduct(productId: $productId)
+ }
+ `
