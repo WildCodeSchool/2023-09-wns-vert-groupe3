@@ -1,4 +1,3 @@
-import CategoriesFilter from "components/CategoriesFilter";
 import CardProductRent, {
    CardProductRentProps,
 } from "./cards/product-rent/CardProductRent";
@@ -12,7 +11,6 @@ const DisplayProd = ({ products }: DisplayProdType) => {
 
    return (
       <>
-         <CategoriesFilter />
          <div className="grid grid-cols-2 gap-6">
             {products.map((product) => (
                <CardProductRent key={product.id} {...product} />
