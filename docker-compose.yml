@@ -1,5 +1,4 @@
 services:
-
   backend:
     build: ./backend
     ports:
@@ -57,6 +56,15 @@ services:
     image: adminer
     ports:
       - 8080:8080
-      
+
+  redis:
+    image: redis
+  redis-commander:
+    image: rediscommander/redis-commander
+    environment:
+      - REDIS_HOSTS=redis
+    ports:
+      - "8081:8081"
+
 volumes:
   pgdata_new1:
