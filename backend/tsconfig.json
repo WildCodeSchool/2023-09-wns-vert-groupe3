@@ -32,6 +32,9 @@
 		// 	"@inputs": ["inputs"],
 		// 	"@resolvers": ["resolvers"]
 		// }
+      "paths": {
+         "@/*": ["./src/*"]
+       }
    },
    "exclude": [
       "node_modules"

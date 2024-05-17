@@ -24,3 +24,8 @@ export const ADD_CATEGORY = gql`
   }
 }
 `;
+export const DELETE_PRODUCT = gql`
+mutation Mutation($productId: Float!) {
+   deleteProduct(productId: $productId)
+ }
+ `
