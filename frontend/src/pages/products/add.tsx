@@ -9,9 +9,11 @@ import Button from "components/Button";
 
 type InputCreateProduct = {
   name: string;
-  description: string;
+  description_short: string;
+  description_long: string;
   picture: string;
-  price: string;
+  price_fixed: string;
+  price_daily: string;
   quantity: string;
   category: string;
 };
@@ -32,13 +34,16 @@ const ProductsAddPage = () => {
   ] = useMutation(ADD_PRODUCT);
 
   const onSubmit = async (formData: InputCreateProduct) => {
+    console.log("SUBMITTING", formData)
+
     try {
       formData.category = selectedCategoryId;
       setValue("category", formData.category);
 
       const variables = {
         ...formData,
-        price: parseFloat(formData.price),
+        price_daily: parseFloat(formData.price_daily),
+        price_fixed: parseFloat(formData.price_fixed),
         quantity: parseInt(formData.quantity, 10),
         category: parseInt(formData.category, 10),
       }
@@ -64,21 +69,32 @@ const ProductsAddPage = () => {
       <h3 className="mb-6 flex items-center justify-center text-3xl">
         Ajouter un nouveau produit
       </h3>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)} method="POST">
         <label>
           Nom de l&apos;annonce: <br />
           <input className="text-field" {...register("name")} />
         </label>
         <br />
         <label>
-          Description: <br />
-          <input className="text-field" {...register("description")} />
+          Description courte: <br />
+          <input className="text-field" {...register("description_long")} />
         </label>
         <br />
         <label>
-          Prix: <br />
-          <input className="text-field" {...register("price")} type="number" />
+          Description longue: <br />
+          <input className="text-field" {...register("description_short")} />
         </label>
+        <br />
+        <div className="flex gap-4">
+          <label>
+            Prix fix: <br />
+            <input className="text-field" {...register("price_fixed")} type="number" />
+          </label>
+          <label>
+            Prix journalier: <br />
+            <input className="text-field" {...register("price_daily")} type="number" />
+          </label>
+        </div>
         <br />
         <label>
           Quantité: <br />
