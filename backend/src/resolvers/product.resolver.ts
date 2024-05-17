@@ -20,7 +20,7 @@ export default class ProductResolver {
       return JSON.parse(cacheResult);
     } else {
       const dbResult = await Product.find({
-        where: { description: Like(`%${keyword}%`) },
+        where: { name: Like(`%${keyword}%`) },
       });
       redisClient.set(keyword, JSON.stringify(dbResult), { EX: 60 });
       return dbResult;
