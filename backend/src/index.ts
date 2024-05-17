@@ -10,6 +10,10 @@ import { createClient } from "redis";
 
 export const redisClient = createClient({
   url: "redis://redis",
+  legacyMode: false,
+  socket: {
+    connectTimeout: 10000,
+  },
 });
 
 redisClient.on("error", (err) => {
