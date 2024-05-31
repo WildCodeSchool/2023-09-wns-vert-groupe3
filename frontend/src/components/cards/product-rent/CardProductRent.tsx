@@ -71,7 +71,7 @@ const CardProductRent = ({
               {/* ITEM FIRST ICONS */}
               <div className="flex items-center justify-end gap-3">
                 {isUnavailable ? (
-                  <div className="flex items-center justify-center rounded bg-danger px-3 py-1">
+                  <div className="flex w-max items-center justify-center rounded bg-danger px-3 py-1">
                     <p className="text-sm font-semibold text-white">
                       Indisponible
                     </p>
