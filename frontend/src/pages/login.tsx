@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 
@@ -40,8 +41,8 @@ const LoginPage = () => {
           <div className="w-full rounded-lg bg-white shadow md:max-w-lg xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800">
             <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
               <div className="mb-6 flex items-center">
-                <a
-                  href="../"
+                <Link
+                  href="./"
                   className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
                 >
                   <Image
@@ -50,7 +51,7 @@ const LoginPage = () => {
                     width={50}
                     height={50}
                   />
-                </a>
+                </Link>
                 <h1 className="ml-4 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Se connecter à votre compte
                 </h1>
@@ -120,12 +121,12 @@ const LoginPage = () => {
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Vous n&apos;avez pas encore de compte ?{" "}
-                  <a
-                    href="../register"
+                  <Link
+                    href="/register"
                     className="text-primary-600 dark:text-primary-500 font-medium hover:underline"
                   >
                     S&apos;enregistrer
-                  </a>
+                  </Link>
                 </p>
                 <div className="before:border-white-300 after:border-white-300 my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t after:mt-0.5 after:flex-1 after:border-t">
                   <p className="mx-4 mb-0 text-center font-semibold dark:text-white">
