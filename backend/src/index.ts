@@ -1,9 +1,9 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { authChecker } from "authChecker";
 import { createClient } from "redis";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
+import { authChecker } from "./authChecker";
 import dataSource from "./config/datasource";
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
 import { CategoryResolver, ProductResolver, UserResolver } from "./resolvers";
