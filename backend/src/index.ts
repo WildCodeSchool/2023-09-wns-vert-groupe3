@@ -1,13 +1,12 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import { authChecker } from "authChecker";
+import { createClient } from "redis";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
-
 import dataSource from "./config/datasource";
-
-import { CategoryResolver, ProductResolver, UserResolver } from "./resolvers";
-
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
+import { CategoryResolver, ProductResolver, UserResolver } from "./resolvers";
 
 export const redisClient = createClient({
   url: "redis://redis",
