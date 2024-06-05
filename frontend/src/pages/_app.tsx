@@ -4,10 +4,14 @@ import {
   InMemoryCache,
   createHttpLink,
 } from "@apollo/client";
-import Layout from "components/Layout";
-import { SessionProvider } from "next-auth/react";
-import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
+import type { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
+import { UserDatesResearchProvider } from "contexts/UserDatesResearchContext";
+
+import Layout from "components/Layout";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import "styles/globals.css";
 
@@ -30,7 +34,10 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     <SessionProvider session={session}>
       <ApolloProvider client={client}>
         <Layout>
-          <Component {...pageProps} />
+          <UserDatesResearchProvider>
+            <Component {...pageProps} />
+          </UserDatesResearchProvider>
+          <ToastContainer />
         </Layout>
       </ApolloProvider>
     </SessionProvider>

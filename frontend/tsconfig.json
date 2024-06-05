@@ -19,16 +19,16 @@
       }
     ],
     "baseUrl": "./src",
-    "paths": {
-      "@mutations": ["graphql/mutations/mutations"],
-      "@queries": ["graphql/queries/queries"],
-      "@components": ["components"],
-      "@types": ["types"],
-      "@theme": ["theme"],
-    },
-      //  "paths": {
-      //    "@/*": ["./src/*"]
-      //  }
+   //  "paths": {
+   //    "@mutations": ["graphql/mutations/mutations"],
+   //    "@queries": ["graphql/queries/queries"],
+   //    "@components": ["components"],
+   //    "@types": ["types"],
+   //    "@theme": ["theme"],
+   //  },
+   "paths": {
+   "@/*": ["./src/*"]
+   }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

@@ -1,4 +1,6 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Like } from "typeorm";
+import { redisClient } from "../../src/index";
 import { Product } from "../entities";
 import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 import ProductService from "../services/product.service";
@@ -10,11 +12,24 @@ export default class ProductResolver {
     return await new ProductService().list();
   }
 
+  @Query(() => [Product])
+  async getAllProductsByKeyword(@Arg("keyword") keyword: string) {
+    const cacheResult = await redisClient.get(keyword);
+    if (cacheResult !== null) {
+      console.log("From cache");
+      return JSON.parse(cacheResult);
+    } else {
+      const dbResult = await Product.find({
+        where: { name: Like(`%${keyword}%`) },
+      });
+      redisClient.set(keyword, JSON.stringify(dbResult), { EX: 60 });
+      return dbResult;
+    }
+  }
+
   @Query(() => Product, { nullable: true })
-  async oneProductById(@Arg("id") id: number) {
-    const oneProduct = await new ProductService().findById(id);
-    console.log(oneProduct);
-    return oneProduct;
+  async getProductById(@Arg("productId") id: number) {
+    return await new ProductService().findById(id);
   }
 
   @Query(() => [Product])

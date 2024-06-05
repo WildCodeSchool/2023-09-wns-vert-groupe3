@@ -49,8 +49,8 @@ const Tabs: React.FC<TabsProps> = ({ children, defaultValue }) => {
   return (
     <RadixTabs.Root defaultValue={defaultValue} orientation="vertical">
       <RadixTabs.List className="mb-4 flex gap-8">
-        {tabsNames.map((tab) => (
-          <TabButton keyId={tab.keyId} name={tab.name} />
+        {tabsNames.map((tab, index) => (
+          <TabButton key={index} keyId={tab.keyId} name={tab.name} />
         ))}
       </RadixTabs.List>
       {tabItems}

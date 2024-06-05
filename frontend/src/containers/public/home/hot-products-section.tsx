@@ -1,8 +1,10 @@
+import { useQuery } from "@apollo/client";
 import DisplayProd from "components/DisplayProd";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { GET_PRODUCTS } from "lib/graphql/queries";
+import { HiPlusCircle } from "react-icons/hi";
+
 import styles from "styles/pages/ProductsPage.module.scss";
-import { useQuery } from "@apollo/client";
 
 const HomeHotProductsSection = () => {
   const { data, loading, error } = useQuery(GET_PRODUCTS);
@@ -14,11 +16,14 @@ const HomeHotProductsSection = () => {
 
   return (
     <section className="mt-32 flex flex-col gap-2">
-      <h2 className="text-2xl font-bold">Les nouveautés</h2>
+      <div className="justifiy-center fit-content mb-4 flex">
+        <HiPlusCircle className="mr-2 text-4xl text-blue-500" />
+        <h2 className="w-fit items-center border-b-2 border-b-blue-500 text-2xl font-bold">
+          Les nouveautés
+        </h2>
+      </div>
       <main className={styles.productsPage}>
-        <div>
-          <DisplayProd products={products} />
-        </div>
+        <DisplayProd products={products} />
       </main>
     </section>
   );
