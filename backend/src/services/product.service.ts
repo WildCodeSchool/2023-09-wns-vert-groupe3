@@ -1,5 +1,6 @@
 import { validate } from "class-validator";
-import { Repository } from "typeorm";
+import { redisClient } from "index";
+import { Like, Repository } from "typeorm";
 import datasource from "../config/datasource";
 import { Category, Product } from "../entities";
 import { InputCreateProduct, InputUpdateProduct } from "../inputs";
@@ -26,6 +27,20 @@ export default class ProductService {
       where: { id },
       relations: { category: true },
     });
+  }
+
+  async getAllProductsByKeyword(keyword: string): Promise<Product[]> {
+    const cacheResult = await redisClient.get(keyword);
+    if (cacheResult !== null) {
+      console.log("From cache");
+      return JSON.parse(cacheResult);
+    } else {
+      const dbResult = await Product.find({
+        where: { name: Like(`%${keyword}%`) },
+      });
+      redisClient.set(keyword, JSON.stringify(dbResult), { EX: 60 });
+      return dbResult;
+    }
   }
 
   async findProductsByCategoryId(categoryId: number): Promise<Product[]> {
