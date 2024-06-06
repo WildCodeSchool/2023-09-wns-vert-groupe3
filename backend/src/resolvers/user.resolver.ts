@@ -40,8 +40,7 @@ export default class UserResolver {
       return "Error while creating new user";
     }
   }
-
-  @Query(() => String)
+  @Mutation(() => String)
   async login(@Arg("UserData") UserData: InputUser) {
     let payload: { email: string; role: UserRoleType };
     const user = await User.findOneByOrFail({ email: UserData.email });
