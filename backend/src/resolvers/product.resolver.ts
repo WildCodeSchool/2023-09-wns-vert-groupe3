@@ -33,11 +33,14 @@ export default class ProductResolver {
     return productsByCategoryId;
   }
 
-  @Mutation(() => Product)
-  async addProduct(@Arg("infos") infos: InputCreateProduct) {
-    const newProduct = await this.productService.create(infos);
-    return newProduct;
-  }
+   @Mutation(() => Product)
+   async addProduct(
+      @Arg("infos") infos: InputCreateProduct,
+      // @Ctx() ctx: { email: string }
+   ) {
+      const newProduct = await this.productService.create(infos);
+      return newProduct;
+   }
 
   @Mutation(() => Product)
   async updateProduct(
