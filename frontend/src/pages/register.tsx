@@ -1,6 +1,5 @@
 import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "lib/graphql/mutations";
-import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,7 +9,6 @@ import { HiEye, HiEyeOff } from "react-icons/hi";
 import { inputRegisterUser } from "types/inputRegisterUser";
 
 const RegisterPage = () => {
-  const { data: session } = useSession();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -55,25 +53,6 @@ const RegisterPage = () => {
 
   const eyeIcon = showPassword ? <HiEyeOff /> : <HiEye />;
 
-  if (session) {
-    return (
-      <div className="mb-4 flex items-center">
-        <p className="mr-6">Bienvenue {session.user?.name}.</p>
-        <Image
-          src={session.user?.image || ""}
-          alt="user image profile"
-          className="rounded-full"
-          width={48}
-          height={48}
-        />
-        <p>Enregistré avec l&apos;adresse : {session.user?.email}</p>
-        <br />
-        <button className="underline" onClick={() => signOut()}>
-          Se déconnecter
-        </button>
-      </div>
-    );
-  } else {
     return (
       <div className="flex justify-center">
         <div className="w-full rounded-lg bg-white shadow md:max-w-lg xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800">
@@ -264,7 +243,6 @@ const RegisterPage = () => {
         </div>
       </div>
     );
-  }
-};
+  };
 
 export default RegisterPage;

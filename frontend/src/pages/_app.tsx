@@ -31,7 +31,6 @@ const client = new ApolloClient({
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <SessionProvider session={session}>
       <ApolloProvider client={client}>
         <Layout>
           <UserDatesResearchProvider>
@@ -40,7 +39,6 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <ToastContainer />
         </Layout>
       </ApolloProvider>
-    </SessionProvider>
   );
 }
 
