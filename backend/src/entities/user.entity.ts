@@ -33,13 +33,3 @@ export class User extends BaseEntity {
   })
   role: UserRoleType;
 }
-
-@ObjectType()
-export class UserInfo {
-  @Field()
-  isLoggedIn: boolean;
-  @Field({ nullable: true })
-  email: string;
-  @Field({ nullable: true })
-  role: string;
-}

@@ -1,8 +1,19 @@
-import { User, UserInfo } from "../entities/user.entity";
+import { User } from "../entities/user.entity";
 import { InputUser } from "../inputs";
 import { UserService } from "../services/user.service";
 
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+
+@ObjectType()
+export class UserInfo {
+  @Field()
+  isLoggedIn: boolean;
+  @Field({ nullable: true })
+  email: string;
+  @Field({ nullable: true })
+  role: string;
+}
+
 
 @Resolver()
 export default class UserResolver {
