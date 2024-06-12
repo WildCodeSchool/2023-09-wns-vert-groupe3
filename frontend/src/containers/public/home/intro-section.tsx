@@ -7,7 +7,7 @@ export default function HomeIntroSection() {
   useEffect(() => {
     function handleScroll() {
       const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
+        window.scrollY || document.documentElement.scrollTop;
       const newOpacity = 1 - scrollTop / window.innerHeight;
       setScrollOpacity(Math.min(Math.max(newOpacity, 0), 1));
     }
