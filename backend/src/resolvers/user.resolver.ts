@@ -36,7 +36,7 @@ export default class UserResolver {
     }
   }
 
-  @Mutation(() => String)
+  @Query(() => String)
   async loginUser(@Arg("inputUser") inputUser: InputUser): Promise<string> {
     return this.userService.loginUser(inputUser);
   }
