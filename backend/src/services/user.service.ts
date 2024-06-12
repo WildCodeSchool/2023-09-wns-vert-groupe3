@@ -7,9 +7,19 @@ import { User, UserRoleType } from "../entities/user.entity";
 export class UserService {
   async createUser(inputUser: InputUser): Promise<User> {
     try {
+      const existingUser = await User.findOne({
+        where: [{ email: inputUser.email }, { username: inputUser.username }],
+      });
+
+      if (existingUser) {
+        throw new Error("User with this email or username already exists");
+      }
+
       const newUser = new User();
       newUser.email = inputUser.email;
+      newUser.username = inputUser.username;
       newUser.hashedPassword = await argon2.hash(inputUser.password);
+      newUser.role = "user";
       return await newUser.save();
     } catch (error) {
       console.error("Error while creating new user:", error);
@@ -36,6 +46,13 @@ export class UserService {
       console.error("Error while login:", error);
       throw new Error("Error while login");
     }
+  }
+
+  async checkUserExistence(username: string, email: string): Promise<boolean> {
+    const userByUsername = await User.findOne({ where: { username } });
+    const userByEmail = await User.findOne({ where: { email } });
+
+    return !!(userByUsername || userByEmail);
   }
 
   async getAllUsers(): Promise<User[]> {

@@ -1,12 +1,31 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginPage = () => {
   const { data: session } = useSession();
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const registrationSuccess = localStorage.getItem("registrationSuccess");
+    if (registrationSuccess) {
+      toast.success(
+        <div>
+          Compte créé avec succès!
+          <br />
+          Vous pouvez désormais vous connecter.
+        </div>,
+        {
+          autoClose: 5000,
+        },
+      );
+      localStorage.removeItem("registrationSuccess");
+    }
+  }, []);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -181,6 +200,7 @@ const LoginPage = () => {
             </div>
           </div>
         </div>
+        <ToastContainer />
       </>
     );
   }

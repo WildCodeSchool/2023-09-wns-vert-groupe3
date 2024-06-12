@@ -1,39 +1,34 @@
-import * as argon2 from "argon2";
-import * as jwt from "jsonwebtoken";
-
-import { User, UserInfo, UserRoleType } from "../entities/user.entity";
+import { User, UserInfo } from "../entities/user.entity";
 import { InputUser } from "../inputs";
+import { UserService } from "../services/user.service";
 
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 
 @Resolver()
 export default class UserResolver {
+  private userService = new UserService();
+
   // @Authorized("admin")
   @Query(() => [User])
-  async getAllUsers() {
-    const result = await User.find();
-    return result;
+  async getAllUsers(): Promise<User[]> {
+    return this.userService.getAllUsers();
   }
 
   // @Authorized("admin")
-  @Mutation(() => Number)
-  async deleteUser(@Arg("userId") userId: number) {
-    const userToDelete = await User.findOneByOrFail({
-      id: userId,
-    });
-    await userToDelete.remove();
-    return userId;
+  @Mutation(() => String)
+  async deleteUser(@Arg("userId") userId: string): Promise<string> {
+    return this.userService.deleteUser(userId);
+  }
+
+  @Mutation(() => User)
+  async createUser(@Arg("inputUser") inputUser: InputUser): Promise<User> {
+    return this.userService.createUser(inputUser);
   }
 
   @Mutation(() => String)
-  async register(@Arg("newUserData") newUserData: InputUser) {
+  async register(@Arg("newUserData") newUserData: InputUser): Promise<string> {
     try {
-      const newUser = new User();
-      newUser.username = newUserData.username;
-      newUser.email = newUserData.email;
-      newUser.hashedPassword = await argon2.hash(newUserData.password);
-      newUser.role = "user";
-      await newUser.save();
+      await this.userService.createUser(newUserData);
       return "New user was created with success";
     } catch (err) {
       console.log("err", err);
@@ -41,20 +36,17 @@ export default class UserResolver {
     }
   }
 
-  @Query(() => String)
-  async login(@Arg("UserData") UserData: InputUser) {
-    let payload: { email: string; role: UserRoleType };
-    const user = await User.findOneByOrFail({ email: UserData.email });
-    console.log(user);
-    if (
-      (await argon2.verify(user.hashedPassword, UserData.password)) === false
-    ) {
-      throw new Error("invalid password");
-    } else {
-      payload = { email: user.email, role: user.role };
-      const token = jwt.sign(payload, "mysupersecretkey");
-      return token;
-    }
+  @Mutation(() => String)
+  async loginUser(@Arg("inputUser") inputUser: InputUser): Promise<string> {
+    return this.userService.loginUser(inputUser);
+  }
+
+  @Query(() => Boolean)
+  async checkUserExistence(
+    @Arg("username") username: string,
+    @Arg("email") email: string
+  ): Promise<boolean> {
+    return this.userService.checkUserExistence(username, email);
   }
 
   // @Authorized("admin")
