@@ -7,7 +7,9 @@ interface CategoriesFilterProps {
   setSelectedCategory: (category: string | null) => void;
 }
 
-const CategoriesFilter: React.FC<CategoriesFilterProps> = ({ setSelectedCategory }) => {
+const CategoriesFilter: React.FC<CategoriesFilterProps> = ({
+  setSelectedCategory,
+}) => {
   const { loading, error, data } = useQuery(GET_ALL_CATEGORIES);
   const [selectedCategoryName, setSelectedCategoryName] = useState<
     string | undefined
@@ -23,17 +25,14 @@ const CategoriesFilter: React.FC<CategoriesFilterProps> = ({ setSelectedCategory
     handleSelectChange("");
   };
 
-  if (loading)
-    return <p className="text-black">Chargement des articles</p>;
+  if (loading) return <p className="text-black">Chargement des articles</p>;
   if (error)
-    return (
-      <p className="text-black">Erreur lors du chargement des articles</p>
-    );
+    return <p className="text-black">Erreur lors du chargement des articles</p>;
 
   const categories = data?.getAllCategories || [];
 
   return (
-    <div className="py-4 z-20 relative">
+    <div className="relative z-20 py-4">
       <h1 className="mb-4 text-2xl font-semibold">Filtrer les articles</h1>
       <Select.Root
         value={selectedCategoryName}
@@ -42,7 +41,7 @@ const CategoriesFilter: React.FC<CategoriesFilterProps> = ({ setSelectedCategory
         onOpenChange={(open) => setIsOpen(open)}
       >
         <Select.Trigger
-          className="inline-flex w-64 items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="mr-4 inline-flex w-64 items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           aria-label="Sélectionnez une catégorie"
         >
           <Select.Value
@@ -72,7 +71,7 @@ const CategoriesFilter: React.FC<CategoriesFilterProps> = ({ setSelectedCategory
           </svg>
         </Select.Trigger>
         <Select.Content className="max-h-60 w-64 overflow-y-auto rounded-md bg-white shadow-md">
-          <Select.Viewport className="p-2 absolute">
+          <Select.Viewport className="absolute p-2">
             {categories.map((category: any) => (
               <Select.Item
                 key={category.id}
@@ -87,7 +86,7 @@ const CategoriesFilter: React.FC<CategoriesFilterProps> = ({ setSelectedCategory
       </Select.Root>
       <button
         onClick={handleReset}
-        className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="mt-2 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
       >
         Réinitialiser
       </button>
