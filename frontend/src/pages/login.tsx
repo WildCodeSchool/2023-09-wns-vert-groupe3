@@ -1,12 +1,17 @@
-import { signIn} from "next-auth/react";
+// import { UserContext } from "../components/Layout";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const LoginPage = () => {
+
+   // const router = useRouter();
+   // const authInfo = useContext(UserContext);
+
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
