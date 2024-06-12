@@ -21,6 +21,7 @@ const CardProductRent = ({
   price_fixed,
   price_daily,
   category,
+  quantity,
 }: ProductType) => {
   const { dates: userRequestedRentDates } = useUserDatesResearch();
 
@@ -116,7 +117,9 @@ const CardProductRent = ({
                 {convertToCurrency(price_daily).in("EUR").valueWithSymbol} par
                 jours)
               </p>
-              <p className="text-sm opacity-70">+ Item info, item info</p>
+              <p className="text-sm opacity-70">
+                Quantité restante : {quantity}
+              </p>
             </section>
           </div>
         </div>
