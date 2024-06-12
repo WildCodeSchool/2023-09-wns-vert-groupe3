@@ -7,13 +7,14 @@ import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 import { DELETE_PRODUCT } from "lib/graphql/mutations";
 import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import getCategoryColor from "utils/categoryColors";
+import { useState } from "react";
 import { convertToCurrency } from "utils/currency";
 // import { InputsProducts } from 'types/inputsProducts';
+import Image from "next/image";
+import Link from "next/link";
 import { isDateRangeOverlap } from "utils/date";
 
-const productslist = () => {
+const Productslist = () => {
   const { dates: userRequestedRentDates } = useUserDatesResearch();
 
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -47,11 +48,14 @@ const productslist = () => {
   ] = useMutation(DELETE_PRODUCT);
 
   const handleDelete = async (productId: string) => {
-    // console.log("Product id : ", productId);
+    if (loading) return LoadingProgress;
+    if (error) return console.log(error.message);
 
     // console.log("TypeOf productid: ", typeof (productId));
-    const productIdNumber = parseFloat(productId);
+    // console.log("Product id : ", productId);
     // console.log("TypeOf productid !!!: ", typeof(productIdNumber));
+
+    const productIdNumber = parseFloat(productId);
 
     try {
       await deleteProduct({
@@ -64,7 +68,7 @@ const productslist = () => {
           },
         ],
       });
-      console.log("Product deleted !");
+      // console.log("Product deleted !");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -77,7 +81,7 @@ const productslist = () => {
 
   // console.log('data :', data);
   const articles = data.getAllproducts;
-  console.log(articles);
+  // console.log(articles);
 
   const isUnavailable = isDateRangeOverlap(
     userRequestedRentDates,
@@ -90,7 +94,7 @@ const productslist = () => {
 
   const openModalDelete = (article: any) => {
     setSelectedArticle(article);
-    console.log("delete");
+    // console.log("delete");
     setShowModalDelete(true);
   };
 
@@ -135,7 +139,7 @@ const productslist = () => {
                       scope="col"
                       className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
                     >
-                      Prix à l'unité
+                      Prix à l&aspo;unité
                     </th>
                     <th
                       scope="col"
@@ -162,11 +166,13 @@ const productslist = () => {
                     <tr key={article.id}>
                       <td className="name-cell whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6">
                         <div className="flex items-center">
-                          <div className="h-16 w-16 flex-shrink-0">
-                            <img
-                              className=" h-16 w-16 rounded-full"
+                          <div className="flex-shrink-0">
+                            <Image
+                              className="h-16 w-16 rounded-full object-cover"
+                              width={"100"}
+                              height={"100"}
                               src={article.picture}
-                              alt=""
+                              alt={article.name}
                             />
                           </div>
                           <div className="ml-4">
@@ -209,22 +215,25 @@ const productslist = () => {
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-lg font-medium sm:pr-6">
                         <div>
-                          <a
+                          <Link
                             href="#"
                             className="font-semibold text-indigo-600 hover:text-indigo-900"
                           >
                             Editer
                             <span className="sr-only">, {article.name}</span>
-                          </a>
+                          </Link>
                         </div>
                         <div
                           onClick={() => openModalDelete(article)}
                           className="cursor-pointer"
                         >
-                          <a className="font-semibold text-indigo-600 hover:text-red-600">
+                          <Link
+                            className="font-semibold text-indigo-600 hover:text-red-600"
+                            href="#"
+                          >
                             Supprimer
                             <span className="sr-only">, {article.name}</span>
-                          </a>
+                          </Link>
                         </div>
                       </td>
                       {showModalDelete && (
@@ -246,4 +255,4 @@ const productslist = () => {
   );
 };
 
-export default productslist;
+export default Productslist;

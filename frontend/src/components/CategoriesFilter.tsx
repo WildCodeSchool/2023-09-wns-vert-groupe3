@@ -14,17 +14,14 @@ const CategoriesFilter = () => {
     setSelectedCategoryName(name);
   };
 
-  if (loading)
-    return <p className="text-black">Chargement des articles</p>;
+  if (loading) return <p className="text-black">Chargement des articles</p>;
   if (error)
-    return (
-      <p className="text-black">Erreur lors du chargement des articles</p>
-    );
+    return <p className="text-black">Erreur lors du chargement des articles</p>;
 
   const categories = data?.getAllCategories || [];
 
   return (
-    <div className="py-4 z-20 relative">
+    <div className="relative z-20 py-4">
       <h1 className="mb-4 text-2xl font-semibold">Filtrer les articles</h1>
       <Select.Root
         value={selectedCategoryName}
@@ -63,7 +60,7 @@ const CategoriesFilter = () => {
           </svg>
         </Select.Trigger>
         <Select.Content className="max-h-60 w-64 overflow-y-auto rounded-md bg-white shadow-md">
-          <Select.Viewport className="p-2 absolute">
+          <Select.Viewport className="absolute p-2">
             {categories.map((category: any) => (
               <Select.Item
                 key={category.id}

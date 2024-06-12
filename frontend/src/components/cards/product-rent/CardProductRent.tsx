@@ -61,8 +61,9 @@ const CardProductRent = ({
           <Image
             fill
             src={picture}
-            alt="Product picture"
-            className="h-full w-full object-cover object-center"
+            alt={"Image de " + name}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+            className="h-auto w-auto object-cover object-center"
           />
         </section>
         <div className="flex grow flex-col gap-10 text-hightcontrast">

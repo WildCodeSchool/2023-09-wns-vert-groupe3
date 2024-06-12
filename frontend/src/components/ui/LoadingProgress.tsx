@@ -1,6 +1,6 @@
-import styles from "styles/pages/ProductsPage.module.scss";
 import * as Progress from "@radix-ui/react-progress";
 import React from "react";
+import styles from "styles/pages/ProductsPage.module.scss";
 
 const LoadingProgress = () => {
   const [progress, setProgress] = React.useState(0);
