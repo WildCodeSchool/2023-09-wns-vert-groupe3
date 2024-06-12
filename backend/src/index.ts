@@ -3,7 +3,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { createClient } from "redis";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
-import { authChecker } from "./authChecker";
+// import { authChecker } from "./authChecker";
 import dataSource from "./config/datasource";
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
 import { CategoryResolver, ProductResolver, UserResolver } from "./resolvers";
@@ -29,7 +29,13 @@ const start = async () => {
 
   const schema = await buildSchema({
     resolvers: [ProductResolver, CategoryResolver, UserResolver],
-    authChecker: authChecker,
+    authChecker: ({context}) => {
+      if (context.email) {
+         return true
+      } else {
+         return false
+      }
+    },
   });
 
   const server = new ApolloServer({
