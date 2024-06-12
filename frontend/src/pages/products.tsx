@@ -6,6 +6,7 @@ import { GET_PRODUCTS } from "../lib/graphql/queries";
 import styles from "../styles/pages/ProductsPage.module.scss";
 import CategoriesFilter from "components/CategoriesFilter";
 import { ProductType } from "lib/graphql/queries";
+import BackNavigation from "components/ui/BackNavigation";
 
 
 const ProductsPage = () => {
@@ -21,6 +22,7 @@ const ProductsPage = () => {
 
    return (
       <main className={styles.productsPage}>
+         <BackNavigation />
          <CategoriesFilter setSelectedCategory={setSelectedCategory} />
          <div>
             <DisplayProd products={filteredProducts} />
