@@ -1,14 +1,12 @@
-import "reflect-metadata";
-import { createClient } from "redis";
-import { buildSchema } from "type-graphql";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-
+import { createClient } from "redis";
+import "reflect-metadata";
+import { buildSchema } from "type-graphql";
+import { authChecker } from "./authChecker";
 import dataSource from "./config/datasource";
-
-import { CategoryResolver, ProductResolver } from "./resolvers";
-
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
+import { CategoryResolver, ProductResolver, UserResolver } from "./resolvers";
 
 export const redisClient = createClient({
   url: "redis://redis",
@@ -23,13 +21,14 @@ redisClient.on("connect", () => {
 });
 
 const start = async () => {
-  await redisClient.connect(); 
+  await redisClient.connect();
   await dataSource.initialize();
 
   await fillDatabaseIfEmpty();
 
   const schema = await buildSchema({
-    resolvers: [ProductResolver, CategoryResolver],
+    resolvers: [ProductResolver, CategoryResolver, UserResolver],
+    authChecker: authChecker,
   });
 
   const server = new ApolloServer({
