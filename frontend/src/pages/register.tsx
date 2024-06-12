@@ -105,12 +105,16 @@ const RegisterPage = () => {
                 <input
                   type="text"
                   {...register("username", {
-                    required: "Nom d'utilisateur est requis",
+                    required: "Le nom d'utilisateur est requis",
                     pattern: {
                       value: /^[a-zA-Z0-9-_]+$/,
                       message:
                         "Le nom d'utilisateur ne peut contenir que des lettres, des chiffres et seuls les (-) et (_) sont acceptés",
                     },
+                     validate: {
+                        minLength: (value) =>
+                           value.length >= 5 || "Le nom d'utilisateur doit contenir au moins 5 caractères",
+                     },
                   })}
                   className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   placeholder="Votre nom d'utilisateur"
@@ -134,7 +138,7 @@ const RegisterPage = () => {
                 <input
                   type="email"
                   {...register("email", {
-                    required: "E-mail est requis",
+                    required: "Le mail est requis",
                     pattern: {
                       value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                       message: "Veuillez saisir une adresse e-mail valide",
@@ -163,7 +167,12 @@ const RegisterPage = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     {...register("password", {
-                      required: "Mot de passe est requis",
+                      required: "Le mot de passe est requis",
+                      validate: {
+                        regex: (value) =>
+                          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/.test(value) ||
+                          "Le mot de passe doit contenir au moins 8 caractères, au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.",
+                      },
                     })}
                     placeholder="••••••••"
                     className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
@@ -196,7 +205,7 @@ const RegisterPage = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     {...register("confirmPassword", {
-                      required: "Confirmation de mot de passe est requise",
+                      required: "La confirmation de mot de passe est requise",
                     })}
                     placeholder="••••••••"
                     className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"

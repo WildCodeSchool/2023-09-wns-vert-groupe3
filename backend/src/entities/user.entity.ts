@@ -14,7 +14,7 @@ export class User extends BaseEntity {
   @Field()
   @Column()
   @MinLength(5, {
-    message: "Le nom d'utilisateur doit contenir au moins 5 caractères",
+    message: "Le nom d'utilisateur doit contenir au moins 5 caractères", //TODO à revoir car possible de créer un compte avec moins de 5 caractères
   })
   username: string;
 
