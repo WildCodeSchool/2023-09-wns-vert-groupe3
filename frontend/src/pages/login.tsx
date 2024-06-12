@@ -1,11 +1,31 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginPage = () => {
   const { data: session } = useSession();
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const registrationSuccess = localStorage.getItem("registrationSuccess");
+    if (registrationSuccess) {
+      toast.success(
+        <div>
+          Compte créé avec succès!
+          <br />
+          Vous pouvez désormais vous connecter.
+        </div>,
+        {
+          autoClose: 5000,
+        },
+      );
+      localStorage.removeItem("registrationSuccess");
+    }
+  }, []);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -36,18 +56,25 @@ const LoginPage = () => {
   } else {
     return (
       <>
-        <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
-          <a
-            href="#"
-            className="mb-6 flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
-          >
-            <Image src="/wildrent-logo.png" alt="test" width={50} height={50} />
-          </a>
-          <div className="w-full rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800">
+        <div className="flex justify-center">
+          <div className="w-full rounded-lg bg-white shadow md:max-w-lg xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800">
             <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Se connecter à votre compte
-              </h1>
+              <div className="mb-6 flex items-center">
+                <Link
+                  href="./"
+                  className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
+                >
+                  <Image
+                    src="/wildrent-logo.png"
+                    alt="test"
+                    width={50}
+                    height={50}
+                  />
+                </Link>
+                <h1 className="ml-4 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                  Se connecter à votre compte
+                </h1>
+              </div>
               <form className="space-y-4 md:space-y-6" action="#">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
@@ -82,7 +109,7 @@ const LoginPage = () => {
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between">
                   <div className="flex items-start">
                     <div className="flex h-5 items-center">
                       <input
@@ -113,12 +140,12 @@ const LoginPage = () => {
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Vous n&apos;avez pas encore de compte ?{" "}
-                  <a
-                    href="#"
+                  <Link
+                    href="/register"
                     className="text-primary-600 dark:text-primary-500 font-medium hover:underline"
                   >
                     S&apos;enregistrer
-                  </a>
+                  </Link>
                 </p>
                 <div className="before:border-white-300 after:border-white-300 my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t after:mt-0.5 after:flex-1 after:border-t">
                   <p className="mx-4 mb-0 text-center font-semibold dark:text-white">
@@ -173,6 +200,7 @@ const LoginPage = () => {
             </div>
           </div>
         </div>
+        <ToastContainer />
       </>
     );
   }
