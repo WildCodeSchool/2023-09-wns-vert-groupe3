@@ -20,10 +20,10 @@ export default class UserResolver {
     return this.userService.deleteUser(userId);
   }
 
-  @Mutation(() => User)
-  async createUser(@Arg("inputUser") inputUser: InputUser): Promise<User> {
-    return this.userService.createUser(inputUser);
-  }
+//   @Mutation(() => User)
+//   async createUser(@Arg("inputUser") inputUser: InputUser): Promise<User> {
+//     return this.userService.createUser(inputUser);
+//   }
 
   @Mutation(() => String)
   async register(@Arg("newUserData") newUserData: InputUser): Promise<string> {

@@ -1,7 +1,8 @@
 // import { UserContext } from "../components/Layout";
+// import { useLazyQuery } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,7 +12,13 @@ const LoginPage = () => {
 
    // const router = useRouter();
    // const authInfo = useContext(UserContext);
-
+   // const [handleLogin] = useLazyQuery(LOGIN, {
+   //   async onCompleted(data) {
+   //     localStorage.setItem("jwt", data.login);
+   //     authInfo.refetchLogin();
+   //     router.push("/");
+   //   },
+   // });
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {

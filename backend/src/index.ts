@@ -7,6 +7,7 @@ import { authChecker } from "./authChecker";
 import dataSource from "./config/datasource";
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
 import { CategoryResolver, ProductResolver, UserResolver } from "./resolvers";
+// import * as jwt from "jsonwebtoken";
 
 export const redisClient = createClient({
   url: "redis://redis",
@@ -37,6 +38,21 @@ const start = async () => {
 
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
+
+
+   //  context: async ({ req }) => {
+   //    // console.log("headers", req.headers.authorization);
+   //    const token = req.headers.authorization?.split("Bearer ")[1];
+   //    // console.log(token);
+   //    if (token) {
+   //      const payload = jwt.verify(token, "mysupersecretkey");
+   //      console.log("payload", payload);
+   //      return payload;
+   //    }
+   //    return {};
+   //  },
+
+    
   });
 
   console.log(`🚀  Server ready at: ${url}`);
