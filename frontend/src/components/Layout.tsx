@@ -3,11 +3,11 @@ import { ReactNode } from "react";
 import MainHeader from "./headers/MainHeader";
 import { createContext } from "vm";
 
-// export const UserContext = createContext({
-//    isLoggedIn: false,
-//    refetchLogin: () => {},
-//    role: "user"
-// });
+export const UserContext = createContext({
+   isLoggedIn: false,
+   refetchLogin: () => {},
+   role: "user"
+});
 
 export const metadata: Metadata = {
   title: "Wildrent",

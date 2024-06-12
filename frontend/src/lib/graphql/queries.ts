@@ -92,3 +92,10 @@ export const GET_PRODUCTS_BY_CATEGORY_ID = gql`
     }
   }
 `;
+
+
+export const LOGIN = gql`
+query Query($loginUserInputUser2: InputUser!) {
+  loginUser(inputUser: $loginUserInputUser2)
+}
+`

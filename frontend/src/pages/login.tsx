@@ -1,8 +1,9 @@
-// import { UserContext } from "../components/Layout";
-// import { useLazyQuery } from "@apollo/client";
+import { UserContext } from "../components/Layout";
+import { useLazyQuery } from "@apollo/client";
+import { LOGIN } from "lib/graphql/queries";
 import Image from "next/image";
 import Link from "next/link";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { ToastContainer, toast } from "react-toastify";
@@ -19,6 +20,7 @@ const LoginPage = () => {
    //     router.push("/");
    //   },
    // });
+   
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
