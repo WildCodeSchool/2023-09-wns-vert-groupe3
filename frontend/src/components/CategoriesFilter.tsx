@@ -3,7 +3,11 @@ import * as Select from "@radix-ui/react-select";
 import { GET_ALL_CATEGORIES } from "lib/graphql/queries";
 import { useState } from "react";
 
-const CategoriesFilter = () => {
+interface CategoriesFilterProps {
+  setSelectedCategory: (category: string | null) => void;
+}
+
+const CategoriesFilter: React.FC<CategoriesFilterProps> = ({ setSelectedCategory }) => {
   const { loading, error, data } = useQuery(GET_ALL_CATEGORIES);
   const [selectedCategoryName, setSelectedCategoryName] = useState<
     string | undefined
@@ -12,6 +16,7 @@ const CategoriesFilter = () => {
 
   const handleSelectChange = (name: string) => {
     setSelectedCategoryName(name);
+    setSelectedCategory(name);
   };
 
   if (loading)
