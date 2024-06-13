@@ -13,9 +13,10 @@ const ProductsPage = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   const products = data.getAllproducts;
+  const navigation = "./";
   return (
     <main className={styles.productsPage}>
-      <BackNavigation />
+      <BackNavigation navigation={navigation} />
       <CategoriesFilter />
       <div>
         <DisplayProd products={products} />
