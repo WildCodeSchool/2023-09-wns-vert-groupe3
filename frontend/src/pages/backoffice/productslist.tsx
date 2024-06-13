@@ -13,7 +13,7 @@ import { convertToCurrency } from "utils/currency";
 // import { InputsProducts } from 'types/inputsProducts';
 import { isDateRangeOverlap } from "utils/date";
 
-const productslist = () => {
+const Productslist = () => {
   const { dates: userRequestedRentDates } = useUserDatesResearch();
 
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -175,7 +175,7 @@ const productslist = () => {
                       scope="col"
                       className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
                     >
-                      Prix à l'unité
+                      Prix à l&apos;unité
                     </th>
                     <th
                       scope="col"
@@ -311,4 +311,4 @@ const productslist = () => {
   );
 };
 
-export default productslist;
+export default Productslist;
