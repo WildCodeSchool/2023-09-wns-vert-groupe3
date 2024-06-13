@@ -18,7 +18,7 @@ const RegisterPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<inputRegisterUser>();
-  const [createUser, { loading, error: mutationError }] =
+  const [createUser, {data, loading, error: mutationError }] =
     useMutation(CREATE_USER);
 
   const togglePasswordVisibility = () => {

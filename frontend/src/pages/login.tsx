@@ -12,19 +12,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { inputLoginUser } from "types/inputLoginUser";
 
 const LoginPage = () => {
-
-   const router = useRouter();
-   const [errorMessage, setErrorMessage] = useState("");
-
-   // const authInfo = useContext(UserContext);
-   // const [handleLogin] = useLazyQuery(LOGIN, {
-   //   async onCompleted(data) {
-   //     localStorage.setItem("jwt", data.login);
-   //     authInfo.refetchLogin();
-   //     router.push("/");
-   //   },
-   // });
-
    useEffect(() => {
       const registrationSuccess = localStorage.getItem("registrationSuccess");
       if (registrationSuccess) {
@@ -42,36 +29,57 @@ const LoginPage = () => {
       }
    }, []);
 
+   const router = useRouter();
+   const [errorMessage, setErrorMessage] = useState("");
+
    const togglePasswordVisibility = () => {
       setShowPassword(!showPassword);
    };
+   const [showPassword, setShowPassword] = useState(false);
+   const eyeIcon = showPassword ? <HiEyeOff /> : <HiEye />;
 
 
-
+   // const authInfo = useContext(UserContext);
+   // const [handleLogin] = useLazyQuery(LOGIN, {
+   //   async onCompleted(data) {
+   //     localStorage.setItem("jwt", data.login);
+   //     authInfo.refetchLogin();
+   //     router.push("/");
+   //   },
+   // });
 
    const {
       register,
       handleSubmit,
       formState: { errors },
    } = useForm<inputLoginUser>();
-   //  const [loginUser, { loading, error: mutationError }] = useQuery(LOGIN);
 
-   const [showPassword, setShowPassword] = useState(false);
-
+    const [loginUser, {data, loading, error: queryError }] = useLazyQuery(LOGIN, {
+      async onCompleted(data) {
+         console.log("data dans onCompleted : ", data);
+         
+        localStorage.setItem("jwt", data.loginUser);
+      //   authInfo.refetchLogin();
+        router.push("/");
+      },
+    });
+ 
 
    const onSubmit: SubmitHandler<inputLoginUser> = async (data) => {
       try {
-         //   await loginUser({
-         //     variables: {
-         //       newUserData: {
-         //         email: data.email,
-         //         password: data.password,
-         //       },
-         //     },
-         //   });
+           const result = await loginUser({
+             variables: {
+               inputUserLogin: {
+                 email: data.email,
+                 password: data.password,
+               },
+             },
+           });
+         console.log("on submit result : ", result);
+         console.log("on submit result.data.loginUser = token : ", result.data.loginUser);
 
-         localStorage.setItem("jwt", "jwtrandom");
-         router.push("/");
+         // localStorage.setItem("jwt", "jwtrandom");
+         // router.push("/");
       } catch (err) {
          setErrorMessage(
             "Une erreur s'est produite lors de l'authentification de l'utilisateur",
@@ -80,7 +88,6 @@ const LoginPage = () => {
       }
    };
 
-   const eyeIcon = showPassword ? <HiEyeOff /> : <HiEye />;
 
    return (
       <>
