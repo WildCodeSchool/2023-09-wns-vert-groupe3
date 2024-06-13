@@ -1,14 +1,14 @@
 import * as argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
 
-import { InputUser } from "inputs";
+import { InputUserCreate, InputUserLogin } from "inputs";
 import { User, UserRoleType } from "../entities/user.entity";
 
 export class UserService {
-  async createUser(inputUser: InputUser): Promise<User> {
+  async createUser(inputUserCreate : InputUserCreate): Promise<User> {
     try {
       const existingUser = await User.findOne({
-        where: [{ email: inputUser.email }, { username: inputUser.username }],
+        where: [{ email: inputUserCreate.email }, { username: inputUserCreate.username }],
       });
 
       if (existingUser) {
@@ -16,34 +16,35 @@ export class UserService {
       }
 
       const newUser = new User();
-      newUser.email = inputUser.email;
-      newUser.username = inputUser.username;
-      newUser.hashedPassword = await argon2.hash(inputUser.password);
+      newUser.email = inputUserCreate.email;
+      newUser.username = inputUserCreate.username;
+      newUser.hashedPassword = await argon2.hash(inputUserCreate.password);
       newUser.role = "user";
       return await newUser.save();
     } catch (error) {
-      console.error("Error while creating new user:", error);
+      console.error("Error while creating new user :", error);
       throw new Error("Error while creating new user");
     }
   }
 
-  async loginUser(inputUser: InputUser): Promise<string> {
+  async loginUser(inputUserLogin: InputUserLogin): Promise<string> {
     let payload: { email: string; role: UserRoleType };
     try {
-      const user = await User.findOne({ where: { email: inputUser.email } });
+      const user = await User.findOne({ where: { email: inputUserLogin.email } });
       if (!user) {
         throw new Error("User not found");
       }
 
-      if (!(await argon2.verify(user.hashedPassword, inputUser.password))) {
+      if (!(await argon2.verify(user.hashedPassword, inputUserLogin.password))) {
         throw new Error("Invalid password");
       }
 
       payload = { email: user.email, role: user.role };
       const token = jwt.sign(payload, "mysupersecretkey");
+      // console.log("generated token : ", token);
       return token;
     } catch (error) {
-      console.error("Error while login:", error);
+      console.error("Error while login :", error);
       throw new Error("Error while login");
     }
   }
@@ -72,7 +73,7 @@ export class UserService {
       await userToDelete.remove();
       return "User removed";
     } catch (error) {
-      console.error("Error while deleting user:", error);
+      console.error("Error while deleting user :", error);
       throw new Error("Error while deleting user");
     }
   }

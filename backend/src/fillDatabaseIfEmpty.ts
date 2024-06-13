@@ -64,7 +64,7 @@ export async function fillDatabaseIfEmpty() {
       "Ceci est une description du matériel d'escalade à louer ! Il est super cool et vous permettra de grimper en toute sécurité !";
     climbing.picture =
       "https://images.unsplash.com/photo-1630432328419-bee5f50d6390";
-    climbing.price_fixed = 199;
+    climbing.price_fixed = 259;
     climbing.price_daily = 20;
     climbing.quantity = 3;
     await climbing.save();

@@ -1,5 +1,5 @@
 import { User, UserInfo } from "../entities/user.entity";
-import { InputUser } from "../inputs";
+import { InputUserCreate, InputUserLogin } from "../inputs";
 import { UserService } from "../services/user.service";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 
@@ -26,10 +26,10 @@ export default class UserResolver {
 //   }
 
   @Mutation(() => String)
-  async register(@Arg("newUserData") newUserData: InputUser): Promise<string> {
+  async register(@Arg("newUserData") newUserData: InputUserCreate): Promise<string> {
     try {
       await this.userService.createUser(newUserData);
-      return "New user was created with success";
+      return "New user has been created with success";
     } catch (err) {
       console.log("err", err);
       return "Error while creating new user";
@@ -37,8 +37,8 @@ export default class UserResolver {
   }
 
   @Query(() => String)
-  async loginUser(@Arg("inputUser") inputUser: InputUser): Promise<string> {
-    return this.userService.loginUser(inputUser);
+  async loginUser(@Arg("inputUserLogin") inputUserLogin: InputUserLogin): Promise<string> {
+    return this.userService.loginUser(inputUserLogin);
   }
 
   @Query(() => Boolean)
