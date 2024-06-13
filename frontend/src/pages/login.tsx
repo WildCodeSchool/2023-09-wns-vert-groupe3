@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { inputLoginUser } from "types/inputLoginUser";
 
 const LoginPage = () => {
+
+   // Affiche la pop up d'enregistrement avec succès
    useEffect(() => {
       const registrationSuccess = localStorage.getItem("registrationSuccess");
       if (registrationSuccess) {
@@ -39,9 +41,11 @@ const LoginPage = () => {
    // const authInfo = useContext(UserContext);
     const [handleLogin, {data, loading, error: queryError }] = useLazyQuery(LOGIN, {
       async onCompleted(data) {
-         console.log("data dans onCompleted : ", data);
+         console.log("data dans onCompleted = token : ", data);
          
         localStorage.setItem("jwt", data.loginUser);
+      //   toastSuccessLogin()
+      //   localStorage.setItem("LoginSuccess", "true");
       //   authInfo.refetchLogin();
         router.push("/");
       },
