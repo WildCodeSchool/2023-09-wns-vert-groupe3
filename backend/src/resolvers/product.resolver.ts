@@ -1,4 +1,4 @@
-import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Product } from "../entities";
 import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 import ProductService from "../services/product.service";
@@ -13,8 +13,8 @@ export default class ProductResolver {
 
   @Authorized()
   @Query(() => [Product])
-  async getAllproducts() {
-    return await this.productService.list();
+  async getAllproducts(@Ctx() ctx: {email:string}) {
+    return await this.productService.list(ctx);
   }
 
   @Query(() => [Product])
