@@ -11,6 +11,7 @@ export default class ProductResolver {
     this.productService = new ProductService();
   }
 
+  @Authorized()
   @Query(() => [Product])
   async getAllproducts() {
     return await this.productService.list();

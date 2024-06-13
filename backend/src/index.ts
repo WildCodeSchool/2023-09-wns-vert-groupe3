@@ -29,13 +29,16 @@ const start = async () => {
 
   const schema = await buildSchema({
     resolvers: [ProductResolver, CategoryResolver, UserResolver],
-   //  authChecker: ({context}) => {
-   //    if (context.email) {
-   //       return true
-   //    } else {
-   //       return false
-   //    }
-   //  },
+    authChecker: ({context}) => {
+      console.log("contexte email :", context.email);
+      console.log("contexte role :", context.role);
+      
+      if (context.email) {
+         return true
+      } else {
+         return false
+      }
+    },
   });
 
    const server = new ApolloServer({
