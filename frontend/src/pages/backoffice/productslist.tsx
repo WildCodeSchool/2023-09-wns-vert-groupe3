@@ -1,19 +1,18 @@
 import { useMutation, useQuery } from "@apollo/client";
 import DeleteModal from "components/modal/DeleteModal";
-// import DeleteModal from 'components/modal/DeleteModal';
 import LoadingProgress from "components/ui/LoadingProgress";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 import { DELETE_PRODUCT, UPDATE_PRODUCT } from "lib/graphql/mutations";
 import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import getCategoryColor from "utils/categoryColors";
+import { useState } from "react";
 import { convertToCurrency } from "utils/currency";
-// import { InputsProducts } from 'types/inputsProducts';
 import { isDateRangeOverlap } from "utils/date";
 
-const Productslist = () => {
+const ProductsList = () => {
   const { dates: userRequestedRentDates } = useUserDatesResearch();
 
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -51,11 +50,10 @@ const Productslist = () => {
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
 
   const handleDelete = async (productId: string) => {
-    // console.log("Product id : ", productId);
+    if (deleteProductLoading) return <LoadingProgress />;
+    if (deleteProductError) return console.log(deleteProductError.message);
 
-    // console.log("TypeOf productid: ", typeof (productId));
     const productIdNumber = parseFloat(productId);
-    // console.log("TypeOf productid !!!: ", typeof(productIdNumber));
 
     try {
       await deleteProduct({
@@ -68,7 +66,6 @@ const Productslist = () => {
           },
         ],
       });
-      console.log("Product deleted !");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -99,9 +96,7 @@ const Productslist = () => {
   if (loading) return <LoadingProgress />;
   if (error) return <p>Error: {error.message}</p>;
 
-  // console.log('data :', data);
   const articles = data.getAllproducts;
-  console.log(articles);
 
   const isUnavailable = isDateRangeOverlap(
     userRequestedRentDates,
@@ -130,7 +125,6 @@ const Productslist = () => {
 
   const openModalDelete = (article: any) => {
     setSelectedArticle(article);
-    console.log("delete");
     setShowModalDelete(true);
   };
 
@@ -156,7 +150,7 @@ const Productslist = () => {
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-              <table className="min-w-full divide-y divide-neutral-300">
+              <table className="min-w-full  table-fixed divide-y divide-neutral-300">
                 <thead className="bg-neutral-200">
                   <tr>
                     <th
@@ -211,8 +205,14 @@ const Productslist = () => {
                           />
                         ) : (
                           <div className="flex items-center">
-                            <div className="h-16 w-16 flex-shrink-0">
-                              <img className="h-16 w-16 rounded-full" src={article.picture} alt="" />
+                            <div className="flex-shrink-0">
+                              <Image
+                                className="h-16 w-16 rounded-full object-cover"
+                                width={100}
+                                height={100}
+                                src={article.picture}
+                                alt={article.name}
+                              />
                             </div>
                             <div className="ml-4">
                               <div className="font-medium text-hightcontrast">{article.name}</div>
@@ -286,10 +286,10 @@ const Productslist = () => {
                           onClick={() => openModalDelete(article)}
                           className="cursor-pointer"
                         >
-                          <a className="font-semibold text-indigo-600 hover:text-red-600">
+                          <Link className="font-semibold text-indigo-600 hover:text-red-600" href="#">
                             Supprimer
                             <span className="sr-only">, {article.name}</span>
-                          </a>
+                          </Link>
                         </div>
                       </td>
                       {showModalDelete && (
@@ -311,4 +311,4 @@ const Productslist = () => {
   );
 };
 
-export default Productslist;
+export default ProductsList;

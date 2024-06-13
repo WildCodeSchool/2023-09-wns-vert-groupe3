@@ -1,6 +1,6 @@
+import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
 
 import { GET_PRODUCT_BY_ID, ProductType } from "lib/graphql/queries";
 
@@ -90,6 +90,6 @@ const ProductDtsPresSection = () => {
       <ProductDtsPriceSidebar product={product} />
     </section>
   );
-}
+};
 
 export default ProductDtsPresSection;

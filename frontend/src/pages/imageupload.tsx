@@ -1,5 +1,6 @@
-import { useState } from "react";
 import axios from "axios";
+import Image from "next/image";
+import { useState } from "react";
 
 const UploadPage = () => {
   const [file, setFile] = useState<File>();
@@ -38,8 +39,8 @@ const UploadPage = () => {
       {imageURL ? (
         <>
           <br />
-          <img
-            width={"500"}
+          <Image
+            width={500}
             alt="uploadedImg"
             src={"http://localhost:8000" + imageURL}
           />

@@ -21,6 +21,7 @@ const CardProductRent = ({
   price_fixed,
   price_daily,
   category,
+  quantity,
 }: ProductType) => {
   const { dates: userRequestedRentDates } = useUserDatesResearch();
 
@@ -61,8 +62,9 @@ const CardProductRent = ({
           <Image
             fill
             src={picture}
-            alt="Product picture"
-            className="h-full w-full object-cover object-center"
+            alt={"Image de " + name}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+            className="h-auto w-auto object-cover object-center"
           />
         </section>
         <div className="flex grow flex-col gap-10 text-hightcontrast">
@@ -115,7 +117,9 @@ const CardProductRent = ({
                 {convertToCurrency(price_daily).in("EUR").valueWithSymbol} par
                 jours)
               </p>
-              <p className="text-sm opacity-70">+ Item info, item info</p>
+              <p className="text-sm opacity-70">
+                Quantité restante : {quantity}
+              </p>
             </section>
           </div>
         </div>
