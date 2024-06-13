@@ -21,6 +21,7 @@ const ContactSection = () => {
         width={500}
         height={500}
         className="static -ml-24 h-auto w-auto rounded-lg"
+        priority
       />
     </div>
   );
