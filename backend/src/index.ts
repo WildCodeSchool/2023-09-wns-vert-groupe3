@@ -29,13 +29,13 @@ const start = async () => {
 
   const schema = await buildSchema({
     resolvers: [ProductResolver, CategoryResolver, UserResolver],
-    authChecker: ({context}) => {
-      if (context.email) {
-         return true
-      } else {
-         return false
-      }
-    },
+   //  authChecker: ({context}) => {
+   //    if (context.email) {
+   //       return true
+   //    } else {
+   //       return false
+   //    }
+   //  },
   });
 
    const server = new ApolloServer({
@@ -45,14 +45,21 @@ const start = async () => {
       listen: { port: 4000 },
       // A chaque requête exécuté, la fonction de contexte va s'enclencher
       context: async ({ req }) => {
-         console.log("headers in he context :", req.headers.authorization);
+         // console.log("headers in he context :", req.headers.authorization);
+
+         // Récupération du token à partir du header de la requete.
          const token = req.headers.authorization?.split("Bearer ")[1];
          console.log("generated token :", token);
-         
+
+         // Vérification du token avec la clé secrète en allant le lire. Vérifie la cohérence avec la clé secrète défini dans la query loginUser lors de la signature.
          if (token) {
-            const payload = jwt.verify(token, "mysupersecretkey");
-            console.log("payload", payload);
-            return payload;
+            try {
+               const payload = jwt.verify(token, "mysupersecretkey");
+               console.log("payload", payload);
+               return payload;
+            } catch {
+               console.log("invalid secret key")
+            }
          }
          return {};
       },

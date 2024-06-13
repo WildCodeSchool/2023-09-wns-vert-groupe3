@@ -40,6 +40,8 @@ export class UserService {
       }
 
       payload = { email: user.email, role: user.role };
+
+       // Signature du token avec une clé secrète
       const token = jwt.sign(payload, "mysupersecretkey");
       // console.log("generated token : ", token);
       return token;

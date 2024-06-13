@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
 import { Product } from "../entities";
 import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 import ProductService from "../services/product.service";
@@ -33,6 +33,7 @@ export default class ProductResolver {
     return productsByCategoryId;
   }
 
+//   @Authorized("admin")
    @Mutation(() => Product)
    async addProduct(
       @Arg("infos") infos: InputCreateProduct,
