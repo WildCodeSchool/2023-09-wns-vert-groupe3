@@ -1,3 +1,4 @@
+import { toastSuccessRegister } from "components/ui/Toast";
 import { UserContext } from "../components/Layout";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { LOGIN } from "lib/graphql/queries";
@@ -15,16 +16,7 @@ const LoginPage = () => {
    useEffect(() => {
       const registrationSuccess = localStorage.getItem("registrationSuccess");
       if (registrationSuccess) {
-         toast.success(
-            <div>
-               Compte créé avec succès!
-               <br />
-               Vous pouvez désormais vous connecter.
-            </div>,
-            {
-               autoClose: 5000,
-            },
-         );
+         toastSuccessRegister()
          localStorage.removeItem("registrationSuccess");
       }
    }, []);
@@ -38,23 +30,14 @@ const LoginPage = () => {
    const [showPassword, setShowPassword] = useState(false);
    const eyeIcon = showPassword ? <HiEyeOff /> : <HiEye />;
 
-
-   // const authInfo = useContext(UserContext);
-   // const [handleLogin] = useLazyQuery(LOGIN, {
-   //   async onCompleted(data) {
-   //     localStorage.setItem("jwt", data.login);
-   //     authInfo.refetchLogin();
-   //     router.push("/");
-   //   },
-   // });
-
    const {
       register,
       handleSubmit,
       formState: { errors },
    } = useForm<inputLoginUser>();
 
-    const [loginUserrr, {data, loading, error: queryError }] = useLazyQuery(LOGIN, {
+   // const authInfo = useContext(UserContext);
+    const [handleLogin, {data, loading, error: queryError }] = useLazyQuery(LOGIN, {
       async onCompleted(data) {
          console.log("data dans onCompleted : ", data);
          
@@ -67,7 +50,7 @@ const LoginPage = () => {
 
    const onSubmit: SubmitHandler<inputLoginUser> = async (data) => {
       try {
-           const result = await loginUserrr({
+           const result = await handleLogin({
              variables: {
                inputUserLogin: {
                  email: data.email,
