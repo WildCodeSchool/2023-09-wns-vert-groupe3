@@ -35,7 +35,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function App({ Component, pageProps: { ...pageProps } }: AppProps) {
   return (
       <ApolloProvider client={client}>
         <Layout>
