@@ -15,7 +15,10 @@ export default class ProductService {
   }
 
   async list(ctx:any) {
-   console.log("CONTEXTTTTTTTE", ctx);
+   console.log("CONTEXTE :", ctx);
+   console.log("CONTEXTE email :", ctx.email);
+   console.log("CONTEXTE : role", ctx.role);
+   console.log("CONTEXTE : usernama", ctx.username);
    
     return this.db.find({
       relations: {

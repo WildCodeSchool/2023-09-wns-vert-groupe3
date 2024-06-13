@@ -28,7 +28,7 @@ export class UserService {
   }
 
   async loginUser(inputUserLogin: InputUserLogin): Promise<string> {
-    let payload: { email: string; role: UserRoleType };
+    let payload: { email: string; role: UserRoleType, username: string };
     try {
       const user = await User.findOne({ where: { email: inputUserLogin.email } });
       if (!user) {
@@ -39,7 +39,7 @@ export class UserService {
         throw new Error("Invalid password");
       }
 
-      payload = { email: user.email, role: user.role };
+      payload = { email: user.email, role: user.role, username: user.username };
 
        // Signature du token avec une clé secrète
       const token = jwt.sign(payload, "mysupersecretkey");
