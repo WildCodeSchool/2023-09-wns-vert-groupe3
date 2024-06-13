@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
 import { toast } from "react-toastify";
 import Button from "components/Button";
+import { useRouter } from "next/router";
 
 type InputCreateProduct = {
   name: string;
@@ -19,6 +20,10 @@ type InputCreateProduct = {
 };
 
 const ProductsAddPage = () => {
+   const router = useRouter()
+   if(localStorage.getItem("jwt") === null) {
+      router.push ("/login")
+   }
   const { register, handleSubmit, setValue, reset } = useForm<InputCreateProduct>();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>("");
