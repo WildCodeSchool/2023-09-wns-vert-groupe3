@@ -34,7 +34,7 @@ export const DELETE_PRODUCT = gql`
 `;
 
 export const CREATE_USER = gql`
-  mutation Mutation($newUserData: InputUser!) {
-    register(newUserData: $newUserData)
-  }
+   mutation Mutation($newUserData: InputUserCreate!) {
+   register(newUserData: $newUserData)
+   }
 `;

@@ -54,7 +54,7 @@ const LoginPage = () => {
       formState: { errors },
    } = useForm<inputLoginUser>();
 
-    const [loginUser, {data, loading, error: queryError }] = useLazyQuery(LOGIN, {
+    const [loginUserrr, {data, loading, error: queryError }] = useLazyQuery(LOGIN, {
       async onCompleted(data) {
          console.log("data dans onCompleted : ", data);
          
@@ -67,7 +67,7 @@ const LoginPage = () => {
 
    const onSubmit: SubmitHandler<inputLoginUser> = async (data) => {
       try {
-           const result = await loginUser({
+           const result = await loginUserrr({
              variables: {
                inputUserLogin: {
                  email: data.email,
