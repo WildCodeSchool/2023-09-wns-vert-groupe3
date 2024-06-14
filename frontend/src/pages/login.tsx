@@ -48,8 +48,8 @@ const LoginPage = () => {
       //   localStorage.setItem("LoginSuccess", "true");
       //   authInfo.refetchLogin();
 
-      //   router.push("/");
-          router.back()
+        router.push("/");
+         //  router.back()
       },
     });
  

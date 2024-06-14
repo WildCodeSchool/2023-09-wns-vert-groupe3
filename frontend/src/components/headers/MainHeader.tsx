@@ -84,17 +84,21 @@ export default function MainHeader() {
               <span>Tous les articles</span>
             </button>
           </Link>
-          <div
-            className="relative"
-            onMouseEnter={() => setMenuVisible(true)}
-            onMouseLeave={() => setMenuVisible(false)}
-          >
-            <RiListSettingsLine
-              className="cursor-pointer text-white ease-out hover:text-indigo-500"
-              size={32}
-            />
-            {menuVisible && <DropdownMenu />}
-          </div>
+              
+              {localStorage.getItem("jwt") ?
+                 <div
+                    className="relative"
+                    onMouseEnter={() => setMenuVisible(true)}
+                    onMouseLeave={() => setMenuVisible(false)}
+                 >
+                    <RiListSettingsLine
+                       className="cursor-pointer text-white ease-out hover:text-indigo-500"
+                       size={32}
+                    />
+                    {menuVisible && <DropdownMenu />}
+                 </div>
+              : ""}
+
           <Link href="/cart">
             <div className="relative ease-out hover:scale-90 hover:text-indigo-500">
               <FaShoppingBag size={32} className="relative" />
