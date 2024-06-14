@@ -43,7 +43,6 @@ export class UserService {
 
        // Signature du token avec une clé secrète
       const token = jwt.sign(payload, "mysupersecretkey");
-      // console.log("generated token : ", token);
       return token;
     } catch (error) {
       console.error("Error while login :", error);

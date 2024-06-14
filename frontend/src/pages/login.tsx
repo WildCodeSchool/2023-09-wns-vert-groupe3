@@ -41,13 +41,11 @@ const LoginPage = () => {
    // const authInfo = useContext(UserContext);
     const [handleLogin, {data, loading, error: queryError }] = useLazyQuery(LOGIN, {
       async onCompleted(data) {
-         console.log("data dans onCompleted = token : ", data);
-         
         localStorage.setItem("jwt", data.loginUser);
+        
       //   toastSuccessLogin()
       //   localStorage.setItem("LoginSuccess", "true");
       //   authInfo.refetchLogin();
-
         router.push("/");
          //  router.back()
       },
