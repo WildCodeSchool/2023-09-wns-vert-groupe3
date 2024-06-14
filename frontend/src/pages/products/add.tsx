@@ -71,7 +71,7 @@ const ProductsAddPage = () => {
         picture: imageURLs.map((url) => `http://localhost:8000${url}`),
       };
 
-      console.log("Variables envoyées pour la création du produit:", variables);
+      console.log("Données envoyés : ", variables);
 
       await createNewProduct({
         variables: {
@@ -122,7 +122,6 @@ const ProductsAddPage = () => {
               className="text-field"
               {...register("price_fixed")}
               type="number"
-              step="0.01"
             />
           </label>
           <label>
@@ -131,7 +130,6 @@ const ProductsAddPage = () => {
               className="text-field"
               {...register("price_daily")}
               type="number"
-              step="0.01"
             />
           </label>
         </div>

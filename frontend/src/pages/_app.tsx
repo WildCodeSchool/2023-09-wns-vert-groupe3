@@ -4,14 +4,14 @@ import {
   InMemoryCache,
   createHttpLink,
 } from "@apollo/client";
-import dynamic from "next/dynamic";
 import type { AppProps } from "next/app";
-import { SessionProvider } from "next-auth/react";
+import dynamic from "next/dynamic";
+
 import { UserDatesResearchProvider } from "contexts/UserDatesResearchContext";
 
 import Layout from "components/Layout";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "styles/globals.css";
 
@@ -31,16 +31,14 @@ const client = new ApolloClient({
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <SessionProvider session={session}>
-      <ApolloProvider client={client}>
-        <Layout>
-          <UserDatesResearchProvider>
-            <Component {...pageProps} />
-          </UserDatesResearchProvider>
-          <ToastContainer />
-        </Layout>
-      </ApolloProvider>
-    </SessionProvider>
+    <ApolloProvider client={client}>
+      <Layout>
+        <UserDatesResearchProvider>
+          <Component {...pageProps} />
+        </UserDatesResearchProvider>
+        <ToastContainer />
+      </Layout>
+    </ApolloProvider>
   );
 }
 

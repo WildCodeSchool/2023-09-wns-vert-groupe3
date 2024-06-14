@@ -1,19 +1,18 @@
 import { useMutation, useQuery } from "@apollo/client";
 import DeleteModal from "components/modal/DeleteModal";
-// import DeleteModal from 'components/modal/DeleteModal';
 import LoadingProgress from "components/ui/LoadingProgress";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 import { DELETE_PRODUCT } from "lib/graphql/mutations";
 import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import getCategoryColor from "utils/categoryColors";
+import { useState } from "react";
 import { convertToCurrency } from "utils/currency";
-// import { InputsProducts } from 'types/inputsProducts';
 import { isDateRangeOverlap } from "utils/date";
 
-const productslist = () => {
+const ProductsList = () => {
   const { dates: userRequestedRentDates } = useUserDatesResearch();
 
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -47,11 +46,10 @@ const productslist = () => {
   ] = useMutation(DELETE_PRODUCT);
 
   const handleDelete = async (productId: string) => {
-    // console.log("Product id : ", productId);
+    if (deleteProductLoading) return <LoadingProgress />;
+    if (deleteProductError) return console.log(deleteProductError.message);
 
-    // console.log("TypeOf productid: ", typeof (productId));
     const productIdNumber = parseFloat(productId);
-    // console.log("TypeOf productid !!!: ", typeof(productIdNumber));
 
     try {
       await deleteProduct({
@@ -64,7 +62,6 @@ const productslist = () => {
           },
         ],
       });
-      console.log("Product deleted !");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -75,9 +72,7 @@ const productslist = () => {
   if (loading) return <LoadingProgress />;
   if (error) return <p>Error: {error.message}</p>;
 
-  // console.log('data :', data);
   const articles = data.getAllproducts;
-  console.log(articles);
 
   const isUnavailable = isDateRangeOverlap(
     userRequestedRentDates,
@@ -90,7 +85,6 @@ const productslist = () => {
 
   const openModalDelete = (article: any) => {
     setSelectedArticle(article);
-    console.log("delete");
     setShowModalDelete(true);
   };
 
@@ -114,136 +108,138 @@ const productslist = () => {
       </div>
       <div className="mt-8 flex flex-col">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-              <table className="min-w-full divide-y divide-neutral-300">
-                <thead className="bg-neutral-200">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-lg font-semibold text-hightcontrast sm:pl-6"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
-                    >
-                      Catégorie
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
-                    >
-                      Prix à l'unité
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
-                    >
-                      Disponibilité
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
-                    >
-                      Quantité
-                    </th>
-                    <th
-                      scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                    >
-                      <span className="sr-only">Edit</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-neutral-300 bg-neutral-200">
-                  {articles.map((article: ProductType) => (
-                    <tr key={article.id}>
-                      <td className="name-cell whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6">
-                        <div className="flex items-center">
-                          <div className="h-16 w-16 flex-shrink-0">
-                            <img
-                              className=" h-16 w-16 rounded-full"
-                              src={article.picture}
-                              alt=""
-                            />
-                          </div>
-                          <div className="ml-4">
-                            <div className="font-medium text-hightcontrast">
-                              {article.name}
-                            </div>
+          <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+            <table className="min-w-full table-fixed divide-y divide-neutral-300">
+              <thead className="bg-neutral-200">
+                <tr>
+                  <th
+                    scope="col"
+                    className="py-3.5 pl-4 pr-3 text-left text-lg font-semibold text-hightcontrast sm:pl-6"
+                  >
+                    Name
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
+                  >
+                    Catégorie
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
+                  >
+                    Prix à l&apos;unité
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
+                  >
+                    Disponibilité
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
+                  >
+                    Quantité
+                  </th>
+                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                    <span className="sr-only">Edit</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-300 bg-neutral-200">
+                {articles.map((article: ProductType) => (
+                  <tr key={article.id}>
+                    <td className="name-cell whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0">
+                          <Image
+                            className="h-16 w-16 rounded-full object-cover"
+                            width={100}
+                            height={100}
+                            src={article.picture}
+                            alt={article.name}
+                          />
+                        </div>
+                        <div className="ml-4">
+                          <div className="font-medium text-hightcontrast">
+                            {article.name}
                           </div>
                         </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-lg">
-                        <span className="inline-flex rounded-full p-4 px-2 text-lg font-bold leading-5">
-                          {article.category.name && (
-                            <div
-                              className={` w-max rounded px-2 py-1 text-sm ${getCategoryColor(article.category.name)}`}
-                            >
-                              {article.category.name}
-                            </div>
-                          )}
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-lg">
-                        <p>
-                          {
-                            convertToCurrency(article.price_daily).in("EUR")
-                              .valueWithSymbol
-                          }
-                        </p>
-                      </td>
-                      {isUnavailable ? (
-                        <td className="whitespace-nowrap px-3 py-4 text-lg text-red-600">
-                          Indisponible
-                        </td>
-                      ) : (
-                        <td className="whitespace-nowrap px-3 py-4 text-lg">
-                          Disponible
-                        </td>
-                      )}
-                      <td className="whitespace-nowrap px-3 py-4 text-lg">
-                        <p>{article.quantity}</p>
-                      </td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-lg font-medium sm:pr-6">
-                        <div>
-                          <a
-                            href="#"
-                            className="font-semibold text-indigo-600 hover:text-indigo-900"
+                      </div>
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-lg">
+                      <span className="inline-flex rounded-full p-4 px-2 text-lg font-bold leading-5">
+                        {article.category.name && (
+                          <div
+                            className={`w-max rounded px-2 py-1 text-sm ${getCategoryColor(
+                              article.category.name,
+                            )}`}
                           >
-                            Editer
-                            <span className="sr-only">, {article.name}</span>
-                          </a>
-                        </div>
-                        <div
-                          onClick={() => openModalDelete(article)}
-                          className="cursor-pointer"
-                        >
-                          <a className="font-semibold text-indigo-600 hover:text-red-600">
-                            Supprimer
-                            <span className="sr-only">, {article.name}</span>
-                          </a>
-                        </div>
+                            {article.category.name}
+                          </div>
+                        )}
+                      </span>
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-lg">
+                      <p>
+                        {
+                          convertToCurrency(article.price_daily).in("EUR")
+                            .valueWithSymbol
+                        }
+                      </p>
+                    </td>
+                    {isUnavailable ? (
+                      <td className="whitespace-nowrap px-3 py-4 text-lg text-red-600">
+                        Indisponible
                       </td>
-                      {showModalDelete && (
-                        <DeleteModal
-                          setShowModalDelete={setShowModalDelete}
-                          handleDelete={handleDelete}
-                          selectedArticle={selectedArticle}
-                        />
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                    ) : (
+                      <td className="whitespace-nowrap px-3 py-4 text-lg">
+                        Disponible
+                      </td>
+                    )}
+                    <td className="whitespace-nowrap px-3 py-4 text-lg">
+                      <p>{article.quantity}</p>
+                    </td>
+                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-lg font-medium sm:pr-6">
+                      <div>
+                        <Link
+                          href="#"
+                          className="font-semibold text-indigo-600 hover:text-indigo-900"
+                        >
+                          Editer
+                          <span className="sr-only">, {article.name}</span>
+                        </Link>
+                      </div>
+                      <div
+                        onClick={() => openModalDelete(article)}
+                        className="cursor-pointer"
+                      >
+                        <Link
+                          className="font-semibold text-indigo-600 hover:text-red-600"
+                          href="#"
+                        >
+                          Supprimer
+                          <span className="sr-only">, {article.name}</span>
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
+      {showModalDelete && (
+        <DeleteModal
+          setShowModalDelete={setShowModalDelete}
+          handleDelete={handleDelete}
+          selectedArticle={selectedArticle}
+        />
+      )}
     </div>
   );
 };
 
-export default productslist;
+export default ProductsList;

@@ -79,10 +79,8 @@ export default function MainHeader() {
           </div>
         </div>
         <div className={styles.rightLinks}>
-          <Link href="/products">
-            <button className={styles.allArticles}>
-              <span>Tous les articles</span>
-            </button>
+          <Link href="/products" className={styles.allArticles}>
+            <span>Tous les articles</span>
           </Link>
           <div
             className="relative"
@@ -103,7 +101,7 @@ export default function MainHeader() {
               </div>
             </div>
           </Link>
-          <Link href="/profile">
+          <Link href="/login">
             <FaUserCircle
               className="text-white ease-out hover:scale-90 hover:text-indigo-500"
               size={32}
