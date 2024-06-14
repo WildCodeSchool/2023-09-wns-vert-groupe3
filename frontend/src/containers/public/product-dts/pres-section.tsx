@@ -1,6 +1,6 @@
+import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
 
 import { GET_PRODUCT_BY_ID, ProductType } from "lib/graphql/queries";
 
@@ -34,7 +34,7 @@ const ProductDtsPresSection = () => {
               sizes="80vw"
               priority={true}
               alt="product image"
-              src={product.picture}
+              src={product.picture[0]}
               className="object-cover object-center"
             />
           </div>
@@ -43,7 +43,7 @@ const ProductDtsPresSection = () => {
               <Image
                 fill
                 sizes="40vw"
-                src="https://via.placeholder.com/525"
+                src={product.picture[1]}
                 alt="product image"
                 className="object-cover object-center"
               />
@@ -90,6 +90,6 @@ const ProductDtsPresSection = () => {
       <ProductDtsPriceSidebar product={product} />
     </section>
   );
-}
+};
 
 export default ProductDtsPresSection;

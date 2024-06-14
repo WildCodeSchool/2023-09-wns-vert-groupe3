@@ -5,7 +5,7 @@ export type ProductType = {
   name: string;
   description_short: string;
   description_long: string;
-  picture: string;
+  picture: string[];
   price_fixed: number;
   price_daily: number;
   discount?: number;
@@ -63,12 +63,12 @@ export const GET_PRODUCT_BY_ID = gql`
 `;
 
 export const GET_ALL_CATEGORIES = gql`
- query GetAllCategories {
-  getAllCategories {
-    id
-    name
+  query GetAllCategories {
+    getAllCategories {
+      id
+      name
+    }
   }
-}
 `;
 
 export const GET_PRODUCTS_BY_CATEGORY_ID = gql`

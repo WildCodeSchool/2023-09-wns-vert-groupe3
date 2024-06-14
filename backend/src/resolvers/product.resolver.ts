@@ -44,9 +44,8 @@ export default class ProductResolver {
     @Arg("id") id: number,
     @Arg("infos") data: InputUpdateProduct
   ) {
-    const productToUpdate = await this.productService.update(id, { ...data });
-    console.log(productToUpdate);
-    return productToUpdate;
+    const updatedProduct = await this.productService.update(id, data);
+    return updatedProduct;
   }
 
   @Mutation(() => Boolean)

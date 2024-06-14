@@ -11,8 +11,8 @@ export class InputUpdateProduct {
   @Field(() => String, { nullable: true })
   description_long: string;
 
-  @Field(() => String, { nullable: true })
-  picture: string;
+  @Field(() => [String], { nullable: true })
+  picture: string[];
 
   @Field(() => Number, { nullable: true })
   price_fixed: number;
