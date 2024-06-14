@@ -82,10 +82,8 @@ export default function MainHeader() {
           </div>
         </div>
         <div className={styles.rightLinks}>
-          <Link href="/products">
-            <button className={styles.allArticles}>
-              <span>Tous les articles</span>
-            </button>
+          <Link href="/products" className={styles.allArticles}>
+            <span>Tous les articles</span>
           </Link>
               
               {localStorage.getItem("jwt") ?

@@ -22,9 +22,11 @@ const FilterPage = () => {
   const productsByCategory = data.getProductsByCategoryId;
   const categoryName = productsByCategory[0]?.category?.name;
 
+  const navigation = "../";
+
   return (
     <main className={styles.productsPage}>
-      <BackNavigation />
+      <BackNavigation navigation={navigation} />
       <div>
         <h3 className="mb-16 mt-0.5 text-2xl">
           Voici les produits correspondants pour la catégorie :

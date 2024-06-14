@@ -7,13 +7,11 @@ const CartPage = () => {
    if(localStorage.getItem("jwt") === null) {
       router.push ("/login")
    }
-   return (
-      <main className={styles.cartPage}>
-         <div>
-            cart page !
-         </div>
-      </main>
-   )
-}
+  return (
+    <main className={styles.cartPage}>
+      <div>cart page !</div>
+    </main>
+  );
+};
 
-export default CartPage
+export default CartPage;

@@ -1,5 +1,5 @@
-import React from "react";
 import * as RadixTabs from "@radix-ui/react-tabs";
+import React from "react";
 
 interface TabsProps {
   defaultValue?: string;

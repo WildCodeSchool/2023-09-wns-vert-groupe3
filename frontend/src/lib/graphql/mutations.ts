@@ -38,3 +38,13 @@ export const CREATE_USER = gql`
    register(newUserData: $newUserData)
    }
 `;
+
+export const UPDATE_PRODUCT = gql`
+  mutation Mutation($infos: InputUpdateProduct!, $updateProductId: Float!) {
+    updateProduct(infos: $infos, id: $updateProductId) {
+      name
+      price_daily
+      quantity
+    }
+  }
+`;

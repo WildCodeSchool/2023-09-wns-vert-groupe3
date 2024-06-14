@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
-import { ReactNode } from "react";
+import { ReactNode, createContext } from "react";
 import MainHeader from "./headers/MainHeader";
-import { createContext } from "vm";
 
 export const UserContext = createContext({
    isLoggedIn: false,
    refetchLogin: () => {},
    role: "user"
 });
+
+// const montserrat = Montserrat({
+//   subsets: ["latin"],
+//   variable: "--font_montserrat",
+//   display: "swap",
+//   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+// });
 
 export const metadata: Metadata = {
   title: "Wildrent",

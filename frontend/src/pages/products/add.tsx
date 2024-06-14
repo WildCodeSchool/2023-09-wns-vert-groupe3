@@ -39,7 +39,7 @@ const ProductsAddPage = () => {
   ] = useMutation(ADD_PRODUCT);
 
   const onSubmit = async (formData: InputCreateProduct) => {
-    console.log("SUBMITTING", formData)
+    console.log("SUBMITTING", formData);
 
     try {
       formData.category = selectedCategoryId;
@@ -51,7 +51,7 @@ const ProductsAddPage = () => {
         price_fixed: parseFloat(formData.price_fixed),
         quantity: parseInt(formData.quantity, 10),
         category: parseInt(formData.category, 10),
-      }
+      };
 
       await createNewProduct({
         variables: {
@@ -74,7 +74,11 @@ const ProductsAddPage = () => {
       <h3 className="mb-6 flex items-center justify-center text-3xl">
         Ajouter un nouveau produit
       </h3>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)} method="POST">
+      <form
+        className={styles.form}
+        onSubmit={handleSubmit(onSubmit)}
+        method="POST"
+      >
         <label>
           Nom de l&apos;annonce: <br />
           <input className="text-field" {...register("name")} />
@@ -93,11 +97,19 @@ const ProductsAddPage = () => {
         <div className="flex gap-4">
           <label>
             Prix fix: <br />
-            <input className="text-field" {...register("price_fixed")} type="number" />
+            <input
+              className="text-field"
+              {...register("price_fixed")}
+              type="number"
+            />
           </label>
           <label>
             Prix journalier: <br />
-            <input className="text-field" {...register("price_daily")} type="number" />
+            <input
+              className="text-field"
+              {...register("price_daily")}
+              type="number"
+            />
           </label>
         </div>
         <br />
@@ -126,9 +138,7 @@ const ProductsAddPage = () => {
         </label>
         <br />
 
-        <Button type="submit">
-          Créer
-        </Button>
+        <Button type="submit">Créer</Button>
       </form>
     </main>
   );
