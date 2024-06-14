@@ -7,6 +7,7 @@ import { useEffect } from "react";
 
 export default function Home() {
 
+   // TODO: Toast à implementer lors de la connexion réussie et de la redirection vers la page d'accueil
    // useEffect(() => {
    //    const LoginSuccess = localStorage.getItem("LoginSuccess");
    //    if (LoginSuccess) {

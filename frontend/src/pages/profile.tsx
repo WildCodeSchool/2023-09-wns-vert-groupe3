@@ -14,9 +14,6 @@ const ProfilePage = () => {
    return (
       <main className={styles.profilePage}>
          <p>Bienvenue sur votre profil </p>
-         {/* <button className="underline">
-            Déconnexion
-         </button> */}
       </main>
    );
 }
