@@ -63,12 +63,12 @@ export const GET_PRODUCT_BY_ID = gql`
 `;
 
 export const GET_ALL_CATEGORIES = gql`
- query GetAllCategories {
-  getAllCategories {
-    id
-    name
+  query GetAllCategories {
+    getAllCategories {
+      id
+      name
+    }
   }
-}
 `;
 
 export const GET_PRODUCTS_BY_CATEGORY_ID = gql`
@@ -93,9 +93,18 @@ export const GET_PRODUCTS_BY_CATEGORY_ID = gql`
   }
 `;
 
-
 export const LOGIN = gql`
-query Query($inputUserLogin: InputUserLogin!) {
-  loginUser(inputUserLogin: $inputUserLogin)
-}
-`
+  query Query($inputUserLogin: InputUserLogin!) {
+    loginUser(inputUserLogin: $inputUserLogin)
+  }
+`;
+
+export const GET_USER_PROFILE = gql`
+  query GetUserProfile {
+    getUserProfile {
+      id
+      email
+      username
+    }
+  }
+`;
