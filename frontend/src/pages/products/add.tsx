@@ -5,13 +5,14 @@ import CategorySelect from "components/CategorySelect";
 import ImageUploader from "components/ImageUploader";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { ADD_PRODUCT } from "lib/graphql/mutations";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { InputCreateProduct } from "types/inputCreateProduct";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
 
 const ProductsAddPage = () => {
+  const [files, setFiles] = useState<File[]>([]);
   const [imageURLs, setImageURLs] = useState<string[]>([]);
   const { register, handleSubmit, reset, setValue } =
     useForm<InputCreateProduct>();
@@ -28,24 +29,26 @@ const ProductsAddPage = () => {
   if (loading) return <LoadingProgress />;
   if (error) return <p>Error: {error.message}</p>;
 
-  const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
+  const handleImageChange = (files: File[]) => {
+    setFiles(files);
+  };
+
+  const uploadImages = async () => {
+    const urlPost = "http://localhost:8000/upload";
+    const uploadPromises = files.map((singleFile) => {
       const formData = new FormData();
-      formData.append("file", file);
-      try {
-        const response = await axios.post(
-          "http://localhost:8000/upload",
-          formData,
-        );
-        const newImageUrl = `http://localhost:8000${response.data.filePath}`;
-        setImageURLs((prevUrls) => [...prevUrls, newImageUrl]);
-      } catch (err) {
-        console.error("Error uploading image:", err);
-        toast.error("Erreur lors du téléchargement de l'image");
-      }
+      formData.append("file", singleFile, singleFile.name);
+      return axios.post(urlPost, formData);
+    });
+
+    try {
+      const responses = await Promise.all(uploadPromises);
+      console.log("Server responses:", responses);
+      const filenames = responses.map((res) => res.data.filename);
+      return filenames;
+    } catch (err) {
+      console.error("Error uploading images:", err);
+      throw err;
     }
   };
 
@@ -56,7 +59,11 @@ const ProductsAddPage = () => {
       formData.price_daily = parseFloat(formData.price_daily.toString());
       formData.price_fixed = parseFloat(formData.price_fixed.toString());
       formData.quantity = parseInt(formData.quantity.toString(), 10);
-      formData.category = parseInt(selectedCategoryId, 10);
+
+      const uploadedImages = await uploadImages();
+      const imageUrls = uploadedImages.map(
+        (filename) => `http://localhost:8000${filename}`,
+      );
 
       const variables = {
         ...formData,
@@ -68,7 +75,7 @@ const ProductsAddPage = () => {
           : 0,
         quantity: formData.quantity,
         category: formData.category,
-        picture: imageURLs.map((url) => `http://localhost:8000${url}`),
+        picture: imageUrls,
       };
 
       console.log("Données envoyés : ", variables);
@@ -154,16 +161,8 @@ const ProductsAddPage = () => {
         <br />
         <label>
           Ajouter des images: <br />
-          <ImageUploader
-            setImageURL={setImageURLs}
-            onChange={handleImageChange}
-          />
+          <ImageUploader setFiles={handleImageChange} />
         </label>
-        {imageURLs.map((url, index) => (
-          <div key={index}>
-            {/* <img src={url} alt={`uploadedImg-${index}`} /> */}
-          </div>
-        ))}
         <br />
         <Button type="submit">Créer</Button>
       </form>

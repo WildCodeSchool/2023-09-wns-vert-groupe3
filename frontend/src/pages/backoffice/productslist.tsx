@@ -5,7 +5,6 @@ import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 import { DELETE_PRODUCT } from "lib/graphql/mutations";
 import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -153,11 +152,11 @@ const ProductsList = () => {
                     <td className="name-cell whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6">
                       <div className="flex items-center">
                         <div className="flex-shrink-0">
-                          <Image
+                          <img
                             className="h-16 w-16 rounded-full object-cover"
                             width={100}
                             height={100}
-                            src={article.picture}
+                            src={article.picture[0]}
                             alt={article.name}
                           />
                         </div>

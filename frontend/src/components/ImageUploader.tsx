@@ -1,22 +1,13 @@
-import axios, { AxiosResponse } from "axios";
 import React, { useState } from "react";
-import { IoIosCheckboxOutline } from "react-icons/io";
 
 type ImageUploaderProps = {
-  setImageURL: (urls: string[]) => void;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  setFiles: (files: File[]) => void;
 };
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({
-  setImageURL,
-  onChange,
-}) => {
-  const [files, setFiles] = useState<File[]>([]);
+const ImageUploader: React.FC<ImageUploaderProps> = ({ setFiles }) => {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
-  const [localImageURL, setLocalImageURL] = useState<string[]>([]);
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e);
     const selectedFiles = e.target.files;
     if (!selectedFiles) return;
 
@@ -32,41 +23,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       URL.createObjectURL(file),
     );
     setPreviewImages(selectedFilesPreview);
-  };
-
-  const handleValidateButtonClick = async (
-    e: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    e.preventDefault();
-
-    if (files.length === 0) {
-      alert("Sélectionnez au moins un fichier à télécharger.");
-      return;
-    }
-
-    if (files.length > 9) {
-      alert("Vous ne pouvez pas télécharger plus de 9 fichiers à la fois.");
-      return;
-    }
-
-    const urlPost = "http://localhost:8000/upload";
-    try {
-      const uploadPromises = files.map((singleFile) => {
-        const formData = new FormData();
-        formData.append("file", singleFile, singleFile.name);
-        return axios.post(urlPost, formData);
-      });
-
-      const responses = await Promise.all(uploadPromises);
-      const filenames = responses.map(
-        (res: AxiosResponse) => res.data.filename,
-      );
-
-      setLocalImageURL(filenames);
-      setImageURL(filenames);
-    } catch (err) {
-      console.log("error", err);
-    }
   };
 
   return (
@@ -86,15 +42,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         >
           <span>Choisir des images</span>
         </label>
-
-        <button
-          type="button"
-          onClick={handleValidateButtonClick}
-          className="flex grow items-center gap-1 rounded-sm bg-green-600 px-3 py-2 text-center text-white"
-        >
-          <IoIosCheckboxOutline size={20} />
-          <span>Valider la sélection</span>
-        </button>
       </form>
       <div className="mt-4 grid grid-cols-3 gap-4">
         {previewImages.map((previewUrl, index) => (
