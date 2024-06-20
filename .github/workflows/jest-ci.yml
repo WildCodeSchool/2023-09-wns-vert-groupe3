@@ -28,11 +28,11 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: "{{defaultContext}}:frontend"
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2:latest
+          context: "{{defaultContext}}:wildrent/frontend"
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/wildrent-front:latest
       - name: 🗂 Build and push backend
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: "{{defaultContext}}:backend"
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/github_action_quest_2:latest
+          context: "{{defaultContext}}:wildrent/backend"
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/wildrent-back:latest
