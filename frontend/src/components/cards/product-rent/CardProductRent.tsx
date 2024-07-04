@@ -8,6 +8,7 @@ import { ProductType } from "lib/graphql/queries";
 import { convertToCurrency } from "utils/currency";
 import { isDateRangeOverlap } from "utils/date";
 
+import { useCart } from "contexts/CartContext";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 
 import Image from "next/image";
@@ -24,6 +25,7 @@ const CardProductRent = ({
   quantity,
 }: ProductType) => {
   const { dates: userRequestedRentDates } = useUserDatesResearch();
+  const { addToCart } = useCart(); // Utilisez le contexte de panier
 
   const isUnavailable = isDateRangeOverlap(
     userRequestedRentDates,
@@ -53,6 +55,10 @@ const CardProductRent = ({
   };
   const handleMouseLeave = () => {
     setIsHovered(false);
+  };
+
+  const handleAddToCart = () => {
+    addToCart({ id, name, price: price_fixed, quantity: 1 });
   };
 
   return (
@@ -125,6 +131,12 @@ const CardProductRent = ({
         </div>
       </Link>
       <div className="inline-flex gap-3.5">
+        <button
+          onClick={handleAddToCart}
+          className="mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+        >
+          Ajouter au panier
+        </button>
         <CardProductRentAvailabilityViewer />
       </div>
     </article>

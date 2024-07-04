@@ -6,7 +6,16 @@ import { buildSchema } from "type-graphql";
 import { authChecker } from "./authChecker";
 import dataSource from "./config/datasource";
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
-import { CategoryResolver, ProductResolver, UserResolver } from "./resolvers";
+import {
+  CategoryResolver,
+  CheckoutResolver,
+  ProductResolver,
+  UserResolver,
+} from "./resolvers";
+
+export const stripe = require("stripe")(
+  "sk_test_51PYtGs2LoS9LYHUfkC2a7A35Xn1TocRl3VQVkQt6piwZk9PgzVXnmqsvCLxmzVbVWmBJNN3dW2ZqAskRz4kO4q1L00vfty1flt"
+);
 
 export const redisClient = createClient({
   url: "redis://redis",
@@ -27,7 +36,12 @@ const start = async () => {
   await fillDatabaseIfEmpty();
 
   const schema = await buildSchema({
-    resolvers: [ProductResolver, CategoryResolver, UserResolver],
+    resolvers: [
+      ProductResolver,
+      CategoryResolver,
+      UserResolver,
+      CheckoutResolver,
+    ],
     authChecker: authChecker,
   });
 

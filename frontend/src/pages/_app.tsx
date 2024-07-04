@@ -13,6 +13,8 @@ import Layout from "components/Layout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { CartProvider } from "contexts/CartContext";
+
 import "styles/globals.css";
 
 const httpLink = createHttpLink({
@@ -33,9 +35,11 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <ApolloProvider client={client}>
       <Layout>
-        <UserDatesResearchProvider>
-          <Component {...pageProps} />
-        </UserDatesResearchProvider>
+        <CartProvider>
+          <UserDatesResearchProvider>
+            <Component {...pageProps} />
+          </UserDatesResearchProvider>
+        </CartProvider>
         <ToastContainer />
       </Layout>
     </ApolloProvider>

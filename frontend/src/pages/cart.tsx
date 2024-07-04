@@ -1,11 +1,11 @@
-import styles from "../styles/pages/CartPage.module.scss";
+import CartPage from "components/Cart/CartPage";
 
-const CartPage = () => {
+const Cart = () => {
   return (
-    <main className={styles.cartPage}>
-      <div>cart page !</div>
+    <main>
+      <CartPage />
     </main>
   );
 };
 
-export default CartPage;
+export default Cart;
