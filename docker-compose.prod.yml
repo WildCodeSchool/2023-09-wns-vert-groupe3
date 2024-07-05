@@ -1,6 +1,6 @@
 services:
   backend:
-    image: wildrent9/staging-server
+    image: wildrent9/wildrend-back
     ports:
       - 4000:4000
     volumes:
@@ -15,7 +15,7 @@ services:
         condition: service_healthy
 
   frontend:
-    image: wildrent9/staging-client
+    image: wildrent9/wildrend-front
     restart: always
     environment:
       - NODE_ENV=development
