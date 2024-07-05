@@ -19,7 +19,7 @@ jobs:
 #         run: cd frontend && pnpm run test
   docker:
     needs: test-e2e
-    if: github.ref == 'refs/heads/staging'
+    if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
       - name: 🔧 Set up QEMU
