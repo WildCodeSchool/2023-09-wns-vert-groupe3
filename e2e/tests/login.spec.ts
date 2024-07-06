@@ -4,7 +4,10 @@ test.describe('Login Page', () => {
 
    test('should load login page and display all elements', async ({ page }) => {
       // Navigate to the login page
-      await page.goto('http://frontend:3000/login');
+      // await page.goto('http://frontend:3000/login');
+
+      await page.goto('http://localhost:3000/login');
+
 
       // Wait for the page to load
       await page.waitForLoadState('networkidle');
