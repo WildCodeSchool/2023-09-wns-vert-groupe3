@@ -16,12 +16,12 @@ services:
 
   frontend:
     image: wildrent9/wildrent-front
-    restart: always
+    # restart: always
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
-    env_file: .env.dev
+    # env_file: .env.dev
     # ports:
     #   - 3000:3000
     volumes:
