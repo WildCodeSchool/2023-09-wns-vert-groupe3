@@ -44,13 +44,19 @@ services:
       retries: 20
     volumes:
       - pgdata_new1:/var/lib/postgresql/data
+
   imagesupload:
-    build: ./imagesupload
+    build: 
+      context: ./imagesupload
+      dockerfile: Dockerfile.prod
+    # build: ./imagesupload
+    # image: wildrent9/wildrent-imagesupload
     volumes:
-      - ./imagesupload/src:/app/src
+      # - ./imagesupload/src:/app/src
       - ./imagesupload/uploads:/app/uploads
-    # ports:
-    #   - 8000:8000
+    ports:
+      - 8000:8000
+
   gateway:
     image: nginx
     depends_on:
@@ -66,6 +72,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
       # - pgdata_new1:/pgdata_new1
       - ./logs:/var/log/nginx
+
   adminer:
     image: adminer
     # ports:
