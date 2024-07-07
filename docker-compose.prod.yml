@@ -66,8 +66,8 @@ services:
       - ./logs:/var/log/nginx
   adminer:
     image: adminer
-    ports:
-      - 8080:8080
+    # ports:
+    #   - 8080:8080
 
   redis:
     image: redis
