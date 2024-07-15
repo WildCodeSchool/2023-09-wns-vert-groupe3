@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
-import { ReactNode } from "react";
-
+import { ReactNode, createContext } from "react";
 import MainHeader from "./headers/MainHeader";
+
+export const UserContext = createContext({
+   isLoggedIn: false,
+   refetchLogin: () => {},
+   role: "user"
+});
 
 // const montserrat = Montserrat({
 //   subsets: ["latin"],

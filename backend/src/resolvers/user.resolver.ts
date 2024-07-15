@@ -1,8 +1,7 @@
-import { User, UserInfo } from "../entities/user.entity";
-import { InputUser } from "../inputs";
-import { UserService } from "../services/user.service";
-
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { User, UserInfo } from "../entities/user.entity";
+import { InputUserCreate, InputUserLogin } from "../inputs";
+import { UserService } from "../services/user.service";
 
 @Resolver()
 export default class UserResolver {
@@ -20,25 +19,29 @@ export default class UserResolver {
     return this.userService.deleteUser(userId);
   }
 
-  @Mutation(() => User)
-  async createUser(@Arg("inputUser") inputUser: InputUser): Promise<User> {
-    return this.userService.createUser(inputUser);
-  }
+  //   @Mutation(() => User)
+  //   async createUser(@Arg("inputUser") inputUser: InputUserCreate): Promise<User> {
+  //     return this.userService.createUser(inputUser);
+  //   }
 
   @Mutation(() => String)
-  async register(@Arg("newUserData") newUserData: InputUser): Promise<string> {
+  async register(
+    @Arg("newUserData") newUserData: InputUserCreate
+  ): Promise<string> {
     try {
       await this.userService.createUser(newUserData);
-      return "New user was created with success";
+      return "New user has been created with success";
     } catch (err) {
       console.log("err", err);
       return "Error while creating new user";
     }
   }
 
-  @Mutation(() => String)
-  async loginUser(@Arg("inputUser") inputUser: InputUser): Promise<string> {
-    return this.userService.loginUser(inputUser);
+  @Query(() => String)
+  async loginUser(
+    @Arg("inputUserLogin") inputUserLogin: InputUserLogin
+  ): Promise<string> {
+    return this.userService.loginUser(inputUserLogin);
   }
 
   @Query(() => Boolean)
@@ -53,6 +56,14 @@ export default class UserResolver {
   @Query(() => String)
   async adminQuery() {
     return "Your are admin";
+  }
+
+  @Query(() => User, { nullable: true })
+  async getUserProfile(@Ctx() ctx: { email: string }): Promise<User | null> {
+    if (!ctx.email) {
+      throw new Error("User not authenticated");
+    }
+    return this.userService.getUserByEmail(ctx.email);
   }
 
   @Query(() => UserInfo)

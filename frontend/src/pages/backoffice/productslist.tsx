@@ -3,7 +3,7 @@ import DeleteModal from "components/modal/DeleteModal";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
-import { DELETE_PRODUCT } from "lib/graphql/mutations";
+import { DELETE_PRODUCT, UPDATE_PRODUCT } from "lib/graphql/mutations";
 import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -16,6 +16,12 @@ const ProductsList = () => {
 
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
+  const [editingArticle, setEditingArticle] = useState<any>(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    price_daily: 0,
+    quantity: 0,
+  });
   const router = useRouter();
 
   const getCategoryColor = (categoryName: string) => {
@@ -44,6 +50,8 @@ const ProductsList = () => {
     { loading: deleteProductLoading, error: deleteProductError },
   ] = useMutation(DELETE_PRODUCT);
 
+  const [updateProduct] = useMutation(UPDATE_PRODUCT);
+
   const handleDelete = async (productId: string) => {
     if (deleteProductLoading) return <LoadingProgress />;
     if (deleteProductError) return console.log(deleteProductError.message);
@@ -66,6 +74,26 @@ const ProductsList = () => {
     }
   };
 
+  const handleUpdate = async () => {
+    try {
+      await updateProduct({
+        variables: {
+          infos: {
+            name: editForm.name,
+            price_daily: parseFloat(editForm.price_daily.toString()),
+            quantity: parseInt(editForm.quantity.toString()),
+          },
+          updateProductId: parseInt(editingArticle.id),
+        },
+        refetchQueries: [{ query: GET_PRODUCTS }],
+      });
+      console.log("Product updated!");
+      setEditingArticle(null);
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
+
   const { data, loading, error } = useQuery(GET_PRODUCTS);
 
   if (loading) return <LoadingProgress />;
@@ -77,6 +105,22 @@ const ProductsList = () => {
     userRequestedRentDates,
     PRODUCT_UNAVAILABLE_DATES,
   );
+
+  const handleEdit = (article: any) => {
+    setEditingArticle(article);
+    setEditForm({
+      name: article.name,
+      price_daily: article.price_daily,
+      quantity: article.quantity,
+    });
+  };
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditForm({
+      ...editForm,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleButtonClick = () => {
     router.push(`/products/add`);
@@ -107,136 +151,175 @@ const ProductsList = () => {
       </div>
       <div className="mt-8 flex flex-col">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-            <table className="min-w-full table-fixed divide-y divide-neutral-300">
-              <thead className="bg-neutral-200">
-                <tr>
-                  <th
-                    scope="col"
-                    className="py-3.5 pl-4 pr-3 text-left text-lg font-semibold text-hightcontrast sm:pl-6"
-                  >
-                    Name
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
-                  >
-                    Catégorie
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
-                  >
-                    Prix à l&apos;unité
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
-                  >
-                    Disponibilité
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
-                  >
-                    Quantité
-                  </th>
-                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                    <span className="sr-only">Edit</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-300 bg-neutral-200">
-                {articles.map((article: ProductType) => (
-                  <tr key={article.id}>
-                    <td className="name-cell whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <img
-                            className="h-16 w-16 rounded-full object-cover"
-                            width={100}
-                            height={100}
-                            src={article.picture[0]}
-                            alt={article.name}
+          <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+              <table className="min-w-full  table-fixed divide-y divide-neutral-300">
+                <thead className="bg-neutral-200">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="py-3.5 pl-4 pr-3 text-left text-lg font-semibold text-hightcontrast sm:pl-6"
+                    >
+                      Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
+                    >
+                      Catégorie
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
+                    >
+                      Prix à l&apos;unité
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
+                    >
+                      Disponibilité
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-lg font-semibold text-hightcontrast"
+                    >
+                      Quantité
+                    </th>
+                    <th
+                      scope="col"
+                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                    >
+                      <span className="sr-only">Edit</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-300 bg-neutral-200">
+                  {articles.map((article: ProductType) => (
+                    <tr key={article.id}>
+                      <td className="name-cell whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6">
+                        {editingArticle?.id === article.id ? (
+                          <input
+                            type="text"
+                            name="name"
+                            value={editForm.name}
+                            onChange={handleFormChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           />
-                        </div>
-                        <div className="ml-4">
-                          <div className="font-medium text-hightcontrast">
-                            {article.name}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-lg">
-                      <span className="inline-flex rounded-full p-4 px-2 text-lg font-bold leading-5">
-                        {article.category.name && (
-                          <div
-                            className={`w-max rounded px-2 py-1 text-sm ${getCategoryColor(
-                              article.category.name,
-                            )}`}
-                          >
-                            {article.category.name}
+                        ) : (
+                          <div className="flex items-center">
+                            <div className="flex-shrink-0">
+                              <img
+                                className="h-16 w-16 rounded-full object-cover"
+                                width={100}
+                                height={100}
+                                src={article.picture[0]}
+                                alt={article.name}
+                              />
+                            </div>
+                            <div className="ml-4">
+                              <div className="font-medium text-hightcontrast">
+                                {article.name}
+                              </div>
+                            </div>
                           </div>
                         )}
-                      </span>
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-lg">
-                      <p>
-                        {
-                          convertToCurrency(article.price_daily).in("EUR")
-                            .valueWithSymbol
-                        }
-                      </p>
-                    </td>
-                    {isUnavailable ? (
-                      <td className="whitespace-nowrap px-3 py-4 text-lg text-red-600">
-                        Indisponible
                       </td>
-                    ) : (
                       <td className="whitespace-nowrap px-3 py-4 text-lg">
-                        Disponible
+                        <span className="inline-flex rounded-full p-4 px-2 text-lg font-bold leading-5">
+                          {article.category.name && (
+                            <div
+                              className={` w-max rounded px-2 py-1 text-sm ${getCategoryColor(article.category.name)}`}
+                            >
+                              {article.category.name}
+                            </div>
+                          )}
+                        </span>
                       </td>
-                    )}
-                    <td className="whitespace-nowrap px-3 py-4 text-lg">
-                      <p>{article.quantity}</p>
-                    </td>
-                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-lg font-medium sm:pr-6">
-                      <div>
-                        <Link
-                          href="#"
-                          className="font-semibold text-indigo-600 hover:text-indigo-900"
+                      <td className="whitespace-nowrap px-3 py-4 text-lg">
+                        {editingArticle?.id === article.id ? (
+                          <input
+                            type="number"
+                            name="price_daily"
+                            value={editForm.price_daily}
+                            onChange={handleFormChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                          />
+                        ) : (
+                          <p>
+                            {
+                              convertToCurrency(article.price_daily).in("EUR")
+                                .valueWithSymbol
+                            }
+                          </p>
+                        )}
+                      </td>
+                      {isUnavailable ? (
+                        <td className="whitespace-nowrap px-3 py-4 text-lg text-red-600">
+                          Indisponible
+                        </td>
+                      ) : (
+                        <td className="whitespace-nowrap px-3 py-4 text-lg">
+                          Disponible
+                        </td>
+                      )}
+                      <td className="whitespace-nowrap px-3 py-4 text-lg">
+                        {editingArticle?.id === article.id ? (
+                          <input
+                            type="number"
+                            name="quantity"
+                            value={editForm.quantity}
+                            onChange={handleFormChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                          />
+                        ) : (
+                          <p>{article.quantity}</p>
+                        )}
+                      </td>
+                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-lg font-medium sm:pr-6">
+                        {editingArticle?.id === article.id ? (
+                          <button
+                            onClick={handleUpdate}
+                            className="font-semibold text-indigo-600 hover:text-indigo-900"
+                          >
+                            Enregistrer
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleEdit(article)}
+                            className="font-semibold text-indigo-600 hover:text-indigo-900"
+                          >
+                            Editer
+                          </button>
+                        )}
+                        <div
+                          onClick={() => openModalDelete(article)}
+                          className="cursor-pointer"
                         >
-                          Editer
-                          <span className="sr-only">, {article.name}</span>
-                        </Link>
-                      </div>
-                      <div
-                        onClick={() => openModalDelete(article)}
-                        className="cursor-pointer"
-                      >
-                        <Link
-                          className="font-semibold text-indigo-600 hover:text-red-600"
-                          href="#"
-                        >
-                          Supprimer
-                          <span className="sr-only">, {article.name}</span>
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                          <Link
+                            className="font-semibold text-indigo-600 hover:text-red-600"
+                            href="#"
+                          >
+                            Supprimer
+                            <span className="sr-only">, {article.name}</span>
+                          </Link>
+                        </div>
+                      </td>
+                      {showModalDelete && (
+                        <DeleteModal
+                          setShowModalDelete={setShowModalDelete}
+                          handleDelete={handleDelete}
+                          selectedArticle={selectedArticle}
+                        />
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-      {showModalDelete && (
-        <DeleteModal
-          setShowModalDelete={setShowModalDelete}
-          handleDelete={handleDelete}
-          selectedArticle={selectedArticle}
-        />
-      )}
     </div>
   );
 };

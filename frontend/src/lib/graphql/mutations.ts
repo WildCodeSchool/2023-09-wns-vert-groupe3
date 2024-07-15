@@ -34,7 +34,17 @@ export const DELETE_PRODUCT = gql`
 `;
 
 export const CREATE_USER = gql`
-  mutation Mutation($newUserData: InputUser!) {
-    register(newUserData: $newUserData)
+   mutation Mutation($newUserData: InputUserCreate!) {
+   register(newUserData: $newUserData)
+   }
+`;
+
+export const UPDATE_PRODUCT = gql`
+  mutation Mutation($infos: InputUpdateProduct!, $updateProductId: Float!) {
+    updateProduct(infos: $infos, id: $updateProductId) {
+      name
+      price_daily
+      quantity
+    }
   }
 `;
