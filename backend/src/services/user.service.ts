@@ -5,10 +5,13 @@ import { InputUserCreate, InputUserLogin } from "inputs";
 import { User, UserRoleType } from "../entities/user.entity";
 
 export class UserService {
-  async createUser(inputUserCreate : InputUserCreate): Promise<User> {
+  async createUser(inputUserCreate: InputUserCreate): Promise<User> {
     try {
       const existingUser = await User.findOne({
-        where: [{ email: inputUserCreate.email }, { username: inputUserCreate.username }],
+        where: [
+          { email: inputUserCreate.email },
+          { username: inputUserCreate.username },
+        ],
       });
 
       if (existingUser) {
@@ -28,20 +31,24 @@ export class UserService {
   }
 
   async loginUser(inputUserLogin: InputUserLogin): Promise<string> {
-    let payload: { email: string; role: UserRoleType, username: string };
+    let payload: { email: string; role: UserRoleType; username: string };
     try {
-      const user = await User.findOne({ where: { email: inputUserLogin.email } });
+      const user = await User.findOne({
+        where: { email: inputUserLogin.email },
+      });
       if (!user) {
         throw new Error("User not found");
       }
 
-      if (!(await argon2.verify(user.hashedPassword, inputUserLogin.password))) {
+      if (
+        !(await argon2.verify(user.hashedPassword, inputUserLogin.password))
+      ) {
         throw new Error("Invalid password");
       }
 
       payload = { email: user.email, role: user.role, username: user.username };
 
-       // Signature du token avec une clé secrète
+      // Signature du token avec une clé secrète
       const token = jwt.sign(payload, "mysupersecretkey");
       return token;
     } catch (error) {
@@ -81,6 +88,16 @@ export class UserService {
 
   async adminQuery(): Promise<string> {
     return "You are admin";
+  }
+
+  async getUserByEmail(email: string): Promise<User | null> {
+    try {
+      const user = await User.findOne({ where: { email } });
+      return user;
+    } catch (error) {
+      console.error("Error while fetching user by email:", error);
+      throw new Error("Error while fetching user");
+    }
   }
 
   async whoAmI(
