@@ -10,3 +10,6 @@ node_modules
 /blob-report/
 /playwright/.cache/
 .env
+
+logs
+# Fait référence aux logs générés par le service ou container gateway (nginx)
