@@ -36,8 +36,10 @@ export async function fillDatabaseIfEmpty() {
     snowboard.description_short = "Super snowboard à louer !";
     snowboard.description_long =
       "Ceci est une description d'un snowboard à louer ! Il est super cool et vous permettra de glisser en toute sécurité !";
-    snowboard.picture =
-      "https://images.unsplash.com/photo-1498146831523-fbe41acdc5ad";
+    snowboard.picture = [
+      "https://images.unsplash.com/photo-1614358536373-1ce27819009e",
+      "https://images.unsplash.com/photo-1498146831523-fbe41acdc5ad",
+    ];
     snowboard.price_fixed = 199;
     snowboard.price_daily = 20;
     snowboard.quantity = 5;
@@ -49,8 +51,10 @@ export async function fillDatabaseIfEmpty() {
     tent.description_short = "Superbe tente à louer !";
     tent.description_long =
       "Ceci est une description d'une tente à louer ! Elle est super cool et vous permettra de camper en toute sécurité !";
-    tent.picture =
-      "https://images.unsplash.com/photo-1624923686627-514dd5e57bae";
+    tent.picture = [
+      "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4",
+      "https://images.unsplash.com/photo-1624923686627-514dd5e57bae",
+    ];
     tent.price_fixed = 149;
     tent.price_daily = 15;
     tent.quantity = 8;
@@ -62,9 +66,11 @@ export async function fillDatabaseIfEmpty() {
     climbing.description_short = "Super matériel d'escalade à louer !";
     climbing.description_long =
       "Ceci est une description du matériel d'escalade à louer ! Il est super cool et vous permettra de grimper en toute sécurité !";
-    climbing.picture =
-      "https://images.unsplash.com/photo-1630432328419-bee5f50d6390";
-    climbing.price_fixed = 259;
+    climbing.picture = [
+      "https://images.unsplash.com/photo-1586685256769-4e869a64f1eb",
+      "https://images.unsplash.com/photo-1630432328419-bee5f50d6390",
+    ];
+    climbing.price_fixed = 199;
     climbing.price_daily = 20;
     climbing.quantity = 3;
     await climbing.save();
@@ -75,8 +81,10 @@ export async function fillDatabaseIfEmpty() {
     backpack.description_short = "Super sac de voyage à louer !";
     backpack.description_long =
       "Ceci est une description d'un sac de voyage à louer ! Il est super cool et vous permettra de voyager en toute sécurité !";
-    backpack.picture =
-      "https://images.unsplash.com/photo-1509762774605-f07235a08f1f";
+    backpack.picture = [
+      "https://images.unsplash.com/photo-1622260614153-03223fb72052",
+      "https://images.unsplash.com/photo-1509762774605-f07235a08f1f",
+    ];
     backpack.price_fixed = 99;
     backpack.price_daily = 10;
     backpack.quantity = 11;

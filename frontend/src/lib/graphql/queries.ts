@@ -5,7 +5,7 @@ export type ProductType = {
   name: string;
   description_short: string;
   description_long: string;
-  picture: string;
+  picture: string[];
   price_fixed: number;
   price_daily: number;
   discount?: number;

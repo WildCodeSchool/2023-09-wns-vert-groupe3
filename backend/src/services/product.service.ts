@@ -64,25 +64,28 @@ export default class ProductService {
     return await this.db.save(newProduct);
   }
 
-  async update(id: number, data: InputUpdateProduct) {
-    const categoryToLink = await new CategoryService().find(data.category);
+  async update(id: number, data: InputUpdateProduct): Promise<Product> {
+    const categoryToLink = await new CategoryService().find(+data.category);
     if (!categoryToLink) {
-      throw new Error("category doesnt exist");
+      throw new Error(`Category with ID ${data.category} not found`);
     }
+
     const productToUpdate = await this.findById(id);
     if (!productToUpdate) {
-      throw new Error("Product doesnt exist");
+      throw new Error(`Product with ID ${id} not found`);
     }
-    const producToSave = this.db.merge(productToUpdate, {
+
+    const updatedProduct = this.db.merge(productToUpdate, {
       ...data,
       category: categoryToLink,
     });
-    const errors = await validate(producToSave);
-    if (errors.length !== 0) {
-      console.log(errors);
-      throw new Error("Error when validate");
+    const errors = await validate(updatedProduct);
+    if (errors.length > 0) {
+      console.error("Validation errors:", errors);
+      throw new Error("Product data validation failed");
     }
-    return await this.db.save(producToSave);
+
+    return await this.db.save(updatedProduct);
   }
 
   async deleteProduct(id: number) {
