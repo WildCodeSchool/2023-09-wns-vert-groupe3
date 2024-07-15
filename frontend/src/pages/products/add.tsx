@@ -1,11 +1,12 @@
 import { useMutation } from "@apollo/client";
-import Button from "components/Button";
 import CategorySelect from "components/CategorySelect";
 import { ADD_PRODUCT } from "lib/graphql/mutations";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
+import { toast } from "react-toastify";
+import Button from "components/Button";
+import { useRouter } from "next/router";
 
 type InputCreateProduct = {
   name: string;
@@ -19,8 +20,11 @@ type InputCreateProduct = {
 };
 
 const ProductsAddPage = () => {
-  const { register, handleSubmit, setValue, reset } =
-    useForm<InputCreateProduct>();
+   const router = useRouter()
+   if(localStorage.getItem("jwt") === null) {
+      router.push ("/login")
+   }
+  const { register, handleSubmit, setValue, reset } = useForm<InputCreateProduct>();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>("");
 

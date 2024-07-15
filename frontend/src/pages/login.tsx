@@ -1,35 +1,82 @@
+import { useLazyQuery } from "@apollo/client";
+import { toastSuccessRegister } from "components/ui/Toast";
+import { LOGIN } from "lib/graphql/queries";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { HiEye, HiEyeOff } from "react-icons/hi";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { inputLoginUser } from "types/inputLoginUser";
 
 const LoginPage = () => {
-  const [showPassword, setShowPassword] = useState(false);
-
+  // Affiche la pop up d'enregistrement avec succès
   useEffect(() => {
     const registrationSuccess = localStorage.getItem("registrationSuccess");
     if (registrationSuccess) {
-      toast.success(
-        <div>
-          Compte créé avec succès!
-          <br />
-          Vous pouvez désormais vous connecter.
-        </div>,
-        {
-          autoClose: 5000,
-        },
-      );
+      toastSuccessRegister();
       localStorage.removeItem("registrationSuccess");
     }
   }, []);
 
+  const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState("");
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
+  const [showPassword, setShowPassword] = useState(false);
   const eyeIcon = showPassword ? <HiEyeOff /> : <HiEye />;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<inputLoginUser>();
+
+  // const authInfo = useContext(UserContext);
+  const [handleLogin, { data, loading, error: queryError }] = useLazyQuery(
+    LOGIN,
+    {
+      async onCompleted(data) {
+        localStorage.setItem("jwt", data.loginUser);
+
+        //   toastSuccessLogin()
+        //   localStorage.setItem("LoginSuccess", "true");
+        //   authInfo.refetchLogin();
+        router.push("/");
+        //  router.back()
+      },
+    },
+  );
+
+  const onSubmit: SubmitHandler<inputLoginUser> = async (data) => {
+    try {
+      const result = await handleLogin({
+        variables: {
+          inputUserLogin: {
+            email: data.email,
+            password: data.password,
+          },
+        },
+      });
+      console.log("on submit result : ", result);
+      console.log(
+        "on submit result.data.loginUser = token : ",
+        result.data.loginUser,
+      );
+
+      // localStorage.setItem("jwt", "jwtrandom");
+      // router.push("/");
+    } catch (err) {
+      setErrorMessage(
+        "Une erreur s'est produite lors de l'authentification de l'utilisateur",
+      );
+      console.error("Error : " + err);
+    }
+  };
 
   return (
     <>
@@ -52,18 +99,37 @@ const LoginPage = () => {
                 Se connecter à votre compte
               </h1>
             </div>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                   E-mail
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  id="email"
+                  //   type="email"
+                  {...register("email", {
+                    required: "Le mail est requis",
+                    pattern: {
+                      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                      message: "Veuillez saisir une adresse e-mail valide",
+                    },
+                  })}
                   className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   placeholder="name@domain.com"
                 />
+                {errors.email && (
+                  <div
+                    className="relative mt-2 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
+                    role="alert"
+                  >
+                    <strong className="font-bold">Erreur: </strong>
+                    <span className="block sm:inline">
+                      {errors.email.message}
+                    </span>
+                  </div>
+                )}
               </div>
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
@@ -72,8 +138,14 @@ const LoginPage = () => {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    name="password"
-                    id="password"
+                    {...register("password", {
+                      required: "Le mot de passe est requis",
+                      // validate: {
+                      //   regex: (value) =>
+                      //     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/.test(value) ||
+                      //     "Le mot de passe doit contenir au moins 8 caractères, au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.",
+                      // },
+                    })}
                     placeholder="••••••••"
                     className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   />
@@ -84,6 +156,17 @@ const LoginPage = () => {
                   >
                     {eyeIcon}
                   </button>
+                  {errors.password && (
+                    <div
+                      className="relative mt-2 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
+                      role="alert"
+                    >
+                      <strong className="font-bold">Erreur: </strong>
+                      <span className="block sm:inline">
+                        {errors.password.message}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex flex-wrap items-center justify-between">
@@ -102,12 +185,12 @@ const LoginPage = () => {
                     </label>
                   </div>
                 </div>
-                <Link
-                  href="#"
-                  className="text-primary-600 dark:text-primary-500 text-sm font-medium hover:underline"
-                >
-                  Mot de passe oublié ?
-                </Link>
+                {/* <a
+                    href="#"
+                    className="text-primary-600 dark:text-primary-500 text-sm font-medium hover:underline"
+                  >
+                    Mot de passe oublié ?
+                  </a> */}
               </div>
               <button
                 type="submit"
@@ -124,52 +207,6 @@ const LoginPage = () => {
                   S&apos;enregistrer
                 </Link>
               </p>
-              <div className="before:border-white-300 after:border-white-300 my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t after:mt-0.5 after:flex-1 after:border-t">
-                <p className="mx-4 mb-0 text-center font-semibold dark:text-white">
-                  OU
-                </p>
-              </div>
-              <div className="w-full">
-                <button className="mb-3 flex w-full items-center justify-center rounded bg-black px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white transition duration-150 ease-in-out focus:outline-none focus:ring-0">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mr-2 h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 30 30"
-                  >
-                    <path d="M15,3C8.373,3,3,8.373,3,15c0,5.623,3.872,10.328,9.092,11.63C12.036,26.468,12,26.28,12,26.047v-2.051 c-0.487,0-1.303,0-1.508,0c-0.821,0-1.551-0.353-1.905-1.009c-0.393-0.729-0.461-1.844-1.435-2.526 c-0.289-0.227-0.069-0.486,0.264-0.451c0.615,0.174,1.125,0.596,1.605,1.222c0.478,0.627,0.703,0.769,1.596,0.769 c0.433,0,1.081-0.025,1.691-0.121c0.328-0.833,0.895-1.6,1.588-1.962c-3.996-0.411-5.903-2.399-5.903-5.098 c0-1.162,0.495-2.286,1.336-3.233C9.053,10.647,8.706,8.73,9.435,8c1.798,0,2.885,1.166,3.146,1.481C13.477,9.174,14.461,9,15.495,9 c1.036,0,2.024,0.174,2.922,0.483C18.675,9.17,19.763,8,21.565,8c0.732,0.731,0.381,2.656,0.102,3.594 c0.836,0.945,1.328,2.066,1.328,3.226c0,2.697-1.904,4.684-5.894,5.097C18.199,20.49,19,22.1,19,23.313v2.734 c0,0.104-0.023,0.179-0.035,0.268C23.641,24.676,27,20.236,27,15C27,8.373,21.627,3,15,3z"></path>
-                  </svg>
-                  Continuer avec GitHub
-                </button>
-              </div>
-              <div className="w-full">
-                <button className="mb-3 flex w-full items-center justify-center rounded bg-white px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-black transition duration-150 ease-in-out ">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mr-2 h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 48 48"
-                  >
-                    <path
-                      fill="#FFC107"
-                      d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-                    ></path>
-                    <path
-                      fill="#FF3D00"
-                      d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
-                    ></path>
-                    <path
-                      fill="#4CAF50"
-                      d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
-                    ></path>
-                    <path
-                      fill="#1976D2"
-                      d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
-                    ></path>
-                  </svg>
-                  Continuer avec Google
-                </button>
-              </div>
             </form>
           </div>
         </div>

@@ -14,7 +14,7 @@ export default class ProductService {
     this.dbCategory = datasource.getRepository(Category);
   }
 
-  async list() {
+  async list(_ctx:any) {
     return this.db.find({
       relations: {
         category: true,
