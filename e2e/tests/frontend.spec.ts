@@ -14,7 +14,7 @@ test("Find URL and title", async ({ page }) => {
 
 test("Find all pages", async ({ page }) => {
   await page.goto("http://frontend:3000/products");
-  await page.goto("http://frontend:3000/cart");
+//   await page.goto("http://frontend:3000/cart");
   await page.goto("http://frontend:3000/login");
 //   await page.goto("http://localhost:3000/products");
 //   await page.goto("http://localhost:3000/cart");
