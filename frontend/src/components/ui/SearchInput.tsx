@@ -13,7 +13,11 @@ const SearchInput = () => {
     GET_ALL_PRODUCTS_BY_KEYWORD,
     {
       variables: { keyword: searchValue },
-      skip: !searchActive || !searchValue,
+      skip:
+        !searchActive ||
+        !searchValue ||
+        searchValue.length < 3 ||
+        searchValue.length > 12,
     },
   );
 
@@ -87,20 +91,22 @@ const SearchInput = () => {
                   key={product.id}
                   onClick={toggleSearch}
                 >
-                  <li className="flex cursor-pointer items-center justify-start p-2 text-black hover:bg-gray-100">
-                    <img
-                      src={product.picture[0]}
-                      alt={"Image de " + product.name}
-                      className="mr-6 h-12 w-12 rounded-md"
-                    />
-                    {product.name}
+                  <li className=" cursor-pointer p-2 text-black ">
+                    <div className="flex items-center justify-start rounded-md bg-slate-200 p-2 hover:bg-indigo-300">
+                      <img
+                        src={product.picture[0]}
+                        alt={"Image de " + product.name}
+                        className="mr-6 h-12 w-12 rounded-md object-cover"
+                      />
+                      <p className="text-sm">{product.name}</p>
+                    </div>
                   </li>
                 </Link>
               ))}
             </ul>
           ) : (
-            <div className="text-black-500 bg-red-500 p-2">
-              No results found
+            <div className="text-black-500 rounded-md bg-red-500 p-2">
+              Aucun résultat trouvé
             </div>
           )}
         </div>
