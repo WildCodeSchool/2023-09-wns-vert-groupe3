@@ -2,8 +2,6 @@ import CartProduct from "components/cart/CartProduct";
 import CheckoutButton from "components/CheckoutButton";
 import { useCart } from "contexts/CartContext";
 
-// edit folder cart
-
 const CartPage = () => {
   const { cart, removeFromCart, clearCart } = useCart();
 
