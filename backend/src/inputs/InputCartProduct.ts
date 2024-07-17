@@ -1,5 +1,3 @@
-// backend/src/inputs/inputcartproducts.ts
-
 import { Field, InputType, Int } from "type-graphql";
 
 @InputType()
@@ -10,8 +8,8 @@ export class InputCartProduct {
   @Field()
   name: string;
 
-  /* @Field()
-  picture: string; */
+  @Field(() => [String])
+  picture: string[];
 
   @Field()
   price: number;

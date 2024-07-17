@@ -15,7 +15,7 @@ export default class CheckoutResolver {
           currency: "eur",
           product_data: {
             name: product.name,
-            // picture: product.picture,
+            images: product.picture,
           },
           unit_amount: product.price,
         },

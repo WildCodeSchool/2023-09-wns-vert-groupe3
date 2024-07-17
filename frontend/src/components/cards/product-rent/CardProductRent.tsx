@@ -35,6 +35,7 @@ const CardProductRent = ({
       name,
       price_fixed,
       quantity: 1,
+      picture,
     };
     addToCart(productToAdd);
   };

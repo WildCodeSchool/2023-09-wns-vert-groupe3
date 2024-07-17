@@ -6,7 +6,7 @@ interface CartProduct {
   name: string;
   price_fixed: number;
   quantity: number;
-  // picture: string;
+  picture: string[];
 }
 
 interface CartContextType {
