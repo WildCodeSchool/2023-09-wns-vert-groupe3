@@ -114,12 +114,12 @@ const ProductsAddPage = () => {
         <br />
         <label>
           Description courte: <br />
-          <input className="text-field" {...register("description_long")} />
+          <input className="text-field" {...register("description_short")} />
         </label>
         <br />
         <label>
           Description longue: <br />
-          <input className="text-field" {...register("description_short")} />
+          <input className="text-field" {...register("description_long")} />
         </label>
         <br />
         <div className="flex gap-4">

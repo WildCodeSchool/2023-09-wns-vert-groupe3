@@ -1,9 +1,11 @@
 import { useQuery } from "@apollo/client";
 import { GET_ALL_PRODUCTS_BY_KEYWORD } from "lib/graphql/queries";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+
 import { FaTimes } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
+
+import Link from "next/link";
 
 const SearchInput = () => {
   const [searchActive, setSearchActive] = useState(false);

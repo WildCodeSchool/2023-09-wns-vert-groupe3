@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import * as Select from "@radix-ui/react-select";
 import { GET_ALL_CATEGORIES } from "lib/graphql/queries";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Category {
   id: string;
@@ -19,8 +19,12 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
   selectedCategoryName,
   onCategoryChange,
 }) => {
-  const { loading, error, data } = useQuery(GET_ALL_CATEGORIES);
+  const { loading, error, data, refetch } = useQuery(GET_ALL_CATEGORIES);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    refetch();
+  });
 
   const handleSelectChange = (categoryId: string, categoryName: string) => {
     onCategoryChange(categoryId, categoryName);
