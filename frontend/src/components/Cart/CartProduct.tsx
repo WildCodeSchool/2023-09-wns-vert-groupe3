@@ -13,7 +13,7 @@ const CartProduct = ({ product, onRemove }: any) => {
         />
         <div>
           <h2 className="text-lg font-semibold">{product.name}</h2>
-          <p className="text-gray-500">Prix unitaire: {product.price}€</p>
+          <p className="text-gray-500">Prix unitaire: {product.price_fixed}€</p>
           <div className="mt-1 flex items-center space-x-2">
             <button
               className="rounded bg-gray-800 px-2 py-1"
@@ -26,7 +26,7 @@ const CartProduct = ({ product, onRemove }: any) => {
       </div>
       <div>
         <p className="text-lg font-semibold">
-          {product.price * product.quantity} €
+          {product.price_fixed * product.quantity} €
         </p>
         <p className="text-gray-500">Quantité: {product.quantity}</p>
       </div>

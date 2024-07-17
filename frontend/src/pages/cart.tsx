@@ -1,4 +1,4 @@
-import CartPage from "components/Cart/CartPage";
+import CartPage from "components/cart/CartPage";
 
 const Cart = () => {
   return (

@@ -1,9 +1,10 @@
+import CartProduct from "components/cart/CartProduct";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 interface CartProduct {
   id: number;
   name: string;
-  price: number;
+  price_fixed: number;
   quantity: number;
   // picture: string;
 }

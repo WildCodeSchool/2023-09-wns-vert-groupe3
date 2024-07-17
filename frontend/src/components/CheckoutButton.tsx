@@ -30,7 +30,7 @@ const CheckoutButton = () => {
       id: parseInt(product.id),
       name: product.name,
       // picture: product.picture,
-      price: product.price,
+      price: product.price_fixed,
       quantity: product.quantity,
     }));
 
@@ -48,7 +48,7 @@ const CheckoutButton = () => {
       className="flex items-center rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
     >
       Commander
-      <IoBagCheckOutline className="ml-2" />
+      <IoBagCheckOutline className="ml-2 text-lg" />
     </button>
   );
 };

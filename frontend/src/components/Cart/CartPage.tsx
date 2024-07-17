@@ -1,4 +1,4 @@
-import CartProduct from "components/Cart/CartProduct";
+import CartProduct from "components/cart/CartProduct";
 import CheckoutButton from "components/CheckoutButton";
 import { useCart } from "contexts/CartContext";
 

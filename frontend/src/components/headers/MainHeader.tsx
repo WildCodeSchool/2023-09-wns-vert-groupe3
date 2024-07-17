@@ -1,3 +1,4 @@
+import { useCart } from "contexts/CartContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,6 +14,13 @@ export default function MainHeader() {
   const [searchActive, setSearchActive] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [menuVisible, setMenuVisible] = useState(false);
+
+  const { cart } = useCart();
+
+  const cartItemCount = cart.reduce(
+    (total, product) => total + product.quantity,
+    0,
+  );
 
   const toggleSearch = () => setSearchActive(!searchActive);
   const toggleMenu = () => setMenuVisible(!menuVisible);
@@ -97,7 +105,7 @@ export default function MainHeader() {
             <div className="relative ease-out hover:scale-90 hover:text-indigo-500">
               <FaShoppingBag size={32} className="relative" />
               <div className="absolute -bottom-3 -right-3 flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white">
-                0
+                {cartItemCount}
               </div>
             </div>
           </Link>

@@ -14,7 +14,7 @@ import {
 } from "./resolvers";
 
 export const stripe = require("stripe")(
-  "sk_test_51PYtGs2LoS9LYHUfkC2a7A35Xn1TocRl3VQVkQt6piwZk9PgzVXnmqsvCLxmzVbVWmBJNN3dW2ZqAskRz4kO4q1L00vfty1flt"
+  "sk_test_51PYlpd2KBZ2YS4BjFB7Un6zLAG21R4hWvzlu4hMKBxRkWvn2Ubg3opMn7fq6CeDLguzWQJ15XpqcK8A4ggUhRoGt00IsQN786f"
 );
 
 export const redisClient = createClient({

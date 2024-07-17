@@ -34,14 +34,15 @@ const client = new ApolloClient({
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <ApolloProvider client={client}>
-      <Layout>
-        <CartProvider>
+      <CartProvider>
+        <Layout>
           <UserDatesResearchProvider>
             <Component {...pageProps} />
           </UserDatesResearchProvider>
-        </CartProvider>
-        <ToastContainer />
-      </Layout>
+
+          <ToastContainer />
+        </Layout>
+      </CartProvider>
     </ApolloProvider>
   );
 }
