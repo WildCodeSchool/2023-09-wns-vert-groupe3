@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "styles/globals.css";
 import { setContext } from "@apollo/client/link/context";
+import Head from "next/head";
 
 
 const httpLink = createHttpLink({
@@ -39,6 +40,9 @@ const client = new ApolloClient({
 function App({ Component, pageProps: { ...pageProps } }: AppProps) {
   return (
       <ApolloProvider client={client}>
+         <Head>
+            <title>WildRent</title>
+         </Head>
         <Layout>
           <UserDatesResearchProvider>
             <Component {...pageProps} />
