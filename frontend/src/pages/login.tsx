@@ -24,6 +24,10 @@ const LoginPage = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
 
+  if (localStorage.getItem("jwt") !== null) {
+    router.push("/profile");
+  }
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };

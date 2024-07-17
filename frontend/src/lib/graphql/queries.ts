@@ -108,3 +108,25 @@ export const GET_USER_PROFILE = gql`
     }
   }
 `;
+
+export const GET_ALL_PRODUCTS_BY_KEYWORD = gql`
+  query GetAllProductsByKeyword($keyword: String!) {
+    getAllProductsByKeyword(keyword: $keyword) {
+      id
+      name
+      description_short
+      description_long
+      picture
+      price_fixed
+      price_daily
+      discount
+      quantity
+      created_at
+      updated_at
+      category {
+        name
+        id
+      }
+    }
+  }
+`;

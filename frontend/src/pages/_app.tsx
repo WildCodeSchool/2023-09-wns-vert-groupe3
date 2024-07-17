@@ -45,7 +45,6 @@ function App({ Component, pageProps: { ...pageProps } }: AppProps) {
           <UserDatesResearchProvider>
             <Component {...pageProps} />
           </UserDatesResearchProvider>
-
           <ToastContainer />
         </Layout>
       </CartProvider>
