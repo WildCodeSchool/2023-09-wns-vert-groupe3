@@ -14,7 +14,7 @@ services:
 
   frontend:
     build: ./frontend
-    env_file: .env.dev
+    env_file: .env.test
     healthcheck:
       test: "curl --fail --request GET --header 'content-type: application/json' --url 'http://localhost:3000/api/healthcheck' || exit 1"
       retries: 10

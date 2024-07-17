@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Product } from "../entities";
 import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 import ProductService from "../services/product.service";
@@ -11,9 +11,10 @@ export default class ProductResolver {
     this.productService = new ProductService();
   }
 
+//   @Authorized()
   @Query(() => [Product])
-  async getAllproducts() {
-    return await this.productService.list();
+  async getAllproducts(@Ctx() ctx: {email:string}) {
+    return await this.productService.list(ctx);
   }
 
   @Query(() => [Product])
@@ -33,20 +34,23 @@ export default class ProductResolver {
     return productsByCategoryId;
   }
 
-  @Mutation(() => Product)
-  async addProduct(@Arg("infos") infos: InputCreateProduct) {
-    const newProduct = await this.productService.create(infos);
-    return newProduct;
-  }
+//   @Authorized("admin")
+   @Mutation(() => Product)
+   async addProduct(
+      @Arg("infos") infos: InputCreateProduct,
+      // @Ctx() ctx: { email: string }
+   ) {
+      const newProduct = await this.productService.create(infos);
+      return newProduct;
+   }
 
   @Mutation(() => Product)
   async updateProduct(
     @Arg("id") id: number,
     @Arg("infos") data: InputUpdateProduct
   ) {
-    const productToUpdate = await this.productService.update(id, { ...data });
-    console.log(productToUpdate);
-    return productToUpdate;
+    const updatedProduct = await this.productService.update(id, data);
+    return updatedProduct;
   }
 
   @Mutation(() => Boolean)

@@ -1,13 +1,13 @@
 import { IsDate, IsInt, Length, MinLength } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
 import {
-   BaseEntity,
-   Column,
-   CreateDateColumn,
-   Entity,
-   ManyToOne,
-   PrimaryGeneratedColumn,
-   UpdateDateColumn,
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { Category } from "./category.entity";
 
@@ -25,17 +25,21 @@ export class Product extends BaseEntity {
 
   @Field()
   @Column()
-  @Length(5, 150, { message: "Short description have to be between 5 and 150 characters" })
+  @Length(5, 150, {
+    message: "Short description have to be between 5 and 150 characters",
+  })
   description_short: string;
 
   @Field()
   @Column()
-  @MinLength(100, { message: "Long description have to be above 150 characters" })
+  @MinLength(100, {
+    message: "Long description have to be above 150 characters",
+  })
   description_long: string;
 
-  @Field()
-  @Column()
-  picture: string;
+  @Field(() => [String])
+  @Column("text", { array: true })
+  picture: string[];
 
   @Field()
   @Column()

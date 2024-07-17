@@ -29,22 +29,34 @@ const ProductDtsPresSection = () => {
       <article className="lg:col-span-2">
         <div className="grid min-h-96 grid-cols-3 gap-2 overflow-hidden rounded-xl">
           <div className="relative col-span-2">
-            <Image
+            {/* <Image
               fill
               sizes="80vw"
               priority={true}
-              alt="product image"
-              src={product.picture}
+              alt={"Image de " + product.name}
+              src={product.picture[0]}
+              className="object-cover object-center"
+            /> */}
+            <img
+              sizes="80vw"
+              alt={"Image de " + product.name}
+              src={product.picture[0]}
               className="object-cover object-center"
             />
           </div>
           <div className="col-span-1 grid grid-rows-3 gap-2">
             <div className="relative">
-              <Image
+              {/* <Image
                 fill
                 sizes="40vw"
-                src="https://via.placeholder.com/525"
-                alt="product image"
+                src={product.picture[1]}
+                alt={"Image de " + product.name}
+                className="object-cover object-center"
+              /> */}
+              <img
+                sizes="40vw"
+                src={product.picture[1]}
+                alt={"Image de " + product.name}
                 className="object-cover object-center"
               />
             </div>

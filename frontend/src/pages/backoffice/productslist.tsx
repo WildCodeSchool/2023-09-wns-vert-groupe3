@@ -5,7 +5,6 @@ import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 import { DELETE_PRODUCT, UPDATE_PRODUCT } from "lib/graphql/mutations";
 import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -18,7 +17,11 @@ const ProductsList = () => {
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
   const [editingArticle, setEditingArticle] = useState<any>(null);
-  const [editForm, setEditForm] = useState({name: "", price_daily: 0, quantity: 0});
+  const [editForm, setEditForm] = useState({
+    name: "",
+    price_daily: 0,
+    quantity: 0,
+  });
   const router = useRouter();
 
   const getCategoryColor = (categoryName: string) => {
@@ -71,8 +74,8 @@ const ProductsList = () => {
     }
   };
 
-  const handleUpdate = async() => {
-    try{
+  const handleUpdate = async () => {
+    try {
       await updateProduct({
         variables: {
           infos: {
@@ -86,9 +89,9 @@ const ProductsList = () => {
       });
       console.log("Product updated!");
       setEditingArticle(null);
-      } catch (error) { 
-        console.error("Error updating product:", error);
-      }
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
   };
 
   const { data, loading, error } = useQuery(GET_PRODUCTS);
@@ -108,8 +111,8 @@ const ProductsList = () => {
     setEditForm({
       name: article.name,
       price_daily: article.price_daily,
-      quantity: article.quantity
-    })
+      quantity: article.quantity,
+    });
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,7 +198,7 @@ const ProductsList = () => {
                   {articles.map((article: ProductType) => (
                     <tr key={article.id}>
                       <td className="name-cell whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6">
-                      {editingArticle?.id === article.id ? (
+                        {editingArticle?.id === article.id ? (
                           <input
                             type="text"
                             name="name"
@@ -206,16 +209,18 @@ const ProductsList = () => {
                         ) : (
                           <div className="flex items-center">
                             <div className="flex-shrink-0">
-                              <Image
+                              <img
                                 className="h-16 w-16 rounded-full object-cover"
                                 width={100}
                                 height={100}
-                                src={article.picture}
+                                src={article.picture[0]}
                                 alt={article.name}
                               />
                             </div>
                             <div className="ml-4">
-                              <div className="font-medium text-hightcontrast">{article.name}</div>
+                              <div className="font-medium text-hightcontrast">
+                                {article.name}
+                              </div>
                             </div>
                           </div>
                         )}
@@ -232,7 +237,7 @@ const ProductsList = () => {
                         </span>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-lg">
-                      {editingArticle?.id === article.id ? (
+                        {editingArticle?.id === article.id ? (
                           <input
                             type="number"
                             name="price_daily"
@@ -241,7 +246,12 @@ const ProductsList = () => {
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           />
                         ) : (
-                          <p>{convertToCurrency(article.price_daily).in("EUR").valueWithSymbol}</p>
+                          <p>
+                            {
+                              convertToCurrency(article.price_daily).in("EUR")
+                                .valueWithSymbol
+                            }
+                          </p>
                         )}
                       </td>
                       {isUnavailable ? (
@@ -254,7 +264,7 @@ const ProductsList = () => {
                         </td>
                       )}
                       <td className="whitespace-nowrap px-3 py-4 text-lg">
-                      {editingArticle?.id === article.id ? (
+                        {editingArticle?.id === article.id ? (
                           <input
                             type="number"
                             name="quantity"
@@ -267,7 +277,7 @@ const ProductsList = () => {
                         )}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-lg font-medium sm:pr-6">
-                      {editingArticle?.id === article.id ? (
+                        {editingArticle?.id === article.id ? (
                           <button
                             onClick={handleUpdate}
                             className="font-semibold text-indigo-600 hover:text-indigo-900"
@@ -286,7 +296,10 @@ const ProductsList = () => {
                           onClick={() => openModalDelete(article)}
                           className="cursor-pointer"
                         >
-                          <Link className="font-semibold text-indigo-600 hover:text-red-600" href="#">
+                          <Link
+                            className="font-semibold text-indigo-600 hover:text-red-600"
+                            href="#"
+                          >
                             Supprimer
                             <span className="sr-only">, {article.name}</span>
                           </Link>

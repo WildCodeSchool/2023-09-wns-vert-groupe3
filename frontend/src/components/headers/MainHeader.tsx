@@ -9,11 +9,13 @@ import { RiListSettingsLine } from "react-icons/ri";
 
 import DropdownMenu from "components/ui/DropdownMenu";
 import styles from "../../styles/components/MainHeader.module.scss";
+import DropdownMenuProfile from "components/ui/DropdownMenuProfile";
 
 export default function MainHeader() {
   const [searchActive, setSearchActive] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [menuVisible, setMenuVisible] = useState(false);
+  const [menuProfileVisible, setMenuProfileVisible] = useState(false);
 
   const { cart } = useCart();
 
@@ -24,6 +26,7 @@ export default function MainHeader() {
 
   const toggleSearch = () => setSearchActive(!searchActive);
   const toggleMenu = () => setMenuVisible(!menuVisible);
+  const toggleMenuProfile = () => setMenuProfileVisible(!menuProfileVisible);
 
   const handleInputChange = (e: any) => {
     setSearchValue(e.target.value);
@@ -90,17 +93,21 @@ export default function MainHeader() {
           <Link href="/products" className={styles.allArticles}>
             <span>Tous les articles</span>
           </Link>
-          <div
-            className="relative"
-            onMouseEnter={() => setMenuVisible(true)}
-            onMouseLeave={() => setMenuVisible(false)}
-          >
-            <RiListSettingsLine
-              className="cursor-pointer text-white ease-out hover:text-indigo-500"
-              size={32}
-            />
-            {menuVisible && <DropdownMenu />}
-          </div>
+              
+              {localStorage.getItem("jwt") ?
+                 <div
+                    className="relative"
+                    onMouseEnter={() => setMenuVisible(true)}
+                    onMouseLeave={() => setMenuVisible(false)}
+                 >
+                    <RiListSettingsLine
+                       className="cursor-pointer text-white ease-out hover:text-indigo-500"
+                       size={32}
+                    />
+                    {menuVisible && <DropdownMenu />}
+                 </div>
+              : ""}
+
           <Link href="/cart">
             <div className="relative ease-out hover:scale-90 hover:text-indigo-500">
               <FaShoppingBag size={32} className="relative" />
@@ -109,12 +116,28 @@ export default function MainHeader() {
               </div>
             </div>
           </Link>
-          <Link href="/login">
-            <FaUserCircle
-              className="text-white ease-out hover:scale-90 hover:text-indigo-500"
-              size={32}
-            />
-          </Link>
+              {localStorage.getItem("jwt") ?
+
+                 <div
+                    className="relative"
+                    onMouseEnter={() => setMenuProfileVisible(true)}
+                    onMouseLeave={() => setMenuProfileVisible(false)}
+                 >
+                    <FaUserCircle
+                       className="text-white ease-out hover:scale-90 hover:text-indigo-500"
+                       size={32}
+                    />
+                    {menuProfileVisible && <DropdownMenuProfile setMenuProfileVisible={ setMenuProfileVisible}/>}
+                 </div> :
+                 <Link href="/login">
+                  <div>
+                    <FaUserCircle
+                       className="text-white ease-out hover:scale-90 hover:text-indigo-500"
+                       size={32}
+                    />
+                  </div>
+                 </Link>
+              }
         </div>
       </header>
     </main>

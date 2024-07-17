@@ -3,7 +3,8 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { createClient } from "redis";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
-import { authChecker } from "./authChecker";
+// import { authChecker } from "./authChecker";
+import * as jwt from "jsonwebtoken";
 import dataSource from "./config/datasource";
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
 import {
@@ -42,15 +43,34 @@ const start = async () => {
       UserResolver,
       CheckoutResolver,
     ],
-    authChecker: authChecker,
+    authChecker: ({ context }) => {
+      if (context.email) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   });
 
   const server = new ApolloServer({
     schema,
   });
-
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
+    // A chaque requête exécuté, la fonction de contexte va s'enclencher
+    context: async ({ req }) => {
+      const token = req.headers.authorization?.split("Bearer ")[1];
+
+      if (token) {
+        try {
+          const payload = jwt.verify(token, "mysupersecretkey");
+          return payload;
+        } catch {
+          console.log("invalid secret key");
+        }
+      }
+      return {};
+    },
   });
 
   console.log(`🚀  Server ready at: ${url}`);

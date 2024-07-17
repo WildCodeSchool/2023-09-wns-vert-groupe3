@@ -137,7 +137,7 @@ docker compose watch
 
 ## 🚀 Deployment <a name = "deployment"></a>
 
-[TO COMPLETE]
+`docker compose -f docker-compose.prod.yml up --build` sur le système Linux
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
