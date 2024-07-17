@@ -27,7 +27,7 @@ const CheckoutButton = () => {
 
   const handleCheckout = () => {
     const products = cart.map((product) => ({
-      id: parseInt(product.id),
+      id: product.id,
       name: product.name,
       picture: [product.picture[0]],
       price: product.price_fixed,

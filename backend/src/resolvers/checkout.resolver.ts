@@ -17,7 +17,7 @@ export default class CheckoutResolver {
             name: product.name,
             images: product.picture,
           },
-          unit_amount: product.price,
+          unit_amount: product.price * 100,
         },
         quantity: product.quantity,
       })),

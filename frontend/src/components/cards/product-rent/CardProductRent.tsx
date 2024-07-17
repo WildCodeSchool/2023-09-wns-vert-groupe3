@@ -31,7 +31,7 @@ const CardProductRent = ({
 
   const handleAddToCart = () => {
     const productToAdd = {
-      id,
+      id: Number(id),
       name,
       price_fixed,
       quantity: 1,
