@@ -19,10 +19,17 @@ export default class CheckoutResolver {
           },
           unit_amount: product.price * 100,
         },
+        adjustable_quantity: {
+          enabled: true,
+          minimum: 1,
+          maximum: 6,
+        },
         quantity: product.quantity,
       })),
       mode: "payment",
       success_url: "http://localhost:3000/stripe/success",
+      /* success_url:
+        "http://localhost:3000/stripe/success?session_id={CHECKOUT_SESSION_ID}", */
       cancel_url: "http://localhost:3000/cart",
     });
     return session.url;

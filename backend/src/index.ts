@@ -1,10 +1,9 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import * as jwt from "jsonwebtoken";
 import { createClient } from "redis";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
-// import { authChecker } from "./authChecker";
-import * as jwt from "jsonwebtoken";
 import dataSource from "./config/datasource";
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
 import {
