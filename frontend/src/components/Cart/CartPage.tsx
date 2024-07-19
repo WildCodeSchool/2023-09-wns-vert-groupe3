@@ -14,20 +14,45 @@ const CartPage = () => {
   };
 
   return (
-    <div className="container mx-auto mt-10">
-      <h1 className="mb-6 text-3xl font-semibold">Mon Panier</h1>
+    <div className="container mx-auto mt-5">
       {cart.length === 0 ? (
-        <p className="text-lg">Votre panier est vide.</p>
+        <table className="min-w-full rounded-lg border-gray-300 bg-zinc-800 shadow-lg">
+          <thead>
+            <tr>
+              <th className="rounded-t-lg bg-blue-500 px-6 py-4 text-left font-bold uppercase text-white">
+                Mon Panier
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="rounded-lg px-6 py-8 text-center text-white">
+                Votre panier est vide.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       ) : (
-        <div>
-          {cart.map((product) => (
-            <CartProduct
-              key={product.id}
-              product={product}
-              onRemove={handleRemove}
-            />
-          ))}
-          <div className="mt-6 flex justify-between">
+        <div className="min-w-full rounded-lg border-gray-300 bg-zinc-800 shadow-lg">
+          <table className="min-w-full">
+            <thead>
+              <tr>
+                <th className="rounded-t-lg bg-blue-500 px-6 py-4 text-left font-bold uppercase text-white">
+                  Mon Panier
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map((product) => (
+                <tr key={product.id}>
+                  <td className="px-6 py-4">
+                    <CartProduct product={product} onRemove={handleRemove} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="mt-6 flex justify-between px-6 py-4">
             <button
               onClick={handleClearCart}
               className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"

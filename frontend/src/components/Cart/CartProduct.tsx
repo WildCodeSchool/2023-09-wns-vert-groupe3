@@ -15,10 +15,10 @@ const CartProduct = ({ product, onRemove }: any) => {
         />
         <div>
           <h2 className="text-lg font-semibold">{product.name}</h2>
-          <p className="text-gray-500">Prix unitaire: {product.price_fixed}€</p>
+          <p className="text-gray-300">Prix unitaire: {product.price_fixed}€</p>
           <div className="mt-1 flex items-center space-x-2">
             <button
-              className="rounded bg-gray-800 px-2 py-1"
+              className="rounded bg-red-400 px-2 py-1 hover:bg-red-700"
               onClick={handleRemove}
             >
               Retirer
@@ -30,7 +30,7 @@ const CartProduct = ({ product, onRemove }: any) => {
         <p className="text-lg font-semibold">
           {product.price_fixed * product.quantity} €
         </p>
-        <p className="text-gray-500">Quantité: {product.quantity}</p>
+        <p className="text-gray-300">Quantité: {product.quantity}</p>
       </div>
     </div>
   );

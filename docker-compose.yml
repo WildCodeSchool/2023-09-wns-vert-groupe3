@@ -1,7 +1,6 @@
 services:
-
   backend:
-    build: 
+    build:
       context: ./backend # Fait référence au fichier nommé DockerFile par défaut du répertoire courant. Exécute les instructions à l'intérieur.
       dockerfile: Dockerfile # Indication explicite que l'on cible le fichier nommé Dockerfile.
     ports:
@@ -13,12 +12,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    env_file: .env.apikey
     depends_on:
       db:
         condition: service_healthy
 
   frontend:
-    build: 
+    build:
       context: ./frontend # Fait référence au fichier nommé DockerFile par défaut du répertoire courant. Exécute les instructions à l'intérieur.
       dockerfile: Dockerfile # Indication explicite que l'on cible le fichier nommé Dockerfile.
     restart: always
@@ -52,7 +52,7 @@ services:
 
   imagesupload:
     build: ./imagesupload
-    # build: 
+    # build:
     #   context: ./imagesupload
     #   dockerfile: Dockerfile
     volumes:

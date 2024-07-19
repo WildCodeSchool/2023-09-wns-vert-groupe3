@@ -13,9 +13,9 @@ import {
   UserResolver,
 } from "./resolvers";
 
-export const stripe = require("stripe")(
-  "sk_test_51PYlpd2KBZ2YS4BjFB7Un6zLAG21R4hWvzlu4hMKBxRkWvn2Ubg3opMn7fq6CeDLguzWQJ15XpqcK8A4ggUhRoGt00IsQN786f"
-);
+require("dotenv").config();
+
+export const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export const redisClient = createClient({
   url: "redis://redis",
