@@ -1,4 +1,4 @@
-version: "1.0"
+version: "1.1"
 
 services:
   backend:
@@ -9,8 +9,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - 4000:4000
 
   frontend:
     build: ./frontend
@@ -21,8 +19,6 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    ports:
-      - 3000:3000
 
   e2e:
     build: ./e2e
@@ -35,28 +31,21 @@ services:
 
   imagesupload:
     build: ./imagesupload
-    volumes:
-      - ./imagesupload/uploads:/app/uploads
-    ports:
-      - 8000:8000
+    # volumes:
+    #   - ./imagesupload/uploads:/app/uploads
 
   adminer:
     image: adminer
-    ports:
-      - 8080:8080
 
   db:
     image: postgres
-    restart: always
-    ports:
-      - "5434:5432"
     environment:
       POSTGRES_PASSWORD: wildrent
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
       retries: 10
-    volumes:
-      - pgdata_new1:/var/lib/postgresql/data
+    # volumes:
+    #   - pgdata_new1:/var/lib/postgresql/data
 
   redis:
     image: redis
@@ -64,8 +53,3 @@ services:
     image: rediscommander/redis-commander
     environment:
       - REDIS_HOSTS=redis
-    ports:
-      - "8081:8081"
-
-volumes:
-  pgdata_new1:
