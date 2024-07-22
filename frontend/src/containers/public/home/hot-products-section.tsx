@@ -3,8 +3,8 @@ import DisplayProd from "components/DisplayProd";
 import { GET_PRODUCTS } from "lib/graphql/queries";
 import { HiPlusCircle } from "react-icons/hi";
 
+import CardProductSkeleton from "components/cards/product-rent/CardProductSkeleton";
 import { useEffect } from "react";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from "styles/pages/ProductsPage.module.scss";
 
@@ -25,15 +25,9 @@ const HomeHotProductsSection = () => {
           </h2>
         </div>
         <main className={styles.productsPage}>
-          <div className="grid grid-cols-2 gap-6 lg:grid-cols-2">
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-2">
             {[...Array(4)].map((_, index) => (
-              <SkeletonTheme
-                key={index}
-                baseColor="#202020"
-                highlightColor="#444"
-              >
-                <Skeleton height={300} width={600} />
-              </SkeletonTheme>
+              <CardProductSkeleton key={index} />
             ))}
           </div>
         </main>
@@ -46,17 +40,19 @@ const HomeHotProductsSection = () => {
   const products = data.getAllproducts;
 
   return (
-    <section className="mt-32 flex flex-col gap-2">
-      <div className="fit-content mb-4 flex">
-        <HiPlusCircle className="mr-2 text-4xl text-blue-500" />
-        <h2 className="w-fit border-b-2 border-b-blue-500 text-2xl font-bold">
-          Les nouveautés
-        </h2>
-      </div>
-      <main className={styles.productsPage}>
-        <DisplayProd products={products} />
-      </main>
-    </section>
+    <>
+      <section className="mt-32 flex flex-col gap-2">
+        <div className="fit-content mb-4 flex">
+          <HiPlusCircle className="mr-2 text-4xl text-blue-500" />
+          <h2 className="w-fit border-b-2 border-b-blue-500 text-2xl font-bold">
+            Les nouveautés
+          </h2>
+        </div>
+        <main className={styles.productsPage}>
+          <DisplayProd products={products} />
+        </main>
+      </section>
+    </>
   );
 };
 
