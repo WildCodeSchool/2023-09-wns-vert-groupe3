@@ -2,12 +2,18 @@ import { useQuery } from "@apollo/client";
 import DisplayProd from "components/DisplayProd";
 import { GET_PRODUCTS } from "lib/graphql/queries";
 import { HiPlusCircle } from "react-icons/hi";
+
+import { useEffect } from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from "styles/pages/ProductsPage.module.scss";
 
 const HomeHotProductsSection = () => {
-  const { data, loading, error } = useQuery(GET_PRODUCTS);
+  const { data, loading, error, refetch } = useQuery(GET_PRODUCTS);
+
+  useEffect(() => {
+    refetch();
+  });
 
   if (loading) {
     return (

@@ -41,6 +41,9 @@ dependencies:
   reflect-metadata:
     specifier: ^0.1.13
     version: 0.1.14
+  stripe:
+    specifier: ^16.1.0
+    version: 16.1.0
   ts-node-dev:
     specifier: ^2.0.0
     version: 2.0.0(@types/node@20.11.13)(typescript@5.3.3)
@@ -2085,6 +2088,14 @@ packages:
   /strip-json-comments@2.0.1:
     resolution: {integrity: sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /stripe@16.1.0:
+    resolution: {integrity: sha512-syeEEd112om/waJ5gOQ+SaYi+setuidQ4ZIPiQREF4yJeegXhn2HKy6C0JYm7uhVQKfMAvuZ22dIRsnoDv7AMw==}
+    engines: {node: '>=12.*'}
+    dependencies:
+      '@types/node': 20.11.13
+      qs: 6.11.0
     dev: false
 
   /supports-color@7.2.0:
