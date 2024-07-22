@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
+import CategoryLink from "components/CategoryLink";
 import DeleteModal from "components/modal/DeleteModal";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
@@ -23,27 +24,6 @@ const ProductsList = () => {
     quantity: 0,
   });
   const router = useRouter();
-
-  const getCategoryColor = (categoryName: string) => {
-    switch (categoryName) {
-      case "Ski":
-        return "bg-gradient-to-br from-sky-500 via-sky-500 to-indigo-500 text-white";
-      case "Plongée":
-        return "bg-gradient-to-br from-blue-700 via-blue-700 to-indigo-500 text-white";
-      case "Randonnée":
-        return "bg-gradient-to-br from-green-600 via-green-600 to-indigo-500 text-white";
-      case "Escalade":
-        return "bg-gradient-to-br from-amber-800 via-amber-800 to-indigo-500 text-white";
-      case "Camping":
-        return "bg-gradient-to-br from-yellow-600 via-yellow-600 to-indigo-500 text-white";
-      case "Rafting":
-        return "bg-gradient-to-br from-blue-700 via-blue-700 to-indigo-500 text-white";
-      case "Pêche":
-        return "bg-slate-500 text-white";
-      default:
-        return "bg-slate-500";
-    }
-  };
 
   const [
     deleteProduct,
@@ -227,12 +207,8 @@ const ProductsList = () => {
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-lg">
                         <span className="inline-flex rounded-full p-4 px-2 text-lg font-bold leading-5">
-                          {article.category.name && (
-                            <div
-                              className={` w-max rounded px-2 py-1 text-sm ${getCategoryColor(article.category.name)}`}
-                            >
-                              {article.category.name}
-                            </div>
+                          {article.category && (
+                            <CategoryLink category={article.category} />
                           )}
                         </span>
                       </td>

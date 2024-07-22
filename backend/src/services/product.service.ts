@@ -1,5 +1,5 @@
 import { validate } from "class-validator";
-import { Like, Repository } from "typeorm";
+import { ILike, Repository } from "typeorm";
 import datasource from "../config/datasource";
 import { Category, Product } from "../entities";
 import { redisClient } from "../index";
@@ -14,7 +14,7 @@ export default class ProductService {
     this.dbCategory = datasource.getRepository(Category);
   }
 
-  async list(_ctx:any) {
+  async list(_ctx: any) {
     return this.db.find({
       relations: {
         category: true,
@@ -30,15 +30,21 @@ export default class ProductService {
   }
 
   async getAllProductsByKeyword(keyword: string): Promise<Product[]> {
-    const cacheResult = await redisClient.get(keyword);
+    if (keyword.length < 3 || keyword.length > 12) return [];
+
+    const lowerKeyword = keyword.toLowerCase();
+
+    const cacheResult = await redisClient.get(lowerKeyword);
     if (cacheResult !== null) {
       console.log("From cache");
       return JSON.parse(cacheResult);
     } else {
       const dbResult = await Product.find({
-        where: { name: Like(`%${keyword}%`) },
+        where: { name: ILike(`%${lowerKeyword}%`) },
       });
-      redisClient.set(keyword, JSON.stringify(dbResult), { EX: 60 });
+
+      redisClient.set(lowerKeyword, JSON.stringify(dbResult), { EX: 60 });
+
       return dbResult;
     }
   }

@@ -20,7 +20,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  });
 
   useEffect(() => {
     if (error && error.message.includes("not authenticated")) {

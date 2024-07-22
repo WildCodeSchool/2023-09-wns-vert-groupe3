@@ -14,8 +14,8 @@ const HomeHotProductsSection = () => {
 
   const filteredProducts = products.filter(
     (product: any) =>
-      product.category.name === "Escalade" ||
-      product.category.name === "Camping",
+      product.category?.name === "Escalade" ||
+      product.category?.name === "Camping",
   );
 
   return (

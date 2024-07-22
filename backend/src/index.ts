@@ -4,10 +4,19 @@ import { createClient } from "redis";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 // import { authChecker } from "./authChecker";
+import * as jwt from "jsonwebtoken";
 import dataSource from "./config/datasource";
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
-import { CategoryResolver, ProductResolver, UserResolver } from "./resolvers";
-import * as jwt from "jsonwebtoken";
+import {
+  CategoryResolver,
+  CheckoutResolver,
+  ProductResolver,
+  UserResolver,
+} from "./resolvers";
+
+export const stripe = require("stripe")(
+  "sk_test_51PYlpd2KBZ2YS4BjFB7Un6zLAG21R4hWvzlu4hMKBxRkWvn2Ubg3opMn7fq6CeDLguzWQJ15XpqcK8A4ggUhRoGt00IsQN786f"
+);
 
 export const redisClient = createClient({
   url: "redis://redis",
@@ -28,36 +37,41 @@ const start = async () => {
   await fillDatabaseIfEmpty();
 
   const schema = await buildSchema({
-    resolvers: [ProductResolver, CategoryResolver, UserResolver],
-    authChecker: ({context}) => {
+    resolvers: [
+      ProductResolver,
+      CategoryResolver,
+      UserResolver,
+      CheckoutResolver,
+    ],
+    authChecker: ({ context }) => {
       if (context.email) {
-         return true
+        return true;
       } else {
-         return false
+        return false;
       }
     },
   });
 
-   const server = new ApolloServer({
-      schema,
-   });
-   const { url } = await startStandaloneServer(server, {
-      listen: { port: 4000 },
-      // A chaque requête exécuté, la fonction de contexte va s'enclencher
-      context: async ({ req }) => {
-         const token = req.headers.authorization?.split("Bearer ")[1];
+  const server = new ApolloServer({
+    schema,
+  });
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: 4000 },
+    // A chaque requête exécuté, la fonction de contexte va s'enclencher
+    context: async ({ req }) => {
+      const token = req.headers.authorization?.split("Bearer ")[1];
 
-         if (token) {
-            try {
-               const payload = jwt.verify(token, "mysupersecretkey");
-               return payload;
-            } catch {
-               console.log("invalid secret key")
-            }
-         }
-         return {};
-      },
-   });
+      if (token) {
+        try {
+          const payload = jwt.verify(token, "mysupersecretkey");
+          return payload;
+        } catch {
+          console.log("invalid secret key");
+        }
+      }
+      return {};
+    },
+  });
 
   console.log(`🚀  Server ready at: ${url}`);
 };
