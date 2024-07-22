@@ -62,8 +62,11 @@ const ProductsAddPage = () => {
 
       const uploadedImages = await uploadImages();
       const imageUrls = uploadedImages.map(
-        (filename) => `http://localhost:8000${filename}`,
-      );
+         (filename) => {
+            console.log("filename : ", filename);
+            return `http://localhost:8000${filename}`;
+         }
+      );      
 
       const variables = {
         ...formData,
