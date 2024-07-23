@@ -61,7 +61,7 @@ test('should login successfully and display user profile', async ({ page }) => {
    // await page.goto('http://localhost:3000/profile');
    await page.waitForLoadState('networkidle');
 
-   await expect(page.getByRole('heading', { name: "Profil utilisateur" })).toBeVisible({ timeout: 10000 });
+   await expect(page.getByRole('heading', { name: "Profil de l'utilisateur" })).toBeVisible({ timeout: 10000 });
 
    const emailLocator = page.locator('dd:text("admin@admin.com")');
    await expect(emailLocator).toBeVisible({ timeout: 10000 });

@@ -41,7 +41,7 @@ const ProfilePage = () => {
       <div className="w-full max-w-2xl rounded-lg border bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
         <div className="px-4 py-5 sm:px-6">
           <h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white">
-            Profil utilisateur
+            Profil de l'utilisateur
           </h3>
         </div>
         <div className="border-t border-gray-200 px-4 py-5 sm:p-0 dark:border-gray-700">
