@@ -61,7 +61,7 @@ test('should login successfully and display user profile', async ({ page }) => {
    // page.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
    
-   await page.goto('http://frontend:3000/profile');
+   await page.waitForURL('http://frontend:3000/profile', { timeout: 10000 });
    // await page.goto('http://localhost:3000/profile');
    await page.waitForLoadState('networkidle');
 
