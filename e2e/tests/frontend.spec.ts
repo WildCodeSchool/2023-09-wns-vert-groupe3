@@ -36,8 +36,8 @@ import { expect, test } from "@playwright/test";
 // });
 
 test('should login successfully and display user profile', async ({ page }) => {
-   // await page.goto('http://frontend:3000/login');
-   await page.goto('http://localhost:3000/login');
+   await page.goto('http://frontend:3000/login');
+   // await page.goto('http://localhost:3000/login');
 
    await page.waitForLoadState('networkidle');
 
