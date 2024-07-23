@@ -43,10 +43,10 @@ test('should login successfully and display user profile', async ({ page }) => {
 
    // await expect(page.locator('input[name="email"]')).toBeVisible();
    // await expect(page.locator('input[name="password"]')).toBeVisible();
-   // await page.fill('input[name="email"]', 'admin@admin.com');
-   // await page.fill('input[name="password"]', 'admin');
    await page.fill('input[name="email"]', 'admin@admin.com');
-   await page.fill('input[name="password"]', 'Wildrent!1');
+   await page.fill('input[name="password"]', 'admin');
+   // await page.fill('input[name="email"]', 'admin@admin.com');
+   // await page.fill('input[name="password"]', 'Wildrent!1');
 
    // await page.pause();
 
