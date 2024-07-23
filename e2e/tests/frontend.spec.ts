@@ -53,8 +53,8 @@ test('should login successfully and display user profile', async ({ page }) => {
    await page.waitForNavigation({ waitUntil: 'networkidle' });
 
    // await page.waitForLoadState('networkidle');
-   // const token = await page.evaluate(() => localStorage.getItem('jwt'));
-   // expect(token).not.toBeNull();
+   const token = await page.evaluate(() => localStorage.getItem('jwt'));
+   expect(token).not.toBeNull();
    // page.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
    await page.waitForURL('http://frontend:3000/profile', { timeout: 10000 });
