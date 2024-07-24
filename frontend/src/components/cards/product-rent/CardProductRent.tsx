@@ -53,7 +53,7 @@ const CardProductRent = ({
   return (
     <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
       <Link className="flex gap-4" href={`/products/${id}`}>
-        <section className="relative aspect-square h-80 w-80 overflow-hidden rounded-lg bg-zinc-300">
+        <section className="relative aspect-square h-80 w-80 overflow-hidden rounded-lg">
           <img
             src={picture[0]}
             alt={"Image de " + name}
@@ -80,7 +80,7 @@ const CardProductRent = ({
               </div>
               <div className="flex flex-col border-l-4 border-warning px-3 py-1">
                 <h1 className="text-lg font-semibold text-hightcontrast">
-                  {name || <em>NO TITLE...</em>}
+                  {name}
                 </h1>
                 {category && <CategoryLink category={category} />}
               </div>
@@ -88,7 +88,7 @@ const CardProductRent = ({
 
             <section className="flex flex-col gap-3">
               <p className="text-base font-medium opacity-70">
-                {description_short || <em>NO DESCRIPTION...</em>}
+                {description_short}
               </p>
             </section>
           </div>
