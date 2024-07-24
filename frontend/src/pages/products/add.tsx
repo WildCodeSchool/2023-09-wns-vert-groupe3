@@ -7,6 +7,7 @@ import LoadingProgress from "components/ui/LoadingProgress";
 import { ADD_PRODUCT } from "lib/graphql/mutations";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { CiWarning } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { InputCreateProduct } from "types/inputCreateProduct";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
@@ -14,8 +15,13 @@ import styles from "../../styles/pages/ProductsAddPage.module.scss";
 const ProductsAddPage = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [imageURLs, setImageURLs] = useState<string[]>([]);
-  const { register, handleSubmit, reset, setValue } =
-    useForm<InputCreateProduct>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<InputCreateProduct>();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>("");
 
@@ -61,12 +67,10 @@ const ProductsAddPage = () => {
       formData.quantity = parseInt(formData.quantity.toString(), 10);
 
       const uploadedImages = await uploadImages();
-      const imageUrls = uploadedImages.map(
-         (filename) => {
-            console.log("filename : ", filename);
-            return `http://localhost:8000${filename}`;
-         }
-      );      
+      const imageUrls = uploadedImages.map((filename) => {
+        console.log("filename : ", filename);
+        return `http://localhost:8000${filename}`;
+      });
 
       const variables = {
         ...formData,
@@ -112,34 +116,65 @@ const ProductsAddPage = () => {
       >
         <label>
           Nom de l&apos;annonce: <br />
-          <input className="text-field" {...register("name")} />
+          <input
+            className={`text-field ${errors.name ? "border-red-500" : ""}  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            {...register("name", { required: true })}
+          />
+          {errors.name && (
+            <p className="mt-1 flex items-center text-red-500">
+              <CiWarning className="mr-1 text-xl" /> Ce champ est requis.
+            </p>
+          )}
         </label>
         <br />
         <label>
           Description courte: <br />
-          <input className="text-field" {...register("description_short")} />
+          <input
+            className={`text-field  ${errors.description_short ? "border-red-500" : ""}  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            {...register("description_short", { required: true })}
+          />
+          {errors.description_short && (
+            <p className="mt-1 flex items-center text-red-500">
+              <CiWarning className="mr-1 text-xl" /> Ce champ est requis.
+            </p>
+          )}
         </label>
         <br />
         <label>
           Description longue: <br />
-          <input className="text-field" {...register("description_long")} />
+          <textarea
+            className={`w-full border p-3 ${errors.description_long ? "border-red-500" : "border-gray-300"} max-h-72 min-h-14 resize-y rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            {...register("description_long", { required: true })}
+          />
+          {errors.description_long && (
+            <p className="mt-2 flex items-center text-red-500">
+              <CiWarning className="mr-1 text-xl" /> Ce champ est requis.
+            </p>
+          )}
         </label>
         <br />
-        <div className="flex gap-4">
+        <div className="flex justify-between">
           <label>
             Prix fix: <br />
             <input
-              className="text-field"
-              {...register("price_fixed")}
+              className={`text-field ${errors.price_fixed ? "border-red-500" : ""}  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              {...register("price_fixed", { required: true })}
               type="number"
+              min={0}
             />
+            {errors.price_fixed && (
+              <p className="mt-1 flex items-center text-red-500">
+                <CiWarning className="mr-1 text-xl" /> Ce champ est requis.
+              </p>
+            )}
           </label>
           <label>
             Prix journalier: <br />
             <input
-              className="text-field"
+              className="text-field  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               {...register("price_daily")}
               type="number"
+              min={0}
             />
           </label>
         </div>
@@ -147,10 +182,16 @@ const ProductsAddPage = () => {
         <label>
           Quantité: <br />
           <input
-            className="text-field"
-            {...register("quantity")}
+            className={`text-field ${errors.quantity ? "border-red-500" : ""}  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            {...register("quantity", { required: true })}
             type="number"
+            min={0}
           />
+          {errors.quantity && (
+            <p className="mt-1 flex items-center text-red-500">
+              <CiWarning className="mr-1 text-xl" /> Ce champ est requis.
+            </p>
+          )}
         </label>
         <br />
         <label>

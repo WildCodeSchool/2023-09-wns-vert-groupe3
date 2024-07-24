@@ -77,13 +77,13 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
           />
         </svg>
       </Select.Trigger>
-      <Select.Content className="max-h-60 w-64 overflow-y-auto rounded-md bg-white shadow-md">
+      <Select.Content className="h-fit min-w-52 overflow-y-auto rounded-md bg-white shadow-md">
         <Select.Viewport className="p-2">
           {categories.map((category) => (
             <Select.Item
               key={category.id}
               value={category.id}
-              className="cursor-pointer px-4 py-2 text-sm text-black hover:bg-gray-100"
+              className="cursor-pointer rounded-sm border-black px-4 py-2 text-sm text-black hover:border-2 hover:bg-indigo-200"
             >
               {category.name}
             </Select.Item>
