@@ -5,14 +5,21 @@ import LoadingProgress from "components/ui/LoadingProgress";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 import { DELETE_PRODUCT, UPDATE_PRODUCT } from "lib/graphql/mutations";
-import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
+import { GET_PRODUCTS, ProductType, WHO_AM_I } from "lib/graphql/queries";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { User } from "types/user";
 import { convertToCurrency } from "utils/currency";
 import { isDateRangeOverlap } from "utils/date";
 
 const ProductsList = () => {
+  const {
+    loading: userLoading,
+    error: userError,
+    data: userData,
+  } = useQuery<{ whoAmI: User }>(WHO_AM_I);
+
   const { dates: userRequestedRentDates } = useUserDatesResearch();
 
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -43,11 +50,7 @@ const ProductsList = () => {
         variables: {
           productId: productIdNumber,
         },
-        refetchQueries: [
-          {
-            query: GET_PRODUCTS,
-          },
-        ],
+        refetchQueries: [{ query: GET_PRODUCTS }],
       });
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -76,8 +79,27 @@ const ProductsList = () => {
 
   const { data, loading, error } = useQuery(GET_PRODUCTS);
 
-  if (loading) return <LoadingProgress />;
+  if (userLoading || loading) return <LoadingProgress />;
+  if (userError) {
+    console.error(`Error fetching user data: ${userError}`);
+    return (
+      <div>
+        Une erreur est survenue lors de la récupération des informations de
+        l&apos;utilisateur.
+      </div>
+    );
+  }
+
   if (error) return <p>Error: {error.message}</p>;
+
+  const user = userData?.whoAmI;
+  if (!user || user.role !== "admin") {
+    return (
+      <div>
+        Accès refusé. Vous n&apos;avez pas la permission de voir cette page.
+      </div>
+    );
+  }
 
   const articles = data.getAllproducts;
 

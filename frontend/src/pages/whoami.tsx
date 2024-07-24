@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { WHO_AM_I } from "lib/graphql/queries";
+import { FaCircle } from "react-icons/fa";
 
 interface User {
   email: string;
@@ -24,6 +25,7 @@ const WhoAmI = () => {
   }
 
   const user = data?.whoAmI;
+  console.log(user);
 
   if (!user) {
     return <div>Aucun utilisateur trouvé. Veuillez vous connecter.</div>;
@@ -33,13 +35,16 @@ const WhoAmI = () => {
     <div>
       <h1>Informations de l&apos;utilisateur</h1>
       <div>
-        <p>
-          <b>Email:</b> {user.email}
+        <p>Email: {user.email}</p>
+        <p>Role: {user.role}</p>
+        <p className="flex items-center">
+          Connecté:
+          {user.isLoggedIn ? (
+            <FaCircle className="ml-1 text-green-500" />
+          ) : (
+            <FaCircle className="ml-1 text-red-500" />
+          )}
         </p>
-        <p>
-          <b>Role:</b> {user.role}
-        </p>
-        <p>Connecté: {user.isLoggedIn}</p>
       </div>
     </div>
   );

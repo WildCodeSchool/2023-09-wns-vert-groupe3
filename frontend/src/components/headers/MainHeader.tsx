@@ -1,8 +1,11 @@
+import { useQuery } from "@apollo/client";
 import { useCart } from "contexts/CartContext";
+import { WHO_AM_I } from "lib/graphql/queries";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaShoppingBag, FaUserCircle } from "react-icons/fa";
+import { User } from "types/user";
 
 import { RiListSettingsLine } from "react-icons/ri";
 
@@ -12,6 +15,17 @@ import SearchInput from "components/ui/SearchInput";
 import styles from "../../styles/components/MainHeader.module.scss";
 
 export default function MainHeader() {
+  const {
+    loading: userLoading,
+    error: userError,
+    data: userData,
+    refetch: refetchUser,
+  } = useQuery<{ whoAmI: User }>(WHO_AM_I);
+
+  useEffect(() => {
+    refetchUser();
+  });
+
   const [searchActive, setSearchActive] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [menuVisible, setMenuVisible] = useState(false);
@@ -31,6 +45,21 @@ export default function MainHeader() {
   const handleInputChange = (e: any) => {
     setSearchValue(e.target.value);
   };
+
+  if (userLoading) return null;
+  if (userError) {
+    console.error(`Error fetching user data: ${userError}`);
+    return (
+      <div>
+        Une erreur est survenue lors de la récupération des informations de
+        l&apos;utilisateur.
+      </div>
+    );
+  }
+
+  const user = userData?.whoAmI;
+  const isLoggedIn = user?.isLoggedIn;
+  const isAdmin = isLoggedIn && user.role === "admin";
 
   return (
     <main className={styles.mainHeader}>
@@ -61,7 +90,7 @@ export default function MainHeader() {
             <span>Tous les articles</span>
           </Link>
 
-          {localStorage.getItem("jwt") ? (
+          {isAdmin && (
             <div
               className="relative"
               onMouseEnter={() => setMenuVisible(true)}
@@ -73,8 +102,6 @@ export default function MainHeader() {
               />
               {menuVisible && <DropdownMenu />}
             </div>
-          ) : (
-            ""
           )}
 
           <Link href="/cart">
@@ -85,7 +112,8 @@ export default function MainHeader() {
               </div>
             </div>
           </Link>
-          {localStorage.getItem("jwt") ? (
+
+          {isLoggedIn ? (
             <div
               className="relative"
               onMouseEnter={() => setMenuProfileVisible(true)}
