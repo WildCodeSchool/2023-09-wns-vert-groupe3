@@ -1,10 +1,11 @@
 import { useLazyQuery } from "@apollo/client";
+import { UserContext } from "components/Layout";
 import { toastSuccessRegister } from "components/ui/Toast";
 import { LOGIN } from "lib/graphql/queries";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { ToastContainer } from "react-toastify";
@@ -40,7 +41,7 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<inputLoginUser>();
 
-  // const authInfo = useContext(UserContext);
+  const authInfo = useContext(UserContext);
   const [handleLogin, { data, loading, error: queryError }] = useLazyQuery(
     LOGIN,
     {
@@ -49,7 +50,7 @@ const LoginPage = () => {
 
         //   toastSuccessLogin()
         //   localStorage.setItem("LoginSuccess", "true");
-        //   authInfo.refetchLogin();
+          authInfo.refetchLogin();
         router.push("/");
         //  router.back()
       },
