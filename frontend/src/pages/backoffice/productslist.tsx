@@ -9,9 +9,11 @@ import { GET_PRODUCTS, ProductType, WHO_AM_I } from "lib/graphql/queries";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { CiWarning } from "react-icons/ci";
 import { User } from "types/user";
 import { convertToCurrency } from "utils/currency";
 import { isDateRangeOverlap } from "utils/date";
+import { isAdmin } from "utils/isAdmin";
 
 const ProductsList = () => {
   const {
@@ -79,24 +81,16 @@ const ProductsList = () => {
 
   const { data, loading, error } = useQuery(GET_PRODUCTS);
 
-  if (userLoading || loading) return <LoadingProgress />;
-  if (userError) {
-    console.error(`Error fetching user data: ${userError}`);
-    return (
-      <div>
-        Une erreur est survenue lors de la récupération des informations de
-        l&apos;utilisateur.
-      </div>
-    );
-  }
-
-  if (error) return <p>Error: {error.message}</p>;
-
   const user = userData?.whoAmI;
-  if (!user || user.role !== "admin") {
+  const isUserAdmin = user ? isAdmin(user) : false;
+
+  if (!isUserAdmin) {
     return (
-      <div>
-        Accès refusé. Vous n&apos;avez pas la permission de voir cette page.
+      <div className="w-fit rounded-lg	border-2 border-red-500 p-4">
+        <p className="flex items-center text-lg">
+          <CiWarning className="mr-1 text-lg text-red-500" />
+          Accès refusé. Vous n&apos;avez pas la permission de voir cette page.
+        </p>
       </div>
     );
   }

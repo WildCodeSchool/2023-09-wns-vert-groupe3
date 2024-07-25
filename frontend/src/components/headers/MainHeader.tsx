@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaShoppingBag, FaUserCircle } from "react-icons/fa";
 import { User } from "types/user";
+import { isAdmin } from "utils/isAdmin";
+import { isLoggedIn } from "../../utils/isLoggedIn";
 
 import { RiListSettingsLine } from "react-icons/ri";
 
@@ -24,7 +26,7 @@ export default function MainHeader() {
 
   useEffect(() => {
     refetchUser();
-  });
+  }, [refetchUser]);
 
   const [searchActive, setSearchActive] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -58,8 +60,8 @@ export default function MainHeader() {
   }
 
   const user = userData?.whoAmI;
-  const isLoggedIn = user?.isLoggedIn;
-  const isAdmin = isLoggedIn && user.role === "admin";
+  const isUserLoggedIn = user ? isLoggedIn(user) : false;
+  const isUserAdmin = user ? isAdmin(user) : false;
 
   return (
     <main className={styles.mainHeader}>
@@ -90,7 +92,7 @@ export default function MainHeader() {
             <span>Tous les articles</span>
           </Link>
 
-          {isAdmin && (
+          {isUserAdmin && (
             <div
               className="relative"
               onMouseEnter={() => setMenuVisible(true)}
@@ -113,7 +115,7 @@ export default function MainHeader() {
             </div>
           </Link>
 
-          {isLoggedIn ? (
+          {isUserLoggedIn ? (
             <div
               className="relative"
               onMouseEnter={() => setMenuProfileVisible(true)}
