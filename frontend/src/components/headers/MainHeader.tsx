@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { FaShoppingBag, FaUserCircle } from "react-icons/fa";
 import { User } from "types/user";
 import { isAdmin } from "utils/isAdmin";
-import { isLoggedIn } from "../../utils/isLoggedIn";
+import { isLoggedIn } from "utils/isLoggedIn";
 
 import { RiListSettingsLine } from "react-icons/ri";
 
