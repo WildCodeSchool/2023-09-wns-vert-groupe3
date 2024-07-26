@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { normalizeDate } from "utils/date";
 
 interface UserDatesResearchContextValue {
   dates: UserResearchDatesType;
@@ -34,8 +35,8 @@ export const UserDatesResearchProvider = ({
   children: React.ReactNode;
 }) => {
   const [dates, setDates] = useState<UserResearchDatesType>({
-    start: new Date(Date.parse("2024-05-18")),
-    end: new Date(Date.parse("2024-05-21")),
+    start: normalizeDate(new Date(Date.parse("2024-06-20"))),
+    end: normalizeDate(new Date(Date.parse("2024-06-25")))
   });
 
   const updateDates = (dates: { start: Date; end: Date }) => {

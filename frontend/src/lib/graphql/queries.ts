@@ -2,20 +2,27 @@ import { gql } from "@apollo/client";
 
 export type ProductType = {
   id: number;
-  name: string;
-  description_short: string;
-  description_long: string;
+  name?: string;
   picture: string[];
-  price_fixed: number;
+  discount: number;
+  description_long: string;
+  description_short: string;
   price_daily: number;
-  discount?: number;
-  quantity: number;
-  created_at: string;
-  updated_at: string;
-  category: {
+  price_fixed: number;
+  stock: number;
+  category?: {
     id: number;
     name: string;
   };
+  rents?: {
+    quantity: number;
+    rent: {
+      to: string;
+      from: string;
+    };
+  }[];
+  created_at: string;
+  updated_at: string;
 };
 
 export const GET_PRODUCTS = gql`
@@ -23,19 +30,26 @@ export const GET_PRODUCTS = gql`
     getAllproducts {
       id
       name
-      description_short
-      description_long
+      stock
       picture
-      price_fixed
-      price_daily
       discount
-      quantity
-      created_at
-      updated_at
+      description_long
+      description_short
+      price_daily
+      price_fixed
+      rents {
+        quantity
+        rent {
+          to
+          from
+        }
+      }
       category {
         id
         name
       }
+      created_at
+      updated_at
     }
   }
 `;
@@ -45,19 +59,26 @@ export const GET_PRODUCT_BY_ID = gql`
     getProductById(productId: $productId) {
       id
       name
-      description_short
-      description_long
+      stock
       picture
-      price_fixed
-      price_daily
       discount
-      quantity
-      created_at
-      updated_at
+      description_long
+      description_short
+      price_daily
+      price_fixed
+      rents {
+        quantity
+        rent {
+          to
+          from
+        }
+      }
       category {
         id
         name
       }
+      created_at
+      updated_at
     }
   }
 `;
@@ -76,19 +97,26 @@ export const GET_PRODUCTS_BY_CATEGORY_ID = gql`
     getProductsByCategoryId(categoryId: $categoryId) {
       id
       name
-      description_short
-      description_long
+      stock
       picture
-      price_fixed
-      price_daily
       discount
-      quantity
-      created_at
-      updated_at
+      description_long
+      description_short
+      price_daily
+      price_fixed
+      rents {
+        quantity
+        rent {
+          to
+          from
+        }
+      }
       category {
         id
         name
       }
+      created_at
+      updated_at
     }
   }
 `;

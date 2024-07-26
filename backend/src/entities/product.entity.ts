@@ -1,15 +1,17 @@
-import { IsDate, IsInt, Length, MinLength } from "class-validator";
-import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { Category } from "./category.entity";
+import { Field, ID, ObjectType } from "type-graphql";
+import { IsDate, IsInt, Length, MinLength } from "class-validator";
+import { ProductRented } from "./productRented.entity";
 
 @ObjectType()
 @Entity()
@@ -56,7 +58,18 @@ export class Product extends BaseEntity {
   @Field(() => Number)
   @Column()
   @IsInt()
-  quantity: number;
+  stock: number;
+
+  @Field(() => Category, { nullable: true })
+  @ManyToOne(() => Category, (category) => category.products, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  category: Category;
+
+  @Field(() => [ProductRented], { nullable: true })
+  @OneToMany(() => ProductRented, (productRented) => productRented.product)
+  rents: ProductRented[];
 
   @Field()
   @CreateDateColumn()
@@ -67,14 +80,4 @@ export class Product extends BaseEntity {
   @UpdateDateColumn()
   @IsDate()
   updated_at: Date;
-
-  // One Product has only 1 Category
-  // A Category can contain multiple products
-  // ManyToOne Relationship
-  @Field(() => Category, { nullable: true })
-  @ManyToOne(() => Category, (category) => category.products, {
-    cascade: true,
-    onDelete: "CASCADE",
-  })
-  category: Category;
 }

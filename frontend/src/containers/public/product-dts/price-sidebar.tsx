@@ -2,11 +2,10 @@ import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 
 import { ProductType } from "lib/graphql/queries";
 
-import { daysBetweenDates, isDateRangeOverlap } from "utils/date";
+import { daysBetweenDates, isProductUnavailableAtDates } from "utils/date";
 import { RentBill, convertToCurrency } from "utils/currency";
 
 import Button from "components/Button";
-import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 
 const ProductDtsPriceSidebar = ({ product }: { product: ProductType }) => {
   const { dates: userRequestedRentDates } = useUserDatesResearch();
@@ -24,9 +23,26 @@ const ProductDtsPriceSidebar = ({ product }: { product: ProductType }) => {
   // Add accident protection
   rentBill.addVariant("Protection accident", 30);
 
-  const isUnavailable = isDateRangeOverlap(
+  const allActiveRentsDates = product.rents?.map((item) => {
+    return {
+      quantity: item.quantity,
+      from: new Date(item.rent.from),
+      to: new Date(item.rent.to),
+    };
+  });
+
+  console.log("allActiveRentsDates", product);
+
+  const isUnavailable = isProductUnavailableAtDates(
+    product.stock,
     userRequestedRentDates,
-    PRODUCT_UNAVAILABLE_DATES,
+    allActiveRentsDates?.map((item) => {
+      return {
+        quantity: item.quantity,
+        from: item.from,
+        to: item.to,
+      };
+    }),
   );
 
   console.log("isUnavailable", isUnavailable);

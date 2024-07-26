@@ -10,6 +10,8 @@ import DropdownMenu from "components/ui/DropdownMenu";
 import DropdownMenuProfile from "components/ui/DropdownMenuProfile";
 import SearchInput from "components/ui/SearchInput";
 import styles from "../../styles/components/MainHeader.module.scss";
+import { useQuery } from "@tanstack/react-query";
+
 
 export default function MainHeader() {
   const [searchActive, setSearchActive] = useState(false);
@@ -31,6 +33,18 @@ export default function MainHeader() {
   const handleInputChange = (e: any) => {
     setSearchValue(e.target.value);
   };
+
+  const { data: cart } = useQuery({
+    queryKey: ['getClientCartItem'],
+    queryFn: async () => {
+      const folders = await getCartItemsByUserId({
+        userId
+      })
+
+      if (folders.serverError) throw new Error(folders.serverError)
+      return folders.data ?? []
+    }
+  })
 
   return (
     <main className={styles.mainHeader}>

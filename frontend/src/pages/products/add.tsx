@@ -11,7 +11,6 @@ import { CiWarning } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { InputCreateProduct } from "types/inputCreateProduct";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
-
 const ProductsAddPage = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [imageURLs, setImageURLs] = useState<string[]>([]);

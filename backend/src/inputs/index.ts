@@ -11,5 +11,5 @@ export {
   InputCreateProduct,
   InputUpdateProduct,
   InputUserCreate,
-  InputUserLogin,
+  InputUserLogin
 };

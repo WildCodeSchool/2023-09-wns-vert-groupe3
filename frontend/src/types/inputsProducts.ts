@@ -3,7 +3,7 @@ export type InputsProducts = {
   description: string;
   picture: string[];
   price: string;
-  quantity: string;
+  stock: string;
   created_at: string;
-  updated_at: string;
-};
+  updated_at: string;};
+

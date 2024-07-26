@@ -1,12 +1,10 @@
-import { PRODUCT_UNAVAILABLE_DATES } from "../../../data/fakeData";
-
 import Link from "next/link";
 import { useState } from "react";
 
 import { ProductType } from "lib/graphql/queries";
 
 import { convertToCurrency } from "utils/currency";
-import { isDateRangeOverlap } from "utils/date";
+import { isProductUnavailableAtDates } from "utils/date";
 
 import { useCart } from "contexts/CartContext";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
@@ -19,10 +17,12 @@ import CardProductRentAvailabilityViewer from "../../../components/cards/product
 const CardProductRent = ({
   id,
   name,
-  description_short,
+  stock,
   picture,
   price_fixed,
   price_daily,
+  description_short,
+  rents,
   category,
   quantity,
 }: ProductType) => {
@@ -41,14 +41,45 @@ const CardProductRent = ({
     addToCart(productToAdd);
   };
 
-  const isUnavailable = isDateRangeOverlap(
+  // Compute all the unavailable dates for the product
+  const allActiveRentsDates = rents?.map((item) => {
+    return {
+      quantity: item.quantity,
+      from: new Date(item.rent.from),
+      to: new Date(item.rent.to),
+    };
+  });
+
+  const isUnavailable = isProductUnavailableAtDates(
+    stock,
     userRequestedRentDates,
-    PRODUCT_UNAVAILABLE_DATES,
+    allActiveRentsDates
   );
 
+  const getCategoryColor = (categoryName: string) => {
+    switch (categoryName) {
+      case "Ski":
+        return "bg-gradient-to-br from-sky-500 via-sky-500 to-indigo-500";
+      case "Plongée":
+        return "bg-gradient-to-br from-blue-700 via-blue-700 to-indigo-500";
+      case "Randonnée":
+        return "bg-gradient-to-br from-green-600 via-green-600 to-indigo-500";
+      case "Escalade":
+        return "bg-gradient-to-br from-amber-800 via-amber-800 to-indigo-500";
+      case "Camping":
+        return "bg-gradient-to-br from-yellow-600 via-yellow-600 to-indigo-500";
+      default:
+        return "bg-slate-500";
+    }
+  };
+
   const [isHovered, setIsHovered] = useState(false);
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   return (
     <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
@@ -117,7 +148,10 @@ const CardProductRent = ({
         </div>
       </Link>
       <div className="inline-flex gap-3.5">
-        <CardProductRentAvailabilityViewer />
+        <CardProductRentAvailabilityViewer
+          stock={stock}
+          allActiveRentsDates={allActiveRentsDates}
+        />
       </div>
     </article>
   );

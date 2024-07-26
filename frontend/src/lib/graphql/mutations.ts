@@ -9,7 +9,7 @@ export const ADD_PRODUCT = gql`
       price_fixed
       price_daily
       picture
-      quantity
+      stock
       category {
         id
         name

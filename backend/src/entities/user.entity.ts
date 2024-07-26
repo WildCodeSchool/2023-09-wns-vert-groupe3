@@ -1,6 +1,8 @@
 import { MinLength } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+
+import { Rent } from "./rent.entity";
 
 export type UserRoleType = "admin" | "user";
 
@@ -17,7 +19,7 @@ export class User extends BaseEntity {
     message: "Le nom d'utilisateur doit contenir au moins 5 caractères", //TODO à revoir car possible de créer un compte avec moins de 5 caractères
   })
   username: string;
-
+  
   @Field()
   @Column({ unique: true })
   email: string;
@@ -32,6 +34,10 @@ export class User extends BaseEntity {
     default: "user",
   })
   role: UserRoleType;
+
+  @Field(() => [Rent], { nullable: true })
+  @OneToMany(() => Rent, (rent) => rent.user)
+  rents: Rent[];
 }
 
 @ObjectType()

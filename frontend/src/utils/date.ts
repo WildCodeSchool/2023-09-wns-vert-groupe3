@@ -21,36 +21,55 @@ export const daysInMonth: DaysInMonthType = (month, year): number => {
 /**
  * Checks if there is an overlap between a start and end date and an array of dates
  *
+ * @stock - number of items in stock
  * @param dateRange - object with start and end date
  * @param unavailableDates  - array of dates that are unavailable
  * @returns {boolean} - true if there is an overlap, false otherwise
  *
- * @example isDateRangeOverlap(PRODUCT_UNAVAILABLE_DATES, USER_REQUESTED_RENT_DATES) // returns true
+ * @example isProductAvailableAtDates(5, USER_REQUESTED_RENT_DATES, PRODUCT_UNAVAILABLE_DATES) // returns true or false
  *
  * @throws {Error} - if the start date is greater than the end date
  *
  */
-export const isDateRangeOverlap = (
+export const isProductUnavailableAtDates = (
+  stock: number,
   dateRange: UserResearchDatesType,
-  unavailableDates: Date[],
+  unavailableDates?: {
+    quantity: number;
+    from: Date;
+    to: Date;
+  }[],
 ): boolean => {
   // Check if start date or end date is null and return false
   if (!dateRange.start || !dateRange.end) {
     return false;
   }
 
+  // Check if there are no unavailable dates
+  if (!unavailableDates || unavailableDates.length === 0) {
+    return false;
+  }
+
+  const { start, end } = dateRange;
+
   // Check if start date is greater than end date and throw an error
-  if (dateRange.start > dateRange.end) {
+  if (start > end) {
     throw new Error("Start date cannot be greater than the end date");
   }
 
-  // Check if any unavailable date overlaps with the date range
-  return unavailableDates.some(
-    (d) =>
-      // @ts-ignore
-      d >= dateRange.start && d <= dateRange.end,
-  );
+  // Calculate the total quantity rented during the overlapping date ranges
+  const totalRentedQuantity = unavailableDates.reduce((acc, { quantity, from, to }) => {
+    // Check if the date ranges overlap
+    if (from <= end && to >= start) {
+      return acc + quantity;
+    }
+    return acc;
+  }, 0);
+
+  // Check if the total rented quantity exceeds the stock
+  return totalRentedQuantity >= stock;
 };
+
 
 /**
  * Returns an array of months between two dates
@@ -115,3 +134,13 @@ export const daysBetweenDates = (start?: Date, end?: Date): number => {
   const diffInTime = end.getTime() - start.getTime();
   return Math.round(diffInTime / oneDay);
 };
+
+/**
+ * Returns a normalized date with hours, minutes, seconds and milliseconds set to 0
+ * 
+ * @param date - a date
+ * @returns {Date} - a normalized date
+ */
+export const normalizeDate = (date: Date) => {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}

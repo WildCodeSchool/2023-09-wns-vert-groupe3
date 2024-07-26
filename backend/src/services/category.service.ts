@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
-import datasource from "../config/datasource";
 import { Category } from "../entities";
+import datasource from "../config/datasource";
 import { InputCreateCategory } from "../inputs";
 
 export default class CategoryService {

@@ -1,7 +1,7 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Category } from "../entities";
 import { InputCreateCategory } from "../inputs";
 import CategoryService from "../services/category.service";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 
 @Resolver()
 export default class CategoryResolver {

@@ -28,6 +28,8 @@ const HomeHotProductsSection = () => {
 
   const products = data.getAllproducts;
 
+  console.log("products", products);
+
   const filteredProducts = products.filter(
     (product: any) =>
       product.category?.name === "Escalade" ||

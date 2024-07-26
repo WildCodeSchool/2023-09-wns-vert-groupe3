@@ -24,7 +24,7 @@ export class InputUpdateProduct {
   discount?: number;
 
   @Field(() => Number, { nullable: true })
-  quantity: number;
+  stock: number;
 
   @Field(() => Number, { nullable: true })
   category: number;

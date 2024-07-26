@@ -59,7 +59,7 @@ export async function fillDatabaseIfEmpty() {
     ];
     snowboard.price_fixed = 199;
     snowboard.price_daily = 20;
-    snowboard.quantity = 5;
+    snowboard.stock = 5;
     await snowboard.save();
 
     const tent = new Product();
@@ -74,7 +74,7 @@ export async function fillDatabaseIfEmpty() {
     ];
     tent.price_fixed = 149;
     tent.price_daily = 15;
-    tent.quantity = 8;
+    tent.stock = 8;
     await tent.save();
 
     const climbing = new Product();
@@ -89,7 +89,7 @@ export async function fillDatabaseIfEmpty() {
     ];
     climbing.price_fixed = 199;
     climbing.price_daily = 20;
-    climbing.quantity = 3;
+    climbing.stock = 3;
     await climbing.save();
 
     const backpack = new Product();
@@ -104,7 +104,7 @@ export async function fillDatabaseIfEmpty() {
     ];
     backpack.price_fixed = 99;
     backpack.price_daily = 10;
-    backpack.quantity = 11;
+    backpack.stock = 11;
     await backpack.save();
   }
 }

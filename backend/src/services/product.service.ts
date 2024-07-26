@@ -1,10 +1,10 @@
+import { redisClient } from "../index";
 import { validate } from "class-validator";
 import { ILike, Repository } from "typeorm";
 import datasource from "../config/datasource";
 import { Category, Product } from "../entities";
-import { redisClient } from "../index";
-import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 import CategoryService from "../services/category.service";
+import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 
 export default class ProductService {
   db: Repository<Product>;
@@ -15,17 +15,20 @@ export default class ProductService {
   }
 
   async list(_ctx: any) {
-    return this.db.find({
-      relations: {
-        category: true,
-      },
-    });
+    try {
+      return await this.db.find({
+        relations: ["category", "category.products", "rents", "rents.rent"],
+      });
+    } catch (error) {
+      console.error("Error in list query:", error);
+      throw error;
+    }
   }
 
   async findById(id: number) {
     return await this.db.findOne({
       where: { id },
-      relations: { category: true },
+      relations: ["category", "category.products", "rents", "rents.rent"],
     });
   }
 

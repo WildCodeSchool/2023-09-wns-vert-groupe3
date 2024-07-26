@@ -3,14 +3,13 @@ import CategoryLink from "components/CategoryLink";
 import DeleteModal from "components/modal/DeleteModal";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
-import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 import { DELETE_PRODUCT, UPDATE_PRODUCT } from "lib/graphql/mutations";
 import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { convertToCurrency } from "utils/currency";
-import { isDateRangeOverlap } from "utils/date";
+import { isProductUnavailableAtDates } from "utils/date";
 
 const ProductsList = () => {
   const { dates: userRequestedRentDates } = useUserDatesResearch();
@@ -79,12 +78,9 @@ const ProductsList = () => {
   if (loading) return <LoadingProgress />;
   if (error) return <p>Error: {error.message}</p>;
 
-  const articles = data.getAllproducts;
-
-  const isUnavailable = isDateRangeOverlap(
-    userRequestedRentDates,
-    PRODUCT_UNAVAILABLE_DATES,
-  );
+  // console.log('data :', data);
+  const articles: ProductType[] = data.getAllproducts;
+  console.log(articles);
 
   const handleEdit = (article: any) => {
     setEditingArticle(article);
@@ -178,59 +174,43 @@ const ProductsList = () => {
                   {articles.map((article: ProductType) => (
                     <tr key={article.id}>
                       <td className="name-cell whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6">
-                        {editingArticle?.id === article.id ? (
-                          <input
-                            type="text"
-                            name="name"
-                            value={editForm.name}
-                            onChange={handleFormChange}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                          />
-                        ) : (
-                          <div className="flex items-center">
-                            <div className="flex-shrink-0">
-                              <img
-                                className="h-16 w-16 rounded-full object-cover"
-                                width={100}
-                                height={100}
-                                src={article.picture[0]}
-                                alt={article.name}
-                              />
-                            </div>
-                            <div className="ml-4">
-                              <div className="font-medium text-hightcontrast">
-                                {article.name}
-                              </div>
+                        <div className="flex items-center">
+                          <div className="h-16 w-16 flex-shrink-0">
+                            <img
+                              className=" h-16 w-16 rounded-full"
+                              width={100}
+                              height={100}
+                              src={article.picture[0]}
+                              alt={article.name}
+                            />
+                          </div>
+                          <div className="ml-4">
+                            <div className="font-medium text-hightcontrast">
+                              {article.name}
                             </div>
                           </div>
-                        )}
+                        </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-lg">
                         <span className="inline-flex rounded-full p-4 px-2 text-lg font-bold leading-5">
-                          {article.category && (
-                            <CategoryLink category={article.category} />
+                          {article.category?.name && (
+                            <div
+                              className={` w-max rounded px-2 py-1 text-sm`}
+                            >
+                              {article.category.name}
+                            </div>
                           )}
                         </span>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-lg">
-                        {editingArticle?.id === article.id ? (
-                          <input
-                            type="number"
-                            name="price_daily"
-                            value={editForm.price_daily}
-                            onChange={handleFormChange}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                          />
-                        ) : (
-                          <p>
-                            {
-                              convertToCurrency(article.price_daily).in("EUR")
-                                .valueWithSymbol
-                            }
-                          </p>
-                        )}
+                        <p>
+                          {
+                            convertToCurrency(article.price_daily).in("EUR")
+                              .valueWithSymbol
+                          }
+                        </p>
                       </td>
-                      {isUnavailable ? (
+                      {false ? (
                         <td className="whitespace-nowrap px-3 py-4 text-lg text-red-600">
                           Indisponible
                         </td>
@@ -240,45 +220,26 @@ const ProductsList = () => {
                         </td>
                       )}
                       <td className="whitespace-nowrap px-3 py-4 text-lg">
-                        {editingArticle?.id === article.id ? (
-                          <input
-                            type="number"
-                            name="quantity"
-                            value={editForm.quantity}
-                            onChange={handleFormChange}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                          />
-                        ) : (
-                          <p>{article.quantity}</p>
-                        )}
+                        <p>{article.quantity}</p>
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-lg font-medium sm:pr-6">
-                        {editingArticle?.id === article.id ? (
-                          <button
-                            onClick={handleUpdate}
-                            className="font-semibold text-indigo-600 hover:text-indigo-900"
-                          >
-                            Enregistrer
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleEdit(article)}
+                        <div>
+                          <a
+                            href="#"
                             className="font-semibold text-indigo-600 hover:text-indigo-900"
                           >
                             Editer
-                          </button>
-                        )}
+                            <span className="sr-only">, {article.name}</span>
+                          </a>
+                        </div>
                         <div
                           onClick={() => openModalDelete(article)}
                           className="cursor-pointer"
                         >
-                          <Link
-                            className="font-semibold text-indigo-600 hover:text-red-600"
-                            href="#"
-                          >
+                          <a className="font-semibold text-indigo-600 hover:text-red-600">
                             Supprimer
                             <span className="sr-only">, {article.name}</span>
-                          </Link>
+                          </a>
                         </div>
                       </td>
                       {showModalDelete && (

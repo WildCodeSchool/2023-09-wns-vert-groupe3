@@ -1,7 +1,7 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Product } from "../entities";
-import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 import ProductService from "../services/product.service";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 
 @Resolver()
 export default class ProductResolver {

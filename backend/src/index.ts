@@ -1,10 +1,12 @@
+import "reflect-metadata";
+import { createClient } from "redis";
+import { buildSchema } from "type-graphql";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import * as jwt from "jsonwebtoken";
-import { createClient } from "redis";
-import "reflect-metadata";
-import { buildSchema } from "type-graphql";
+
 import dataSource from "./config/datasource";
+import { authChecker } from "./authChecker";
 import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
 import {
   CategoryResolver,
@@ -12,6 +14,7 @@ import {
   ProductResolver,
   UserResolver,
 } from "./resolvers";
+import RentedResolver from "resolvers/rent.resolver";
 
 require("dotenv").config();
 
@@ -41,7 +44,7 @@ const start = async () => {
       CategoryResolver,
       UserResolver,
       CheckoutResolver,
-    ],
+      RentedResolver],
     authChecker: ({ context }) => {
       if (context.email) {
         return true;

@@ -16,6 +16,8 @@ import { setContext } from "@apollo/client/link/context";
 import { CartProvider } from "contexts/CartContext";
 import "styles/globals.css";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_BACKEND_URL,
 });
@@ -37,17 +39,21 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const queryClient = new QueryClient();
+
 function App({ Component, pageProps: { ...pageProps } }: AppProps) {
   return (
     <ApolloProvider client={client}>
-      <CartProvider>
-        <Layout>
-          <UserDatesResearchProvider>
-            <Component {...pageProps} />
-          </UserDatesResearchProvider>
-          <ToastContainer />
-        </Layout>
-      </CartProvider>
+      <QueryClientProvider client={queryClient}>
+        <CartProvider>
+          <Layout>
+            <UserDatesResearchProvider>
+              <Component {...pageProps} />
+            </UserDatesResearchProvider>
+            <ToastContainer />
+          </Layout>
+        </CartProvider>
+      </QueryClientProvider>
     </ApolloProvider>
   );
 }
