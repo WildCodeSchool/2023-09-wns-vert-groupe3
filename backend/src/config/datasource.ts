@@ -1,4 +1,6 @@
 import { DataSource } from "typeorm";
+// import { Migration1721926264177 } from "../database/migrations/1721926264177-migration";
+// import path from 'path';
 
 const dataSource = new DataSource({
   type: "postgres",
@@ -13,7 +15,9 @@ const dataSource = new DataSource({
   entities: ["src/entities/*.ts"],
   synchronize: false,
   logging: ["error", "query"],
-  migrations: [__dirname + "/migrations/*.{js, ts}"], // Déterminer à quel endroit on enregistre les fichiers de migrations afin de pouvoir les relire.
+  migrations: ["src/database/migrations/*.ts"], // Déterminer à quel endroit on enregistre les fichiers de migrations afin de pouvoir les relire.
+  //   migrations: [path.join(__dirname, '../database/migrations/*.ts')],
+  //   migrations: [Migration1721926264177],
   migrationsRun: true // Assure l'application des migrations non encore appliquées à chaque connexion à la base de données.
 });
 
