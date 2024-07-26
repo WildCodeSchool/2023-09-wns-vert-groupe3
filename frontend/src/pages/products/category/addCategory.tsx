@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from "@apollo/client";
 import Button from "components/Button";
+import BadAuthorization from "components/ui/BadAuthorization";
 import { ADD_CATEGORY } from "lib/graphql/mutations";
 import { WHO_AM_I } from "lib/graphql/queries";
 import { useForm } from "react-hook-form";
-import { CiWarning } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { User } from "types/user";
 import { isAdmin } from "utils/isAdmin";
@@ -32,15 +32,8 @@ const CategoryAddPage = () => {
   const user = userData?.whoAmI;
   const isUserAdmin = user ? isAdmin(user) : false;
 
-  if (!isUserAdmin) {
-    return (
-      <div className="w-fit rounded-lg	border-2 border-red-500 p-4">
-        <p className="flex items-center text-lg">
-          <CiWarning className="mr-1 text-lg text-red-500" />
-          Accès refusé. Vous n&apos;avez pas la permission de voir cette page.
-        </p>
-      </div>
-    );
+  if (isUserAdmin) {
+    return <BadAuthorization />;
   }
 
   const onSubmit = async (formData: InputCreateCategory) => {

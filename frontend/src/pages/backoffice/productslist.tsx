@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import CategoryLink from "components/CategoryLink";
 import DeleteModal from "components/modal/DeleteModal";
+import BadAuthorization from "components/ui/BadAuthorization";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
@@ -9,7 +10,6 @@ import { GET_PRODUCTS, ProductType, WHO_AM_I } from "lib/graphql/queries";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { CiWarning } from "react-icons/ci";
 import { User } from "types/user";
 import { convertToCurrency } from "utils/currency";
 import { isDateRangeOverlap } from "utils/date";
@@ -85,14 +85,7 @@ const ProductsList = () => {
   const isUserAdmin = user ? isAdmin(user) : false;
 
   if (!isUserAdmin) {
-    return (
-      <div className="w-fit rounded-lg	border-2 border-red-500 p-4">
-        <p className="flex items-center text-lg">
-          <CiWarning className="mr-1 text-lg text-red-500" />
-          Accès refusé. Vous n&apos;avez pas la permission de voir cette page.
-        </p>
-      </div>
-    );
+    return <BadAuthorization />;
   }
 
   const articles = data.getAllproducts;
