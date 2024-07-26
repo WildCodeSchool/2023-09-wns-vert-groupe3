@@ -1,6 +1,6 @@
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import { toastSuccessRegister } from "components/ui/Toast";
-import { LOGIN } from "lib/graphql/queries";
+import { LOGIN, WHO_AM_I } from "lib/graphql/queries";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,6 +10,8 @@ import { HiEye, HiEyeOff } from "react-icons/hi";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { inputLoginUser } from "types/inputLoginUser";
+import { User } from "types/user";
+import { isLoggedIn } from "utils/isUserLoggedIn";
 
 const LoginPage = () => {
   // Affiche la pop up d'enregistrement avec succès
@@ -21,12 +23,18 @@ const LoginPage = () => {
     }
   }, []);
 
+  const {
+    loading: userLoading,
+    error: userError,
+    data: userData,
+    refetch: refetchUser,
+  } = useQuery<{ whoAmI: User }>(WHO_AM_I);
+
+  const user = userData?.whoAmI;
+  const isUserLoggedIn = user ? isLoggedIn(user) : false;
+
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
-
-  if (localStorage.getItem("jwt") !== null) {
-    router.push("/profile");
-  }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -50,7 +58,8 @@ const LoginPage = () => {
         //   toastSuccessLogin()
         //   localStorage.setItem("LoginSuccess", "true");
         //   authInfo.refetchLogin();
-        router.push("/");
+        router.reload();
+        // router.push("/");
         //  router.back()
       },
     },
@@ -81,6 +90,10 @@ const LoginPage = () => {
       console.error("Error : " + err);
     }
   };
+
+  if (isUserLoggedIn) {
+    router.push("/");
+  }
 
   return (
     <>
