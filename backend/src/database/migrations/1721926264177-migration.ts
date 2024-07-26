@@ -12,13 +12,13 @@ export class Migration1721926264177 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "product" ADD CONSTRAINT "FK_ff0c0301a95e517153df97f6812" FOREIGN KEY ("categoryId") REFERENCES "category"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
     }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "product" DROP CONSTRAINT "FK_ff0c0301a95e517153df97f6812"`);
-        await queryRunner.query(`DROP TABLE "user"`);
-        await queryRunner.query(`DROP TYPE "public"."user_role_enum"`);
-        await queryRunner.query(`DROP TABLE "checkout"`);
-        await queryRunner.query(`DROP TABLE "product"`);
-        await queryRunner.query(`DROP TABLE "category"`);
+    public async down(_queryRunner: QueryRunner): Promise<void> {
+      //   await queryRunner.query(`ALTER TABLE "product" DROP CONSTRAINT "FK_ff0c0301a95e517153df97f6812"`);
+      //   await queryRunner.query(`DROP TABLE "user"`);
+      //   await queryRunner.query(`DROP TYPE "public"."user_role_enum"`);
+      //   await queryRunner.query(`DROP TABLE "checkout"`);
+      //   await queryRunner.query(`DROP TABLE "product"`);
+      //   await queryRunner.query(`DROP TABLE "category"`);
     }
 
 }

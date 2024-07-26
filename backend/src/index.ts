@@ -5,7 +5,7 @@ import { createClient } from "redis";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import dataSource from "./config/datasource";
-import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
+// import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
 import {
   CategoryResolver,
   CheckoutResolver,
@@ -33,7 +33,7 @@ const start = async () => {
   await redisClient.connect();
   await dataSource.initialize();
 
-  await fillDatabaseIfEmpty();
+//   await fillDatabaseIfEmpty();
 
   const schema = await buildSchema({
     resolvers: [

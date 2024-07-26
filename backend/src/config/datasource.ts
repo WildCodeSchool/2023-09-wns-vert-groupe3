@@ -11,7 +11,7 @@ const dataSource = new DataSource({
   password: "wildrent",
   database: "postgres",
   entities: ["src/entities/*.ts"],
-  synchronize: true,
+  synchronize: false,
   logging: ["error", "query"],
   migrations: [__dirname + "/migrations/*.{js, ts}"], // Déterminer à quel endroit on enregistre les fichiers de migrations afin de pouvoir les relire.
   migrationsRun: true // Assure l'application des migrations non encore appliquées à chaque connexion à la base de données.
