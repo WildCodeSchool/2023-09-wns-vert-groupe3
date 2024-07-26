@@ -10,6 +10,23 @@ export async function fillDatabaseIfEmpty() {
     admin.hashedPassword = await argon2.hash("admin");
     admin.role = "admin";
     admin.save();
+
+    const admin1 = new User();
+    admin1.email = "admin1@admin.com";
+    admin1.username = "admin1";
+    admin1.hashedPassword = await argon2.hash("Wildrent!1");
+    admin1.role = "admin";
+    admin1.save();
+  }
+
+  const user1 = await User.findOne({ where: { role: "user" } });
+  if (!user1) {
+     const user1 = new User();
+     user1.email = "user1@user.com";
+     user1.username = "user1";
+     user1.hashedPassword = await argon2.hash("Wildrent!1");
+     user1.role = "user";
+     user1.save();
   }
 
   // if no categories, create some categories

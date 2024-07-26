@@ -22,7 +22,7 @@ const LoadingButton = () => {
           fill="currentColor"
         />
       </svg>
-      Loading...
+      Chargement...
     </button>
   );
 };

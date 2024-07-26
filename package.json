@@ -1,22 +1,25 @@
 {
-  "name": "2023-09-wns-vert-groupe3",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-   "start": "docker compose -f docker-compose.yml up --build",
-   "start-d": "docker compose -f docker-compose.yml up --build -d",
-   "startprod": "docker compose -f docker-compose.prod.yml up --build",
-   "startprod-d": "docker compose -f docker-compose.prod.yml up --build -d",
-   "test-end": "docker compose -f docker-compose.e2e.yml up --build --exit-code-from e2e",
-   "test-front": "cd frontend && pnpm run test",
-   "test-back": "cd backend && pnpm run test"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@playwright/test": "^1.42.1",
-    "@types/node": "^20.11.28"
-  }
+   "name": "2023-09-wns-vert-groupe3",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "scripts": {
+      "start": "docker compose -f docker-compose.yml up --build",
+      "start-d": "docker compose -f docker-compose.yml up --build -d",
+      "startprod": "docker compose -f docker-compose.prod.yml up --build",
+      "startprod-d": "docker compose -f docker-compose.prod.yml up --build -d",
+      "test-end": "docker compose -f docker-compose.e2e.yml up --build --exit-code-from e2e",
+      "test-front": "cd frontend && pnpm run test",
+      "test-back": "cd backend && pnpm run test",
+      "docker:drop": "docker compose exec backend pnpm run typeorm schema:drop",
+      "docker:generate": "docker compose exec backend pnpm run migration:generate",
+      "docker:cp": "docker compose cp backend:/app/src/database/migrations/ backend/src/database"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "devDependencies": {
+      "@playwright/test": "^1.42.1",
+      "@types/node": "^20.11.28"
+   }
 }
