@@ -67,9 +67,7 @@ export default class UserResolver {
   }
 
   @Query(() => UserInfo)
-  async whoAmI(
-    @Ctx() ctx: { email: string; role: string; isLoggedIn: boolean }
-  ) {
+  async whoAmI(@Ctx() ctx: { email: string; role: string }) {
     if (ctx.email !== undefined) {
       return { ...ctx, isLoggedIn: true };
     } else {

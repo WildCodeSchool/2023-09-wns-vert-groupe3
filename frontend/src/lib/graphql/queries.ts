@@ -132,10 +132,10 @@ export const GET_ALL_PRODUCTS_BY_KEYWORD = gql`
 `;
 
 export const WHO_AM_I = gql`
-  query Query {
+  query WhoAmI {
     whoAmI {
-      email
       isLoggedIn
+      email
       role
     }
   }

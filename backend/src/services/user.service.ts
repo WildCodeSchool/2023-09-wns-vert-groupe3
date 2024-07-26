@@ -99,15 +99,4 @@ export class UserService {
       throw new Error("Error while fetching user");
     }
   }
-
-  async whoAmI(
-    email: string,
-    role: UserRoleType
-  ): Promise<{ isLoggedIn: boolean; email?: string; role?: UserRoleType }> {
-    if (email) {
-      return { isLoggedIn: true, email, role };
-    } else {
-      return { isLoggedIn: false };
-    }
-  }
 }

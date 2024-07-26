@@ -58,8 +58,8 @@ const LoginPage = () => {
 
         //   toastSuccessLogin()
         //   localStorage.setItem("LoginSuccess", "true");
-        authInfo.refetchLogin();
-        // router.reload();
+        // authInfo.refetchLogin();
+        router.reload();
         // router.push("/");
         //  router.back()
       },
