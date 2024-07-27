@@ -53,7 +53,7 @@ export class UserService {
       return token;
     } catch (error) {
       console.error("Error while login :", error);
-      throw new Error("Error while login");
+      throw new Error(error.message);
     }
   }
 
