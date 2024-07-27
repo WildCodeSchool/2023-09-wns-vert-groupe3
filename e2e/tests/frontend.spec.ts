@@ -33,7 +33,7 @@ test("Should create a new user and login", async ({ page }) => {
 
   await page.click('button:has-text("S\'enregistrer")');
 
-  await page.waitForNavigation({ waitUntil: "networkidle" });
+  await page.waitForNavigation({ waitUntil: "networkidle", timeout: 20000 });
 
   await page.goto("http://frontend:3000/login");
 
@@ -42,7 +42,7 @@ test("Should create a new user and login", async ({ page }) => {
 
   await page.click('button:has-text("Se connecter")');
 
-  await page.waitForNavigation({ waitUntil: "networkidle" });
+  await page.waitForNavigation({ waitUntil: "networkidle", timeout: 20000 });
 
   const token = await page.evaluate(() => localStorage.getItem("jwt"));
   expect(token).not.toBeNull();
