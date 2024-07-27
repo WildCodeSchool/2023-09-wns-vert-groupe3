@@ -1,12 +1,21 @@
+import { UserContext } from "components/Layout";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 
-const DropdownMenuProfile = ({ setMenuProfileVisible }: any) => {
+const DropdownMenuProfile = ({
+  setMenuProfileVisible,
+  // setMenuVisible,
+}: any) => {
+  const authInfo = useContext(UserContext);
   const router = useRouter();
   const handleDisconnectUser = () => {
     localStorage.removeItem("jwt");
     setMenuProfileVisible(false);
-    router.reload();
+    authInfo.refetchLogin();
+    // setMenuVisible(false);
+    // console.log(setMenuVisible);
+    // router.push("/");
   };
 
   return (

@@ -1,27 +1,21 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import axios from "axios";
 import Button from "components/Button";
 import CategorySelect from "components/CategorySelect";
 import ImageUploader from "components/ImageUploader";
+import { UserContext } from "components/Layout";
 import BadAuthorization from "components/ui/BadAuthorization";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { ADD_PRODUCT } from "lib/graphql/mutations";
-import { WHO_AM_I } from "lib/graphql/queries";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CiWarning } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { InputCreateProduct } from "types/inputCreateProduct";
-import { User } from "types/user";
-import { isAdmin } from "utils/isAdmin";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
 
 const ProductsAddPage = () => {
-  const {
-    loading: userLoading,
-    error: userError,
-    data: userData,
-  } = useQuery<{ whoAmI: User }>(WHO_AM_I);
+  const authInfo = useContext(UserContext);
 
   const [files, setFiles] = useState<File[]>([]);
   const [imageURLs, setImageURLs] = useState<string[]>([]);
@@ -45,10 +39,7 @@ const ProductsAddPage = () => {
   if (loading) return <LoadingProgress />;
   if (error) return <p>Error: {error.message}</p>;
 
-  const user = userData?.whoAmI;
-  const isUserAdmin = user ? isAdmin(user) : false;
-
-  if (!isUserAdmin) {
+  if (authInfo.role !== "admin") {
     return <BadAuthorization />;
   }
 

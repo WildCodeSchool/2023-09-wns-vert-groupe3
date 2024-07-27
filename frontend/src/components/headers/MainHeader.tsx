@@ -1,32 +1,19 @@
-import { useQuery } from "@apollo/client";
 import { useCart } from "contexts/CartContext";
-import { WHO_AM_I } from "lib/graphql/queries";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { FaShoppingBag, FaUserCircle } from "react-icons/fa";
-import { User } from "types/user";
-import { isAdmin } from "utils/isAdmin";
-import { isLoggedIn } from "utils/isUserLoggedIn";
 
 import { RiListSettingsLine } from "react-icons/ri";
 
+import { UserContext } from "components/Layout";
 import DropdownMenu from "components/ui/DropdownMenu";
 import DropdownMenuProfile from "components/ui/DropdownMenuProfile";
 import SearchInput from "components/ui/SearchInput";
 import styles from "../../styles/components/MainHeader.module.scss";
 
 export default function MainHeader() {
-  const {
-    loading: userLoading,
-    error: userError,
-    data: userData,
-    refetch: refetchUser,
-  } = useQuery<{ whoAmI: User }>(WHO_AM_I);
-
-  useEffect(() => {
-    refetchUser();
-  }, [refetchUser]);
+  const authInfo = useContext(UserContext);
 
   const [searchActive, setSearchActive] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -47,21 +34,6 @@ export default function MainHeader() {
   const handleInputChange = (e: any) => {
     setSearchValue(e.target.value);
   };
-
-  if (userLoading) return null;
-  if (userError) {
-    console.error(`Error fetching user data: ${userError}`);
-    return (
-      <div>
-        Une erreur est survenue lors de la récupération des informations de
-        l&apos;utilisateur.
-      </div>
-    );
-  }
-
-  const user = userData?.whoAmI;
-  const isUserLoggedIn = user ? isLoggedIn(user) : false;
-  const isUserAdmin = user ? isAdmin(user) : false;
 
   return (
     <main className={styles.mainHeader}>
@@ -91,8 +63,7 @@ export default function MainHeader() {
           <Link href="/products" className={styles.allArticles}>
             <span>Tous les articles</span>
           </Link>
-
-          {isUserAdmin && (
+          {authInfo.role === "admin" ? (
             <div
               className="relative"
               onMouseEnter={() => setMenuVisible(true)}
@@ -104,7 +75,7 @@ export default function MainHeader() {
               />
               {menuVisible && <DropdownMenu />}
             </div>
-          )}
+          ) : null}
 
           <Link href="/cart">
             <div className="relative ease-out hover:scale-90 hover:text-indigo-500">
@@ -115,7 +86,7 @@ export default function MainHeader() {
             </div>
           </Link>
 
-          {isUserLoggedIn ? (
+          {authInfo.isLoggedIn ? (
             <div
               className="relative"
               onMouseEnter={() => setMenuProfileVisible(true)}

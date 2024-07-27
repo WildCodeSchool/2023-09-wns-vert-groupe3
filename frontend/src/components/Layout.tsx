@@ -36,7 +36,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   }
 
   if (data) {
-    console.log("whoamidata", data);
+    // console.log("whoamidata", data);
     return (
       // <html lang="fr" data-theme='dark' className={`${montserrat.variable}`}>
       //    <div className={`flex flex-col min-h-screen ${montserrat.variable}`} data-theme='dark' lang="fr">

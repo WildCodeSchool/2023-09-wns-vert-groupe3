@@ -1,27 +1,21 @@
 import { useMutation, useQuery } from "@apollo/client";
 import CategoryLink from "components/CategoryLink";
+import { UserContext } from "components/Layout";
 import DeleteModal from "components/modal/DeleteModal";
 import BadAuthorization from "components/ui/BadAuthorization";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 import { DELETE_PRODUCT, UPDATE_PRODUCT } from "lib/graphql/mutations";
-import { GET_PRODUCTS, ProductType, WHO_AM_I } from "lib/graphql/queries";
+import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { User } from "types/user";
+import { useContext, useState } from "react";
 import { convertToCurrency } from "utils/currency";
 import { isDateRangeOverlap } from "utils/date";
-import { isAdmin } from "utils/isAdmin";
 
 const ProductsList = () => {
-  const {
-    loading: userLoading,
-    error: userError,
-    data: userData,
-  } = useQuery<{ whoAmI: User }>(WHO_AM_I);
-
+  const authInfo = useContext(UserContext);
   const { dates: userRequestedRentDates } = useUserDatesResearch();
 
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -81,10 +75,7 @@ const ProductsList = () => {
 
   const { data, loading, error } = useQuery(GET_PRODUCTS);
 
-  const user = userData?.whoAmI;
-  const isUserAdmin = user ? isAdmin(user) : false;
-
-  if (!isUserAdmin) {
+  if (authInfo.role !== "admin") {
     return <BadAuthorization />;
   }
 
