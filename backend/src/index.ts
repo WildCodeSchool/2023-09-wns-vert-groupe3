@@ -5,13 +5,13 @@ import { createClient } from "redis";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import dataSource from "./config/datasource";
-// import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
 import {
-  CategoryResolver,
-  CheckoutResolver,
-  ProductResolver,
-  UserResolver,
+   CategoryResolver,
+   CheckoutResolver,
+   ProductResolver,
+   UserResolver,
 } from "./resolvers";
+// import { fillDatabaseIfEmpty } from "./fillDatabaseIfEmpty";
 
 require("dotenv").config();
 
@@ -42,20 +42,23 @@ const start = async () => {
       UserResolver,
       CheckoutResolver,
     ],
-    authChecker: ({ context }) => {
-      if (context.email) {
-        return true;
-      } else {
-        return false;
-      }
-    },
+    // authChecker est appelée par TypeGraphQL chaque fois qu'une requête est effectuée sur un champ protégé par un décorateur @Authorized.
+     authChecker: ({ context }, roles) => {
+        if (roles.length > 0 && context.email) {
+           if (roles.includes(context.role)) {
+              return true;
+           } else return false;
+        }
+        if (roles.length === 0 && context.email) {
+         return true;
+        } else return false
+     },
   });
 
-  const server = new ApolloServer({
-    schema,
-  });
+  const server = new ApolloServer({ schema,});
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
+
     // A chaque requête exécuté, la fonction de contexte va s'enclencher
     context: async ({ req }) => {
       const token = req.headers.authorization?.split("Bearer ")[1];
@@ -63,6 +66,8 @@ const start = async () => {
       if (token) {
         try {
           const payload = jwt.verify(token, "mysupersecretkey");
+          console.log("PAYLOAD :", payload); // Le payload contient l'email, le role et le username. Voir user.service.ts méthode login. 
+
           return payload;
         } catch {
           console.log("invalid secret key");

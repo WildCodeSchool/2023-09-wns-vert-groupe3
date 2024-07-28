@@ -1,19 +1,20 @@
 import { useMutation } from "@apollo/client";
 import Button from "components/Button";
-import { UserContext } from "components/Layout";
 import BadAuthorization from "components/ui/BadAuthorization";
 import { ADD_CATEGORY } from "lib/graphql/mutations";
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import styles from "../../../styles/pages/ProductsAddPage.module.scss";
+import { useContext } from "react";
+import { UserContext } from "contexts/UserContext";
 
 type InputCreateCategory = {
   name: string;
 };
 
 const CategoryAddPage = () => {
-  const authInfo = useContext(UserContext);
+   const authInfo = useContext(UserContext)
+   const userRole = authInfo.role
 
   const {
     register,
@@ -22,9 +23,10 @@ const CategoryAddPage = () => {
     formState: { errors },
   } = useForm<InputCreateCategory>();
 
+
   const [createNewCategory] = useMutation(ADD_CATEGORY);
 
-  if (authInfo.role !== "admin") {
+  if (userRole != "admin") {
     return <BadAuthorization />;
   }
 

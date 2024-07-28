@@ -8,14 +8,23 @@ import BadAuthorization from "components/ui/BadAuthorization";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { ADD_PRODUCT } from "lib/graphql/mutations";
 import { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CiWarning } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { InputCreateProduct } from "types/inputCreateProduct";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
+import { UserContext } from "contexts/UserContext";
 
 const ProductsAddPage = () => {
-  const authInfo = useContext(UserContext);
+   const authInfo = useContext(UserContext)
+   const userRole = authInfo.role;
+   const isLoggedIn = authInfo.isLoggedIn
+   const userEmail = authInfo.email
+   
+   console.log(userRole);
+   console.log(isLoggedIn);
+   console.log(userEmail);
 
   const [files, setFiles] = useState<File[]>([]);
   const [imageURLs, setImageURLs] = useState<string[]>([]);
@@ -39,7 +48,12 @@ const ProductsAddPage = () => {
   if (loading) return <LoadingProgress />;
   if (error) return <p>Error: {error.message}</p>;
 
-  if (authInfo.role !== "admin") {
+//   const user = userData?.whoAmI;
+//   const isUserAdmin = user ? isAdmin(user) : false;
+
+console.log("authinfo.role: " , authInfo.role);
+
+  if (userRole != "admin") {
     return <BadAuthorization />;
   }
 

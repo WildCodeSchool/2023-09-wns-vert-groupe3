@@ -1,7 +1,7 @@
-import { useLazyQuery } from "@apollo/client";
-import { UserContext } from "components/Layout";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import { toastSuccessRegister } from "components/ui/Toast";
-import { LOGIN } from "lib/graphql/queries";
+import { UserContext } from "contexts/UserContext";
+import { LOGIN, WHO_AM_I } from "lib/graphql/queries";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -12,6 +12,17 @@ import "react-toastify/dist/ReactToastify.css";
 import { inputLoginUser } from "types/inputLoginUser";
 
 const LoginPage = () => {
+const authInfo = useContext(UserContext)
+const userRole = authInfo.role;
+const isLoggedIn = authInfo.isLoggedIn
+const userEmail = authInfo.email
+
+console.log('User Role : ', userRole);
+console.log('is Logged In : ', isLoggedIn);
+console.log('User Email : ', userEmail);
+
+
+  // Affiche la pop up d'enregistrement avec succès
   useEffect(() => {
     const registrationSuccess = localStorage.getItem("registrationSuccess");
     if (registrationSuccess) {
@@ -19,6 +30,7 @@ const LoginPage = () => {
       localStorage.removeItem("registrationSuccess");
     }
   }, []);
+
 
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,14 +47,17 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<inputLoginUser>();
 
-  const authInfo = useContext(UserContext);
-  const [handleLogin, { data, loading, error: queryError }] = useLazyQuery(
+  const [handleLogin] = useLazyQuery(
     LOGIN,
     {
       async onCompleted(data) {
         localStorage.setItem("jwt", data.loginUser);
+        //   toastSuccessLogin()
+        //   localStorage.setItem("LoginSuccess", "true");
         authInfo.refetchLogin();
-        router.push("/");
+      //   router.reload();
+        // router.push("/");
+        //  router.back()
       },
     },
   );
@@ -62,17 +77,20 @@ const LoginPage = () => {
         "on submit result.data.loginUser = token : ",
         result.data.loginUser,
       );
-    } catch (err) {
+      // localStorage.setItem("jwt", "jwtrandom");
+      // router.push("/");
+   } catch (err) {
       setErrorMessage(
-        "Une erreur s'est produite lors de l'authentification de l'utilisateur",
+         "Une erreur s'est produite lors de l'authentification de l'utilisateur",
       );
       console.error("Error : " + err);
-    }
-  };
+   }
+};
 
-  if (authInfo.isLoggedIn) {
-    router.push("/");
-  }
+
+      if (isLoggedIn) {
+        router.push("/");
+      }
 
   return (
     <main>

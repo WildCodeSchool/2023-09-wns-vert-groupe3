@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
 import { Category } from "../entities";
 import { InputCreateCategory } from "../inputs";
 import CategoryService from "../services/category.service";
@@ -16,11 +16,13 @@ export default class CategoryResolver {
     return await this.categoryService.getAllCategories();
   }
 
+  @Authorized("admin")
   @Mutation(() => Category)
   async addCategory(@Arg("infos") infos: InputCreateCategory) {
     return await this.categoryService.addCategory(infos);
   }
 
+  @Authorized("admin")
   @Mutation(() => String)
   async deleteCategoryById(@Arg("id") id: number) {
     try {

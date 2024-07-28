@@ -2,21 +2,10 @@ import { useQuery } from "@apollo/client";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { WHO_AM_I } from "lib/graphql/queries";
 import type { Metadata } from "next";
-import { ReactNode, createContext } from "react";
+import { ReactNode } from "react";
 import MainHeader from "./headers/MainHeader";
-
-export const UserContext = createContext({
-  isLoggedIn: false,
-  refetchLogin: () => {},
-  role: "user",
-});
-
-// const montserrat = Montserrat({
-//   subsets: ["latin"],
-//   variable: "--font_montserrat",
-//   display: "swap",
-//   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-// });
+import { UserContext } from "contexts/UserContext";
+import { User } from "types/user";
 
 export const metadata: Metadata = {
   title: "Wildrent",
@@ -24,9 +13,7 @@ export const metadata: Metadata = {
 };
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const { data, loading, error, refetch } = useQuery<{
-    whoAmI: { isLoggedIn: boolean; role: string };
-  }>(WHO_AM_I);
+   const { data, loading, error, refetch } = useQuery<{ whoAmI: User}>(WHO_AM_I);
 
   if (loading) return <LoadingProgress />;
 
@@ -36,15 +23,18 @@ const Layout = ({ children }: { children: ReactNode }) => {
   }
 
   if (data) {
-    // console.log("whoamidata", data);
+    console.log("whoamidata", data);
+    console.log("email :", data.whoAmI.email);
+    console.log("role :", data.whoAmI.role);
+    console.log("isLoggedIn :", data.whoAmI.isLoggedIn);
+    
     return (
-      // <html lang="fr" data-theme='dark' className={`${montserrat.variable}`}>
-      //    <div className={`flex flex-col min-h-screen ${montserrat.variable}`} data-theme='dark' lang="fr">
       <UserContext.Provider
         value={{
           isLoggedIn: data.whoAmI.isLoggedIn,
           refetchLogin: refetch,
           role: data.whoAmI.role,
+          email: data.whoAmI.email
         }}
       >
         <div className="flex min-h-screen flex-col">
@@ -54,8 +44,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
           </main>
         </div>
       </UserContext.Provider>
-      //    </div>
-      // </html >
     );
   }
 };
