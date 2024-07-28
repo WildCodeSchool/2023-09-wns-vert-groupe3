@@ -26,6 +26,11 @@ test("Should create a new user and login", async ({ page }) => {
   // Navigate to the register page
   await page.goto("http://frontend:3000/register");
 
+  await page.waitForSelector('input[name="username"]', { timeout: 20000 });
+  await page.waitForSelector('input[name="email"]', { timeout: 20000 });
+  await page.waitForSelector('input[name="password"]', { timeout: 20000 });
+  await page.waitForSelector('input[name="confirmPassword"]', { timeout: 20000 });
+
   await page.fill('input[name="username"]', "newuser");
   await page.fill('input[name="email"]', "newuser@example.com");
   await page.fill('input[name="password"]', "NewUserPassword!1");
@@ -36,6 +41,9 @@ test("Should create a new user and login", async ({ page }) => {
   await page.waitForNavigation({ waitUntil: "networkidle", timeout: 20000 });
 
   await page.goto("http://frontend:3000/login");
+
+  await page.waitForSelector('input[name="email"]', { timeout: 20000 });
+  await page.waitForSelector('input[name="password"]', { timeout: 20000 });
 
   await page.fill('input[name="email"]', "newuser@example.com");
   await page.fill('input[name="password"]', "NewUserPassword!1");
