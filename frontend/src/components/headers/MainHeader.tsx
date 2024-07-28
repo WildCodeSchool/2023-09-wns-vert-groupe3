@@ -3,10 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { FaShoppingBag, FaUserCircle } from "react-icons/fa";
-
 import { RiListSettingsLine } from "react-icons/ri";
-
-import { UserContext } from "components/Layout";
 import DropdownMenu from "components/ui/DropdownMenu";
 import DropdownMenuProfile from "components/ui/DropdownMenuProfile";
 import SearchInput from "components/ui/SearchInput";
@@ -33,13 +30,13 @@ const isLoggedIn = authinfo.isLoggedIn
     0,
   );
 
-  const toggleSearch = () => setSearchActive(!searchActive);
-  const toggleMenu = () => setMenuVisible(!menuVisible);
-  const toggleMenuProfile = () => setMenuProfileVisible(!menuProfileVisible);
+//   const toggleSearch = () => setSearchActive(!searchActive);
+//   const toggleMenu = () => setMenuVisible(!menuVisible);
+//   const toggleMenuProfile = () => setMenuProfileVisible(!menuProfileVisible);
 
-  const handleInputChange = (e: any) => {
-    setSearchValue(e.target.value);
-  };
+//   const handleInputChange = (e: any) => {
+//     setSearchValue(e.target.value);
+//   };
 
   return (
     <main className={styles.mainHeader}>
@@ -82,7 +79,7 @@ const isLoggedIn = authinfo.isLoggedIn
               />
               {menuVisible && <DropdownMenu />}
             </div>
-          ) : null}
+          )}
 
          {(!isAdmin) && (
             <Link href="/cart">

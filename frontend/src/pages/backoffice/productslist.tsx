@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
 import CategoryLink from "components/CategoryLink";
-import { UserContext } from "components/Layout";
 import DeleteModal from "components/modal/DeleteModal";
 import BadAuthorization from "components/ui/BadAuthorization";
 import LoadingProgress from "components/ui/LoadingProgress";
@@ -11,7 +10,6 @@ import { DELETE_PRODUCT, UPDATE_PRODUCT } from "lib/graphql/mutations";
 import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
 import { useContext, useState } from "react";
 import { convertToCurrency } from "utils/currency";
 import { isDateRangeOverlap } from "utils/date";
