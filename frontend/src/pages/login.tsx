@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
-import { UserContext } from "components/Layout";
 import { toastSuccessRegister } from "components/ui/Toast";
+import { UserContext } from "contexts/UserContext";
 import { LOGIN } from "lib/graphql/queries";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +13,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { inputLoginUser } from "types/inputLoginUser";
 
 const LoginPage = () => {
+  const authInfo = useContext(UserContext);
+  const userRole = authInfo.role;
+  const isLoggedIn = authInfo.isLoggedIn;
+  const userEmail = authInfo.email;
+
+  console.log("User Role : ", userRole);
+  console.log("is Logged In : ", isLoggedIn);
+  console.log("User Email : ", userEmail);
+
+  // Affiche la pop up d'enregistrement avec succès
   useEffect(() => {
     const registrationSuccess = localStorage.getItem("registrationSuccess");
     if (registrationSuccess) {
@@ -36,30 +46,28 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<inputLoginUser>();
 
-  const authInfo = useContext(UserContext);
-  const [handleLogin, { data, loading, error: queryError }] = useLazyQuery(
-    LOGIN,
-    {
-      async onCompleted(data) {
-        localStorage.setItem("jwt", data.loginUser);
-        authInfo.refetchLogin();
-        router.push("/");
-      },
-      onError(err) {
-        if (err.message.includes("User not found")) {
-          setErrorMessage(
-            "Aucun compte n'a été trouvé pour cette adresse mail.",
-          );
-        } else if (err.message.includes("Invalid password")) {
-          setErrorMessage("Mot de passe incorrect.");
-        } else {
-          setErrorMessage(
-            "Une erreur s'est produite lors de l'authentification.",
-          );
-        }
-      },
+  const [handleLogin] = useLazyQuery(LOGIN, {
+    async onCompleted(data) {
+      localStorage.setItem("jwt", data.loginUser);
+      //   toastSuccessLogin()
+      //   localStorage.setItem("LoginSuccess", "true");
+      authInfo.refetchLogin();
+      //   router.reload();
+      // router.push("/");
+      //  router.back()
     },
-  );
+    onError(err) {
+      if (err.message.includes("User not found")) {
+        setErrorMessage("Aucun compte n'a été trouvé pour cette adresse mail.");
+      } else if (err.message.includes("Invalid password")) {
+        setErrorMessage("Mot de passe incorrect.");
+      } else {
+        setErrorMessage(
+          "Une erreur s'est produite lors de l'authentification.",
+        );
+      }
+    },
+  });
 
   const onSubmit: SubmitHandler<inputLoginUser> = async (formData) => {
     setErrorMessage("");
@@ -77,7 +85,7 @@ const LoginPage = () => {
     }
   };
 
-  if (authInfo.isLoggedIn) {
+  if (isLoggedIn) {
     router.push("/");
   }
 

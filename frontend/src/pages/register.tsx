@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { UserContext } from "components/Layout";
+import { UserContext } from "contexts/UserContext";
 import { CREATE_USER } from "lib/graphql/mutations";
 import Image from "next/image";
 import Link from "next/link";

@@ -46,6 +46,7 @@ export class UserService {
         throw new Error("Invalid password");
       }
 
+      // Transmission du payload dans jwt.sign et réception du payload dans jwt.verify
       payload = { email: user.email, role: user.role, username: user.username };
 
       // Signature du token avec une clé secrète

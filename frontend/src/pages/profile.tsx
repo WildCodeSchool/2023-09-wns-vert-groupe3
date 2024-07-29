@@ -1,8 +1,9 @@
 import { useQuery } from "@apollo/client";
 import LoadingProgress from "components/ui/LoadingProgress";
+import { UserContext } from "contexts/UserContext";
 import { GET_USER_PROFILE } from "lib/graphql/queries";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 type User = {
   id: number;
@@ -11,20 +12,20 @@ type User = {
 };
 
 const ProfilePage = () => {
+   const authInfo = useContext(UserContext);
+
   const { loading, error, data, refetch } = useQuery<{ getUserProfile: User }>(
     GET_USER_PROFILE,
   );
   const router = useRouter();
 
-  useEffect(() => {
-    refetch();
-  });
+   useEffect(() => {
+      if (authInfo.isLoggedIn === false) {
+         router.push('/login')
+      }
+      refetch();
+   }, []);
 
-  useEffect(() => {
-    if (error && error.message.includes("not authenticated")) {
-      router.push("/login");
-    }
-  }, [error, router]);
 
   if (loading) return <LoadingProgress />;
   if (error) {

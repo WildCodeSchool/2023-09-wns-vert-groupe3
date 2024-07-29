@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const DropdownMenu = () => {
   return (
-    <div className="absolute z-10 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+    <div className="absolute -right-6 z-10 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
       <div
         className="py-1"
         role="menu"
