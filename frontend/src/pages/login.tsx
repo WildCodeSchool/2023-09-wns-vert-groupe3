@@ -1,26 +1,26 @@
-import { useLazyQuery, useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { toastSuccessRegister } from "components/ui/Toast";
 import { UserContext } from "contexts/UserContext";
-import { LOGIN, WHO_AM_I } from "lib/graphql/queries";
+import { LOGIN } from "lib/graphql/queries";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import { IoIosWarning } from "react-icons/io";
 import "react-toastify/dist/ReactToastify.css";
 import { inputLoginUser } from "types/inputLoginUser";
 
 const LoginPage = () => {
-const authInfo = useContext(UserContext)
-const userRole = authInfo.role;
-const isLoggedIn = authInfo.isLoggedIn
-const userEmail = authInfo.email
+  const authInfo = useContext(UserContext);
+  const userRole = authInfo.role;
+  const isLoggedIn = authInfo.isLoggedIn;
+  const userEmail = authInfo.email;
 
-console.log('User Role : ', userRole);
-console.log('is Logged In : ', isLoggedIn);
-console.log('User Email : ', userEmail);
-
+  console.log("User Role : ", userRole);
+  console.log("is Logged In : ", isLoggedIn);
+  console.log("User Email : ", userEmail);
 
   // Affiche la pop up d'enregistrement avec succès
   useEffect(() => {
@@ -30,7 +30,6 @@ console.log('User Email : ', userEmail);
       localStorage.removeItem("registrationSuccess");
     }
   }, []);
-
 
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
@@ -47,50 +46,48 @@ console.log('User Email : ', userEmail);
     formState: { errors },
   } = useForm<inputLoginUser>();
 
-  const [handleLogin] = useLazyQuery(
-    LOGIN,
-    {
-      async onCompleted(data) {
-        localStorage.setItem("jwt", data.loginUser);
-        //   toastSuccessLogin()
-        //   localStorage.setItem("LoginSuccess", "true");
-        authInfo.refetchLogin();
+  const [handleLogin] = useLazyQuery(LOGIN, {
+    async onCompleted(data) {
+      localStorage.setItem("jwt", data.loginUser);
+      //   toastSuccessLogin()
+      //   localStorage.setItem("LoginSuccess", "true");
+      authInfo.refetchLogin();
       //   router.reload();
-        // router.push("/");
-        //  router.back()
-      },
+      // router.push("/");
+      //  router.back()
     },
-  );
+    onError(err) {
+      if (err.message.includes("User not found")) {
+        setErrorMessage("Aucun compte n'a été trouvé pour cette adresse mail.");
+      } else if (err.message.includes("Invalid password")) {
+        setErrorMessage("Mot de passe incorrect.");
+      } else {
+        setErrorMessage(
+          "Une erreur s'est produite lors de l'authentification.",
+        );
+      }
+    },
+  });
 
-  const onSubmit: SubmitHandler<inputLoginUser> = async (data) => {
+  const onSubmit: SubmitHandler<inputLoginUser> = async (formData) => {
+    setErrorMessage("");
     try {
-      const result = await handleLogin({
+      await handleLogin({
         variables: {
           inputUserLogin: {
-            email: data.email,
-            password: data.password,
+            email: formData.email,
+            password: formData.password,
           },
         },
       });
-      console.log("on submit result : ", result);
-      console.log(
-        "on submit result.data.loginUser = token : ",
-        result.data.loginUser,
-      );
-      // localStorage.setItem("jwt", "jwtrandom");
-      // router.push("/");
-   } catch (err) {
-      setErrorMessage(
-         "Une erreur s'est produite lors de l'authentification de l'utilisateur",
-      );
-      console.error("Error : " + err);
-   }
-};
+    } catch (err) {
+      setErrorMessage("Une erreur s'est produite lors de l'authentification.");
+    }
+  };
 
-
-      if (isLoggedIn) {
-        router.push("/");
-      }
+  if (isLoggedIn) {
+    router.push("/");
+  }
 
   return (
     <main>
@@ -122,7 +119,7 @@ console.log('User Email : ', userEmail);
                   E-mail
                 </label>
                 <input
-                  //   type="email"
+                  type="email"
                   {...register("email", {
                     required: "Le mail est requis",
                     pattern: {
@@ -190,7 +187,7 @@ console.log('User Email : ', userEmail);
                       id="remember"
                       aria-describedby="remember"
                       type="checkbox"
-                      className=" focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 h-4 w-4 cursor-pointer rounded border border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
+                      className="focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 h-4 w-4 cursor-pointer rounded border border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
                     />
                   </div>
                   <div className="ml-3 text-sm">
@@ -216,6 +213,15 @@ console.log('User Email : ', userEmail);
                 </Link>
               </p>
             </form>
+            {errorMessage && (
+              <div
+                className="relative mt-2 flex rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
+                role="alert"
+              >
+                <IoIosWarning className="mr-2 text-xl" />
+                <span className="block sm:inline">{errorMessage}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
