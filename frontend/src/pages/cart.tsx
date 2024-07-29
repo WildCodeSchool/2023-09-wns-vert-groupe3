@@ -1,4 +1,4 @@
-import CartPage from "components/cart/CartPage";
+import CartPage from "components/cart1/CartPage";
 import { UserContext } from "contexts/UserContext";
 import { useRouter } from "next/router";
 import { useContext } from "react";

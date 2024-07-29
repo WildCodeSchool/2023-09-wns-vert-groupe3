@@ -1,4 +1,4 @@
-import CartProduct from "components/cart/CartProduct";
+import CartProduct from "components/cart1/CartProduct";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 interface CartProduct {
