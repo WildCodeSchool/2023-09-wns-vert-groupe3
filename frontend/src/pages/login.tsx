@@ -1,18 +1,27 @@
-import { useLazyQuery } from "@apollo/client";
-import { UserContext } from "components/Layout";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import { toastSuccessRegister } from "components/ui/Toast";
-import { LOGIN } from "lib/graphql/queries";
+import { UserContext } from "contexts/UserContext";
+import { LOGIN, WHO_AM_I } from "lib/graphql/queries";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { HiEye, HiEyeOff } from "react-icons/hi";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { inputLoginUser } from "types/inputLoginUser";
 
 const LoginPage = () => {
+const authInfo = useContext(UserContext)
+const userRole = authInfo.role;
+const isLoggedIn = authInfo.isLoggedIn
+const userEmail = authInfo.email
+
+console.log('User Role : ', userRole);
+console.log('is Logged In : ', isLoggedIn);
+console.log('User Email : ', userEmail);
+
+
   // Affiche la pop up d'enregistrement avec succès
   useEffect(() => {
     const registrationSuccess = localStorage.getItem("registrationSuccess");
@@ -22,12 +31,9 @@ const LoginPage = () => {
     }
   }, []);
 
+
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
-
-  if (localStorage.getItem("jwt") !== null) {
-    router.push("/profile");
-  }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -41,17 +47,16 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<inputLoginUser>();
 
-  const authInfo = useContext(UserContext);
-  const [handleLogin, { data, loading, error: queryError }] = useLazyQuery(
+  const [handleLogin] = useLazyQuery(
     LOGIN,
     {
       async onCompleted(data) {
         localStorage.setItem("jwt", data.loginUser);
-
         //   toastSuccessLogin()
         //   localStorage.setItem("LoginSuccess", "true");
-          authInfo.refetchLogin();
-        router.push("/");
+        authInfo.refetchLogin();
+      //   router.reload();
+        // router.push("/");
         //  router.back()
       },
     },
@@ -72,19 +77,23 @@ const LoginPage = () => {
         "on submit result.data.loginUser = token : ",
         result.data.loginUser,
       );
-
       // localStorage.setItem("jwt", "jwtrandom");
       // router.push("/");
-    } catch (err) {
+   } catch (err) {
       setErrorMessage(
-        "Une erreur s'est produite lors de l'authentification de l'utilisateur",
+         "Une erreur s'est produite lors de l'authentification de l'utilisateur",
       );
       console.error("Error : " + err);
-    }
-  };
+   }
+};
+
+
+      if (isLoggedIn) {
+        router.push("/");
+      }
 
   return (
-    <>
+    <main>
       <div className="flex justify-center">
         <div className="w-full rounded-lg bg-white shadow md:max-w-lg xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
@@ -190,12 +199,6 @@ const LoginPage = () => {
                     </label>
                   </div>
                 </div>
-                {/* <a
-                    href="#"
-                    className="text-primary-600 dark:text-primary-500 text-sm font-medium hover:underline"
-                  >
-                    Mot de passe oublié ?
-                  </a> */}
               </div>
               <button
                 type="submit"
@@ -216,8 +219,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
-    </>
+    </main>
   );
 };
 

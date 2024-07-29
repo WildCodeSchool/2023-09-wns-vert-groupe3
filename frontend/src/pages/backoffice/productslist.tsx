@@ -1,18 +1,23 @@
 import { useMutation, useQuery } from "@apollo/client";
 import CategoryLink from "components/CategoryLink";
 import DeleteModal from "components/modal/DeleteModal";
+import BadAuthorization from "components/ui/BadAuthorization";
 import LoadingProgress from "components/ui/LoadingProgress";
+import { UserContext } from "contexts/UserContext";
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 import { DELETE_PRODUCT, UPDATE_PRODUCT } from "lib/graphql/mutations";
 import { GET_PRODUCTS, ProductType } from "lib/graphql/queries";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { convertToCurrency } from "utils/currency";
 import { isDateRangeOverlap } from "utils/date";
 
 const ProductsList = () => {
+   const authInfo = useContext(UserContext)
+   const userRole = authInfo.role
+
   const { dates: userRequestedRentDates } = useUserDatesResearch();
 
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -43,11 +48,7 @@ const ProductsList = () => {
         variables: {
           productId: productIdNumber,
         },
-        refetchQueries: [
-          {
-            query: GET_PRODUCTS,
-          },
-        ],
+        refetchQueries: [{ query: GET_PRODUCTS }],
       });
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -76,10 +77,11 @@ const ProductsList = () => {
 
   const { data, loading, error } = useQuery(GET_PRODUCTS);
 
-  if (loading) return <LoadingProgress />;
-  if (error) return <p>Error: {error.message}</p>;
+  if (userRole != "admin") {
+    return <BadAuthorization />;
+  }
 
-  const articles = data.getAllproducts;
+  const articles = data?.getAllproducts;
 
   const isUnavailable = isDateRangeOverlap(
     userRequestedRentDates,
@@ -175,7 +177,7 @@ const ProductsList = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-300 bg-neutral-200">
-                  {articles.map((article: ProductType) => (
+                  {articles?.map((article: ProductType) => (
                     <tr key={article.id}>
                       <td className="name-cell whitespace-nowrap py-4 pl-4 pr-3 text-lg sm:pl-6">
                         {editingArticle?.id === article.id ? (

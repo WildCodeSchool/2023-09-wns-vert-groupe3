@@ -3,16 +3,27 @@ import axios from "axios";
 import Button from "components/Button";
 import CategorySelect from "components/CategorySelect";
 import ImageUploader from "components/ImageUploader";
+import BadAuthorization from "components/ui/BadAuthorization";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { ADD_PRODUCT } from "lib/graphql/mutations";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CiWarning } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { InputCreateProduct } from "types/inputCreateProduct";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
+import { UserContext } from "contexts/UserContext";
 
 const ProductsAddPage = () => {
+   const authInfo = useContext(UserContext)
+   const userRole = authInfo.role;
+   const isLoggedIn = authInfo.isLoggedIn
+   const userEmail = authInfo.email
+   
+   console.log(userRole);
+   console.log(isLoggedIn);
+   console.log(userEmail);
+
   const [files, setFiles] = useState<File[]>([]);
   const [imageURLs, setImageURLs] = useState<string[]>([]);
   const {
@@ -34,6 +45,15 @@ const ProductsAddPage = () => {
 
   if (loading) return <LoadingProgress />;
   if (error) return <p>Error: {error.message}</p>;
+
+//   const user = userData?.whoAmI;
+//   const isUserAdmin = user ? isAdmin(user) : false;
+
+console.log("authinfo.role: " , authInfo.role);
+
+  if (userRole != "admin") {
+    return <BadAuthorization />;
+  }
 
   const handleImageChange = (files: File[]) => {
     setFiles(files);
@@ -153,11 +173,11 @@ const ProductsAddPage = () => {
           )}
         </label>
         <br />
-        <div className="flex justify-between">
-          <label>
+        <div className="flex w-full justify-around gap-2">
+          <label className="w-1/2">
             Prix fix: <br />
             <input
-              className={`text-field ${errors.price_fixed ? "border-red-500" : ""}  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`text-field ${errors.price_fixed ? "border-red-500" : ""} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               {...register("price_fixed", { required: true })}
               type="number"
               min={0}
@@ -168,10 +188,10 @@ const ProductsAddPage = () => {
               </p>
             )}
           </label>
-          <label>
+          <label className="w-1/2">
             Prix journalier: <br />
             <input
-              className="text-field  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="text-field rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               {...register("price_daily")}
               type="number"
               min={0}

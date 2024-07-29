@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { User, UserInfo } from "../entities/user.entity";
 import { InputUserCreate, InputUserLogin } from "../inputs";
 import { UserService } from "../services/user.service";
@@ -7,13 +7,13 @@ import { UserService } from "../services/user.service";
 export default class UserResolver {
   private userService = new UserService();
 
-  // @Authorized("admin")
+  @Authorized("admin")
   @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }
 
-  // @Authorized("admin")
+  @Authorized("admin")
   @Mutation(() => String)
   async deleteUser(@Arg("userId") userId: string): Promise<string> {
     return this.userService.deleteUser(userId);

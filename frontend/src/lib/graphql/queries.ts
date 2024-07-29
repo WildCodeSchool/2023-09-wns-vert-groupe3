@@ -130,3 +130,13 @@ export const GET_ALL_PRODUCTS_BY_KEYWORD = gql`
     }
   }
 `;
+
+export const WHO_AM_I = gql`
+  query WhoAmI {
+    whoAmI {
+      isLoggedIn
+      email
+      role
+    }
+  }
+`;

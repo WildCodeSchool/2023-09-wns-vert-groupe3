@@ -1,32 +1,31 @@
 import { useQuery } from "@apollo/client";
 import LoadingProgress from "components/ui/LoadingProgress";
+import { UserContext } from "contexts/UserContext";
 import { GET_USER_PROFILE } from "lib/graphql/queries";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 type User = {
   id: number;
   email: string;
   username: string;
-  phone?: string;
-  address?: string;
 };
 
 const ProfilePage = () => {
+   const authInfo = useContext(UserContext);
+
   const { loading, error, data, refetch } = useQuery<{ getUserProfile: User }>(
     GET_USER_PROFILE,
   );
   const router = useRouter();
 
-  useEffect(() => {
-    refetch();
-  });
+   useEffect(() => {
+      if (authInfo.isLoggedIn === false) {
+         router.push('/login')
+      }
+      refetch();
+   }, []);
 
-  useEffect(() => {
-    if (error && error.message.includes("not authenticated")) {
-      router.push("/login");
-    }
-  }, [error, router]);
 
   if (loading) return <LoadingProgress />;
   if (error) {
@@ -41,7 +40,7 @@ const ProfilePage = () => {
       <div className="w-full max-w-2xl rounded-lg border bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
         <div className="px-4 py-5 sm:px-6">
           <h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white">
-            Profil de l utilisateur
+            Profil de l&apos;utilisateur
           </h3>
         </div>
         <div className="border-t border-gray-200 px-4 py-5 sm:p-0 dark:border-gray-700">

@@ -64,7 +64,7 @@ const ProductDtsPresSection = () => {
               <Image
                 fill
                 sizes="40vw"
-                src="https://via.placeholder.com/525"
+                src="https://via.placeholder.com/250"
                 alt="product image"
                 className="object-cover object-center"
               />
@@ -73,7 +73,7 @@ const ProductDtsPresSection = () => {
               <Image
                 fill
                 sizes="40vw"
-                src="https://via.placeholder.com/525"
+                src="https://via.placeholder.com/250"
                 alt="product image"
                 className="object-cover object-center"
               />
