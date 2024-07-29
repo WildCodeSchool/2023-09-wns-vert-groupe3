@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 
+// Page de test à supprimer
+
 const UploadPage = () => {
   const [file, setFile] = useState<File>();
   const [imageURL, setImageURL] = useState<string>();
@@ -10,16 +12,16 @@ const UploadPage = () => {
         onSubmit={async (event) => {
           event.preventDefault();
           if (file) {
-             const url = "http://localhost:8000/upload";
+            const url = "http://imagesupload:8000/upload";
+            console.log(url);
             // const url = "/upload";
             const formData = new FormData();
             formData.append("file", file, file.name);
             try {
               const response = await axios.post(url, formData);
-              setImageURL(`http://localhost:8000${response.data.filename}`);
-            //   setImageURL(response.data.filename);
+              setImageURL(`http://imagesupload:8000${response.data.filename}`);
+              //   setImageURL(response.data.filename);
               console.log("response data filename : ", response.data.filename);
-              
             } catch (err) {
               console.log("error", err);
             }
@@ -40,15 +42,11 @@ const UploadPage = () => {
         <button type="submit">Upload Image</button>
       </form>
 
-      {imageURL ? (         
-         <>
-         {console.log("image URL : ", imageURL)}
+      {imageURL ? (
+        <>
+          {console.log("image URL : ", imageURL)}
           <br />
-          <img
-            width={500}
-            alt="uploadedImg"
-            src={imageURL}
-          />
+          <img width={500} alt="uploadedImg" src={imageURL} />
           <br />
         </>
       ) : null}
