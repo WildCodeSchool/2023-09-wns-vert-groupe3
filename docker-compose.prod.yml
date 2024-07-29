@@ -10,6 +10,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    env_file: .env.apikey
     depends_on:
       db:
         condition: service_healthy
