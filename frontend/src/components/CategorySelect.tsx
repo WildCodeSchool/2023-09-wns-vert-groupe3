@@ -1,7 +1,9 @@
 import { useQuery } from "@apollo/client";
 import * as Select from "@radix-ui/react-select";
 import { GET_ALL_CATEGORIES } from "lib/graphql/queries";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { FaCheck } from "react-icons/fa6";
+import { RxChevronDown, RxChevronUp } from "react-icons/rx";
 
 interface Category {
   id: string;
@@ -24,10 +26,13 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
 
   useEffect(() => {
     refetch();
-  });
+  }, [refetch]);
 
-  const handleSelectChange = (categoryId: string, categoryName: string) => {
-    onCategoryChange(categoryId, categoryName);
+  const handleSelectChange = (categoryId: string) => {
+    const category = categories.find((cat) => cat.id === categoryId);
+    if (category) {
+      onCategoryChange(category.id, category.name);
+    }
   };
 
   if (loading)
@@ -42,56 +47,57 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
   return (
     <Select.Root
       value={selectedCategoryId}
-      onValueChange={(categoryId) => {
-        const category = categories.find((cat) => cat.id === categoryId);
-        if (category) {
-          handleSelectChange(category.id, category.name);
-        }
-      }}
+      onValueChange={handleSelectChange}
       open={isOpen}
-      onOpenChange={(open) => setIsOpen(open)}
+      onOpenChange={setIsOpen}
     >
       <Select.Trigger
         className="inline-flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         aria-label="Sélectionnez une catégorie"
       >
-        <Select.Value
-          className="text-black"
-          placeholder="Sélectionnez une catégorie"
-        >
+        <Select.Value placeholder="Sélectionnez une catégorie">
           {selectedCategoryName || "Sélectionnez une catégorie"}
         </Select.Value>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className={`h-5 w-5 text-black ${isOpen ? "-rotate-180" : ""}`}
-          viewBox="0 0 20 20"
-          fill="none"
-          stroke="currentColor"
-          style={{ transition: "transform 0.3s ease-out" }}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M7 9l3 3 3-3"
-          />
-        </svg>
+        <Select.Icon className="text-black">
+          <RxChevronDown className={`h-5 w-5 ${isOpen ? "-rotate-180" : ""}`} />
+        </Select.Icon>
       </Select.Trigger>
-      <Select.Content className="h-fit min-w-52 overflow-y-auto rounded-md bg-white shadow-md">
-        <Select.Viewport className="p-2">
-          {categories.map((category) => (
-            <Select.Item
-              key={category.id}
-              value={category.id}
-              className="cursor-pointer rounded-sm border-black px-4 py-2 text-sm text-black hover:border-2 hover:bg-indigo-200"
-            >
-              {category.name}
-            </Select.Item>
-          ))}
-        </Select.Viewport>
-      </Select.Content>
+      <Select.Portal>
+        <Select.Content className="mt-1 overflow-hidden rounded-md bg-white shadow-md">
+          <Select.ScrollUpButton className="flex h-6 cursor-default items-center justify-center bg-white text-black">
+            <RxChevronUp />
+          </Select.ScrollUpButton>
+          <Select.Viewport className="p-2">
+            {categories.map((category) => (
+              <SelectItem key={category.id} value={category.id}>
+                {category.name}
+              </SelectItem>
+            ))}
+          </Select.Viewport>
+          <Select.ScrollDownButton className="flex h-6 cursor-default items-center justify-center bg-white text-black">
+            <RxChevronDown />
+          </Select.ScrollDownButton>
+        </Select.Content>
+      </Select.Portal>
     </Select.Root>
   );
 };
+
+const SelectItem = React.forwardRef<HTMLDivElement, Select.SelectItemProps>(
+  ({ children, ...props }, forwardedRef) => (
+    <Select.Item
+      className="relative flex h-[25px] cursor-pointer select-none items-center rounded-sm pl-[25px] pr-[35px] text-[13px] leading-none text-black data-[disabled]:pointer-events-none data-[highlighted]:bg-indigo-300 data-[disabled]:text-gray-500 data-[highlighted]:text-black data-[highlighted]:outline-none"
+      {...props}
+      ref={forwardedRef}
+    >
+      <Select.ItemText>{children}</Select.ItemText>
+      <Select.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
+        <FaCheck />
+      </Select.ItemIndicator>
+    </Select.Item>
+  ),
+);
+
+SelectItem.displayName = "SelectItem";
 
 export default CategorySelect;
