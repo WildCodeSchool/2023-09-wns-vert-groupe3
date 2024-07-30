@@ -12,14 +12,14 @@ const UploadPage = () => {
         onSubmit={async (event) => {
           event.preventDefault();
           if (file) {
-            const url = "http://imagesupload:8000/upload";
+            const url = "https://imagesupload:8000/upload";
             console.log(url);
             // const url = "/upload";
             const formData = new FormData();
             formData.append("file", file, file.name);
             try {
               const response = await axios.post(url, formData);
-              setImageURL(`http://imagesupload:8000${response.data.filename}`);
+              setImageURL(`https://imagesupload:8000${response.data.filename}`);
               //   setImageURL(response.data.filename);
               console.log("response data filename : ", response.data.filename);
             } catch (err) {
