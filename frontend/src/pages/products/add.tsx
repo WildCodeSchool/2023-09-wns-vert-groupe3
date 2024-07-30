@@ -60,7 +60,7 @@ const ProductsAddPage = () => {
   };
 
   const uploadImages = async () => {
-    const urlPost = "http://localhost:8000/upload";
+    const urlPost = "https://0923-vert-3.wns.wilders.dev/upload";
     const uploadPromises = files.map((singleFile) => {
       const formData = new FormData();
       formData.append("file", singleFile, singleFile.name);
@@ -89,7 +89,7 @@ const ProductsAddPage = () => {
       const uploadedImages = await uploadImages();
       const imageUrls = uploadedImages.map((filename) => {
         console.log("filename : ", filename);
-        return `http://localhost:8000${filename}`;
+        return `https://0923-vert-3.wns.wilders.dev${filename}`;
       });
 
       const variables = {
