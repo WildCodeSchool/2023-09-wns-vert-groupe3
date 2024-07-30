@@ -5,6 +5,7 @@ import CategorySelect from "components/CategorySelect";
 import ImageUploader from "components/ImageUploader";
 import BadAuthorization from "components/ui/BadAuthorization";
 import LoadingProgress from "components/ui/LoadingProgress";
+import { UserContext } from "contexts/UserContext";
 import { ADD_PRODUCT } from "lib/graphql/mutations";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -12,17 +13,16 @@ import { CiWarning } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { InputCreateProduct } from "types/inputCreateProduct";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
-import { UserContext } from "contexts/UserContext";
 
 const ProductsAddPage = () => {
-   const authInfo = useContext(UserContext)
-   const userRole = authInfo.role;
-   const isLoggedIn = authInfo.isLoggedIn
-   const userEmail = authInfo.email
-   
-   console.log(userRole);
-   console.log(isLoggedIn);
-   console.log(userEmail);
+  const authInfo = useContext(UserContext);
+  const userRole = authInfo.role;
+  const isLoggedIn = authInfo.isLoggedIn;
+  const userEmail = authInfo.email;
+
+  console.log(userRole);
+  console.log(isLoggedIn);
+  console.log(userEmail);
 
   const [files, setFiles] = useState<File[]>([]);
   const [imageURLs, setImageURLs] = useState<string[]>([]);
@@ -46,10 +46,10 @@ const ProductsAddPage = () => {
   if (loading) return <LoadingProgress />;
   if (error) return <p>Error: {error.message}</p>;
 
-//   const user = userData?.whoAmI;
-//   const isUserAdmin = user ? isAdmin(user) : false;
+  //   const user = userData?.whoAmI;
+  //   const isUserAdmin = user ? isAdmin(user) : false;
 
-console.log("authinfo.role: " , authInfo.role);
+  console.log("authinfo.role: ", authInfo.role);
 
   if (userRole != "admin") {
     return <BadAuthorization />;
@@ -60,7 +60,8 @@ console.log("authinfo.role: " , authInfo.role);
   };
 
   const uploadImages = async () => {
-    const urlPost = "http://localhost:8000/upload";
+    // const urlPost = "http://localhost:8000/upload";
+    const urlPost = "http://imagesupload:8000/upload";
     const uploadPromises = files.map((singleFile) => {
       const formData = new FormData();
       formData.append("file", singleFile, singleFile.name);
@@ -89,7 +90,8 @@ console.log("authinfo.role: " , authInfo.role);
       const uploadedImages = await uploadImages();
       const imageUrls = uploadedImages.map((filename) => {
         console.log("filename : ", filename);
-        return `http://localhost:8000${filename}`;
+        // return `http://localhost:8000${filename}`;
+        return `http://imagesupload:8000${filename}`;
       });
 
       const variables = {
