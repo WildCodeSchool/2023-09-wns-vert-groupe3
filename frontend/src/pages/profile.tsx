@@ -24,7 +24,7 @@ const ProfilePage = () => {
          router.push('/login')
       }
       refetch();
-   }, []);
+   }, [refetch, authInfo.isLoggedIn, router]);
 
 
   if (loading) return <LoadingProgress />;

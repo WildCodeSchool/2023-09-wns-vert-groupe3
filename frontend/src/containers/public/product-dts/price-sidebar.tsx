@@ -2,8 +2,8 @@ import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 
 import { ProductType } from "lib/graphql/queries";
 
-import { daysBetweenDates, isDateRangeOverlap } from "utils/date";
 import { RentBill, convertToCurrency } from "utils/currency";
+import { daysBetweenDates, isDateRangeOverlap } from "utils/date";
 
 import Button from "components/Button";
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";

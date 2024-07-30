@@ -1,12 +1,12 @@
 import { useMutation } from "@apollo/client";
 import Button from "components/Button";
 import BadAuthorization from "components/ui/BadAuthorization";
+import { UserContext } from "contexts/UserContext";
 import { ADD_CATEGORY } from "lib/graphql/mutations";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import styles from "../../../styles/pages/ProductsAddPage.module.scss";
-import { useContext } from "react";
-import { UserContext } from "contexts/UserContext";
 
 type InputCreateCategory = {
   name: string;

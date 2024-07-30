@@ -1,16 +1,15 @@
 "use client";
 
-import React from "react";
-import { useState } from "react";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { useState } from "react";
 import { FaArrowLeft, FaArrowRight, FaEye } from "react-icons/fa6";
 
 import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 
 import {
-  daysInMonth,
-  getMonthsBetweenDates,
-  getPrevAndNextDates,
+    daysInMonth,
+    getMonthsBetweenDates,
+    getPrevAndNextDates,
 } from "utils/date";
 
 import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";

@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client";
 import LoadingProgress from "components/ui/LoadingProgress";
+import { UserContext } from "contexts/UserContext";
 import { WHO_AM_I } from "lib/graphql/queries";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
-import MainHeader from "./headers/MainHeader";
-import { UserContext } from "contexts/UserContext";
 import { User } from "types/user";
+import MainHeader from "./headers/MainHeader";
 
 export const metadata: Metadata = {
   title: "Wildrent",

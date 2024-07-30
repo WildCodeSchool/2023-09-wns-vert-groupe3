@@ -1,14 +1,14 @@
+import DropdownMenu from "components/ui/DropdownMenu";
+import DropdownMenuProfile from "components/ui/DropdownMenuProfile";
+import SearchInput from "components/ui/SearchInput";
 import { useCart } from "contexts/CartContext";
+import { UserContext } from "contexts/UserContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { FaShoppingBag, FaUserCircle } from "react-icons/fa";
 import { RiListSettingsLine } from "react-icons/ri";
-import DropdownMenu from "components/ui/DropdownMenu";
-import DropdownMenuProfile from "components/ui/DropdownMenuProfile";
-import SearchInput from "components/ui/SearchInput";
 import styles from "../../styles/components/MainHeader.module.scss";
-import { UserContext } from "contexts/UserContext";
 
 export default function MainHeader() {
 const authinfo = useContext(UserContext)

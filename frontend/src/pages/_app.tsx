@@ -1,19 +1,17 @@
 import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  createHttpLink,
+   ApolloClient,
+   ApolloProvider,
+   InMemoryCache,
+   createHttpLink,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import Layout from "components/Layout";
+import { CartProvider } from "contexts/CartContext";
+import { UserDatesResearchProvider } from "contexts/UserDatesResearchContext";
 import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
-
-import Layout from "components/Layout";
-import { UserDatesResearchProvider } from "contexts/UserDatesResearchContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { setContext } from "@apollo/client/link/context";
-import { CartProvider } from "contexts/CartContext";
 import "styles/globals.css";
 
 const httpLink = createHttpLink({

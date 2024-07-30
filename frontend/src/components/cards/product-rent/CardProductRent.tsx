@@ -14,8 +14,8 @@ import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
 import { FaCartArrowDown } from "react-icons/fa6";
 
 import CategoryLink from "components/CategoryLink";
-import CardProductRentAvailabilityViewer from "../../../components/cards/product-rent/CardProductRentAvailabilityViewer";
 import { UserContext } from "contexts/UserContext";
+import CardProductRentAvailabilityViewer from "../../../components/cards/product-rent/CardProductRentAvailabilityViewer";
 
 const CardProductRent = ({
    id,
