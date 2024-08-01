@@ -15,7 +15,9 @@ import { FaCartArrowDown } from "react-icons/fa6";
 
 import CategoryLink from "components/CategoryLink";
 import { UserContext } from "contexts/UserContext";
+import Image from "next/image";
 import CardProductRentAvailabilityViewer from "../../../components/cards/product-rent/CardProductRentAvailabilityViewer";
+
 
 const CardProductRent = ({
    id,
@@ -59,7 +61,9 @@ const CardProductRent = ({
       <article className="relative flex flex-col gap-4 rounded-md bg-lowcontrast p-4">
          <Link className="flex gap-4" href={`/products/${id}`}>
             <section className="relative aspect-square h-80 w-80 overflow-hidden rounded-lg">
-               <img
+               <Image
+                  sizes="50vw"
+                  fill
                   src={picture[0]}
                   alt={"Image de " + name}
                   className="h-full w-full object-cover object-center"
