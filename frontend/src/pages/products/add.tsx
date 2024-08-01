@@ -92,14 +92,14 @@ const ProductsAddPage = () => {
 
    const onSubmit = async (formData: InputCreateProduct) => {
       try {
-         if (selectedCategoryName === '') {
-            setError('category', {
-               message: 'Veuillez sélectionner une catégorie !'
-            })
+         // if (selectedCategoryName === '') {
+         //    setError('category', {
+         //       message: 'Veuillez sélectionner une catégorie !'
+         //    })
             // setCategoryError('Veuillez sélectionner une catégorie !')
             // throw new Error("Missing a category")
-            return
-         }
+         //    return
+         // }
 
          formData.category = parseInt(selectedCategoryId, 10);
          formData.price_daily = parseFloat(formData.price_daily.toString());
@@ -137,7 +137,7 @@ const ProductsAddPage = () => {
          reset();
          setSelectedCategoryId("");
          setSelectedCategoryName("");
-         setCategoryError("")
+         // setCategoryError("")
          setImageURLs([]);
          // setError('category', {type: 'manual', message: ''})
          clearErrors('category')
@@ -247,11 +247,11 @@ const ProductsAddPage = () => {
                />
                <input
                   type="hidden"
-                  {...register("category", { required: "Veuillez sélectionner une catégorie !!!!!!!!" })}
+                  {...register("category", { required: true })}
                />
                {errors.category && (
                   <p className="mt-1 flex items-center text-red-500">
-                     <CiWarning className="mr-1 text-xl" /> {errors.category.message}
+                     <CiWarning className="mr-1 text-xl" /> Veuillez sélectionner une catégorie.
                   </p>
                )}
             </label>
