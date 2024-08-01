@@ -27,7 +27,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ setFiles }) => {
 
   return (
     <div className="my-4">
-      <form className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-2">
         <input
           multiple={true}
           accept=".png, .jpeg, .jpg"
@@ -42,7 +42,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ setFiles }) => {
         >
           <span>Choisir des images</span>
         </label>
-      </form>
+      </div>
       <div className="mt-4 grid grid-cols-3 gap-4">
         {previewImages.map((previewUrl, index) => (
           <div
