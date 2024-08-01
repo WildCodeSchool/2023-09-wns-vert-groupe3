@@ -12,13 +12,12 @@ import styles from "../../styles/components/MainHeader.module.scss";
 
 export default function MainHeader() {
 const authinfo = useContext(UserContext)
-const refetchLogin = authinfo.refetchLogin()
 const isAdmin = authinfo.role === "admin"
 const isLoggedIn = authinfo.isLoggedIn
 
   useEffect(() => {
     authinfo.refetchLogin();
-  }, [refetchLogin]);
+  }, [authinfo]);
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuProfileVisible, setMenuProfileVisible] = useState(false);
@@ -52,6 +51,7 @@ const isLoggedIn = authinfo.isLoggedIn
                 width={56}
                 height={56}
                 className="h-full w-full object-cover"
+                priority
               />
             </div>
             <h1 className="text-3xl font-bold uppercase">Wildrent</h1>
