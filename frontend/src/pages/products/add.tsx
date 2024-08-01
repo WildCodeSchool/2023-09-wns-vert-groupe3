@@ -15,16 +15,16 @@ import { InputCreateProduct } from "types/inputCreateProduct";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
 
 const ProductsAddPage = () => {
-   
+
    const authInfo = useContext(UserContext);
    const userRole = authInfo.role;
    const isLoggedIn = authInfo.isLoggedIn;
    const userEmail = authInfo.email;
-   
+
    console.log(userRole);
    console.log(isLoggedIn);
    console.log(userEmail);
-   
+
    const [files, setFiles] = useState<File[]>([]);
    const [imageURLs, setImageURLs] = useState<string[]>([]);
    const {
@@ -38,13 +38,14 @@ const ProductsAddPage = () => {
    } = useForm<InputCreateProduct>();
    const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
    const [selectedCategoryName, setSelectedCategoryName] = useState<string>("");
-   
+
    // Handle category error
    useEffect(() => {
-      if (selectedCategoryId != "" && selectedCategoryName != ""){
-         clearErrors('category')
+      if (selectedCategoryId && selectedCategoryName) {
+         setValue('category', parseInt(selectedCategoryId, 10));
+         clearErrors('category');
       }
-   }, [selectedCategoryId, selectedCategoryName, clearErrors])
+   }, [selectedCategoryId, selectedCategoryName, setValue, clearErrors])
 
    const handleCategoryChange = (categoryId: string, categoryName: string) => {
       setSelectedCategoryId(categoryId);
@@ -65,11 +66,11 @@ const ProductsAddPage = () => {
    if (userRole != "admin") {
       return <BadAuthorization />;
    }
-   
+
    const handleImageChange = (files: File[]) => {
       setFiles(files);
    };
-   
+
    const uploadImages = async () => {
       const urlPost = "http://localhost:8000/upload";
       const uploadPromises = files.map((singleFile) => {
@@ -77,7 +78,7 @@ const ProductsAddPage = () => {
          formData.append("file", singleFile, singleFile.name);
          return axios.post(urlPost, formData);
       });
-      
+
       try {
          const responses = await Promise.all(uploadPromises);
          console.log("Server responses:", responses);
@@ -99,19 +100,18 @@ const ProductsAddPage = () => {
             // throw new Error("Missing a category")
             return
          }
-         
+
          formData.category = parseInt(selectedCategoryId, 10);
-         setValue("category", formData.category);
          formData.price_daily = parseFloat(formData.price_daily.toString());
          formData.price_fixed = parseFloat(formData.price_fixed.toString());
          formData.quantity = parseInt(formData.quantity.toString(), 10);
-         
+
          const uploadedImages = await uploadImages();
          const imageUrls = uploadedImages.map((filename) => {
             console.log("filename : ", filename);
             return `http://localhost:8000${filename}`;
          });
-         
+
          const variables = {
             ...formData,
             price_daily: formData.price_daily
@@ -120,19 +120,19 @@ const ProductsAddPage = () => {
             price_fixed: formData.price_fixed
                ? parseFloat(formData.price_fixed.toFixed(2))
                : 0,
-               quantity: formData.quantity,
-               category: formData.category,
-               picture: imageUrls,
-            };
-            
+            quantity: formData.quantity,
+            category: formData.category,
+            picture: imageUrls,
+         };
+
          console.log("Données envoyés : ", variables);
-         
+
          await createNewProduct({
             variables: {
                infos: variables,
             },
          });
-         
+
          toast.success("Produit ajouté avec succès !");
          reset();
          setSelectedCategoryId("");
@@ -146,7 +146,7 @@ const ProductsAddPage = () => {
          toast.error("Erreur lors de la création du produit");
       }
    };
-   
+
    return (
       <main className={styles.productsAddPage}>
          <h3 className="mb-4 flex items-center justify-center text-3xl">
@@ -156,7 +156,7 @@ const ProductsAddPage = () => {
             className={styles.form}
             onSubmit={handleSubmit(onSubmit)}
             method="POST"
-            >
+         >
             <label>
                Nom de l&apos;annonce: <br />
                <input
@@ -197,7 +197,7 @@ const ProductsAddPage = () => {
             </label>
             <br />
             <div className="flex w-full justify-around gap-2">
-               
+
                <label className="w-1/2">
                   Prix fix: <br />
                   <input
@@ -205,7 +205,7 @@ const ProductsAddPage = () => {
                      {...register("price_fixed", { required: true })}
                      type="number"
                      min={0}
-                     />
+                  />
                   {errors.price_fixed && (
                      <p className="mt-1 flex items-center text-red-500">
                         <CiWarning className="mr-1 text-xl" /> Ce champ est requis.
@@ -244,6 +244,10 @@ const ProductsAddPage = () => {
                   selectedCategoryId={selectedCategoryId}
                   selectedCategoryName={selectedCategoryName}
                   onCategoryChange={handleCategoryChange}
+               />
+               <input
+                  type="hidden"
+                  {...register("category", { required: "Veuillez sélectionner une catégorie !!!!!!!!" })}
                />
                {errors.category && (
                   <p className="mt-1 flex items-center text-red-500">
