@@ -1,41 +1,63 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { InputCreateProduct, InputUpdateProduct, Product } from "../entities";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Product } from "../entities";
+import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 import ProductService from "../services/product.service";
 
 @Resolver()
 export default class ProductResolver {
+  private productService: ProductService;
+
+  constructor() {
+    this.productService = new ProductService();
+  }
+
   @Query(() => [Product])
-  async getAllproducts() {
-    return await new ProductService().list();
+  async getAllproducts(@Ctx() ctx: {email:string}) {
+    return await this.productService.list(ctx);
+  }
+
+  @Query(() => [Product])
+  async getAllProductsByKeyword(@Arg("keyword") keyword: string) {
+    return await this.productService.getAllProductsByKeyword(keyword);
   }
 
   @Query(() => Product, { nullable: true })
-  async oneProductById(@Arg("id") id: number) {
-    const oneProduct = await new ProductService().findById(id);
-    console.log(oneProduct);
-    return oneProduct;
+  async getProductById(@Arg("productId") id: number) {
+    return await this.productService.findById(id);
   }
 
-  @Mutation(() => Product)
-  async addProduct(@Arg("infos") infos: InputCreateProduct) {
-    const newProduct = await new ProductService().create(infos);
-    return newProduct;
+  @Query(() => [Product])
+  async getProductsByCategoryId(@Arg("categoryId") categoryId: number) {
+    const productsByCategoryId =
+      await this.productService.findProductsByCategoryId(categoryId);
+    return productsByCategoryId;
   }
 
+  @Authorized("admin")
+   @Mutation(() => Product)
+   async addProduct(
+      @Arg("infos") infos: InputCreateProduct,
+      // @Ctx() ctx: { email: string }
+   ) {
+      const newProduct = await this.productService.create(infos);
+      return newProduct;
+   }
+
+  @Authorized("admin")
   @Mutation(() => Product)
   async updateProduct(
     @Arg("id") id: number,
     @Arg("infos") data: InputUpdateProduct
   ) {
-    const productToUpdate = await new ProductService().update(id, { ...data });
-    console.log(productToUpdate);
-    return productToUpdate;
+    const updatedProduct = await this.productService.update(id, data);
+    return updatedProduct;
   }
 
+  @Authorized("admin")
   @Mutation(() => Boolean)
   async deleteProduct(@Arg("productId") productId: number): Promise<boolean> {
     try {
-      await new ProductService().deleteProduct(productId);
+      await this.productService.deleteProduct(productId);
       return true;
     } catch (error) {
       console.error(error);

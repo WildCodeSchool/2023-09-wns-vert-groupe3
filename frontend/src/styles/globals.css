@@ -8,27 +8,27 @@
 /* :root {} */
 
 * {
-   box-sizing: border-box;
-   margin: 0;
-   padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 a {
-   text-decoration: inherit;
-   color: inherit;
+  text-decoration: inherit;
+  color: inherit;
 }
 
 html {
-   color: theme('colors.hightcontrast');
-   background-color: theme('colors.theme');
+  color: theme("colors.hightcontrast");
+  background-color: theme("colors.theme");
 }
 
 body {
-   font-family: "montserrat", sans-serif;
+  font-family: "montserrat", sans-serif;
 }
 
 p {
-   word-break: break-word;
+  word-break: break-word;
 }
 
 h1,
@@ -37,87 +37,86 @@ h3,
 h4,
 h5,
 h6 {
-   word-break: break-word;
-   /* ADD SPECIFIC FONT FOR TITLES ?? */
+  word-break: break-word;
+  /* ADD SPECIFIC FONT FOR TITLES ?? */
 }
 
 /* -------------------------------------------------------------------------- */
 /*                               GLOBAL CSS CODE                              */
 /* -------------------------------------------------------------------------- */
 .default-padding {
-   padding: 0 5rem;
+  padding: 0 5rem;
 }
 
 .default-margin {
-   margin: 0 5rem;
+  margin: 0 5rem;
 }
 
 @media (max-width: 868px) {
-   .default-padding {
-      padding: 0 2.5rem;
-   }
+  .default-padding {
+    padding: 0 2.5rem;
+  }
 
-   .default-margin {
-      margin: 0 2.5rem;
-   }
+  .default-margin {
+    margin: 0 2.5rem;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
 /*                               SCROLLBAR STYLE                              */
 /* -------------------------------------------------------------------------- */
 ::-webkit-scrollbar {
-   width: 10px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-   background: theme('colors.theme');
+  background: theme("colors.theme");
 }
 
 ::-webkit-scrollbar-thumb {
-   padding: 5px;
-   border: 3px solid theme('colors.theme');
-   border-radius: 10px;
-   background: theme("colors.primary");
+  padding: 5px;
+  border: 3px solid theme("colors.theme");
+  border-radius: 10px;
+  background: theme("colors.primary");
 }
 
 ::-webkit-scrollbar-thumb:hover {
-   background: theme("colors.pink.100");
+  background: theme("colors.pink.100");
 }
-
 
 /* -------------------------------------------------------------------------- */
 /*                               ELEMENTS STYLE                              */
 /* -------------------------------------------------------------------------- */
 
-
 /********** Buttons *********/
 
 .button {
-   min-width: 80px;
-   height: 40px;
-   padding: 8px;
-   border-radius: 5px;
-   border: 2px solid #08004b;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   gap: 3px;
-   font-size: 13px;
-   font-weight: bold;
-   color: #08004b;
-   background-color: white;
-   cursor: pointer;
+  min-width: 80px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 2px solid #08004b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #08004b;
+  background-color: white;
+  cursor: pointer;
 }
 
 .button-primary {
-   background-color: #0b006f;
-   color: white;
+  background-color: #0b006f;
+  color: white;
 }
 
 input {
-   height: 35px;
-   /* width: 250px; */
-   border: 1px solid rgb(195, 195, 195);
-   border-radius: 10px;
-   padding: 5px;
+  height: 35px;
+  /* width: 250px; */
+  color: black;
+  border: 1px solid rgb(195, 195, 195);
+  border-radius: 10px;
+  padding: 5px;
 }

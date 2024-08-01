@@ -1,6 +1,7 @@
-import { IsDate, IsInt, Length, Min } from "class-validator";
-import { Field, ID, InputType, ObjectType } from "type-graphql";
+import { IsDate, IsInt, Length, MinLength } from "class-validator";
+import { Field, ID, ObjectType } from "type-graphql";
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -12,7 +13,7 @@ import { Category } from "./category.entity";
 
 @ObjectType()
 @Entity()
-export class Product {
+export class Product extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,17 +25,33 @@ export class Product {
 
   @Field()
   @Column()
-  description: string;
+  @Length(5, 150, {
+    message: "Short description have to be between 5 and 150 characters",
+  })
+  description_short: string;
 
   @Field()
   @Column()
-  picture: string;
+  @MinLength(100, {
+    message: "Long description have to be above 150 characters",
+  })
+  description_long: string;
 
-  @Field(() => Number)
+  @Field(() => [String])
+  @Column("text", { array: true })
+  picture: string[];
+
+  @Field()
   @Column()
-  @IsInt()
-  @Min(0, { message: "price have to be positive" })
-  price: number;
+  price_fixed: number;
+
+  @Field()
+  @Column()
+  price_daily: number;
+
+  @Field(() => Number, { nullable: true })
+  @Column({ nullable: true })
+  discount?: number;
 
   @Field(() => Number)
   @Column()
@@ -60,47 +77,4 @@ export class Product {
     onDelete: "CASCADE",
   })
   category: Category;
-}
-
-// INPUTS
-@InputType()
-export class InputCreateProduct {
-  @Field()
-  name: string;
-
-  @Field()
-  description: string;
-
-  @Field()
-  picture: string;
-
-  @Field()
-  price: number;
-
-  @Field()
-  quantity: number;
-
-  @Field()
-  category: number;
-}
-
-@InputType()
-export class InputUpdateProduct {
-  @Field({ nullable: true })
-  name: string;
-
-  @Field({ nullable: true })
-  description: string;
-
-  @Field({ nullable: true })
-  picture: string;
-
-  @Field({ nullable: true })
-  price: number;
-
-  @Field({ nullable: true })
-  quantity: number;
-
-  @Field({ nullable: true })
-  category: number;
 }

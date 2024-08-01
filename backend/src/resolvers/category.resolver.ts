@@ -1,26 +1,32 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { Category, InputCreateCategory } from "../entities";
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
+import { Category } from "../entities";
+import { InputCreateCategory } from "../inputs";
 import CategoryService from "../services/category.service";
 
 @Resolver()
 export default class CategoryResolver {
+  private categoryService: CategoryService;
+
+  constructor() {
+    this.categoryService = new CategoryService();
+  }
+
   @Query(() => [Category])
   async getAllCategories() {
-    return await new CategoryService().getAllCategories();
+    return await this.categoryService.getAllCategories();
   }
 
+  @Authorized("admin")
   @Mutation(() => Category)
   async addCategory(@Arg("infos") infos: InputCreateCategory) {
-    const newCategory = await new CategoryService().addCategory(infos);
-    return newCategory;
+    return await this.categoryService.addCategory(infos);
   }
 
+  @Authorized("admin")
   @Mutation(() => String)
   async deleteCategoryById(@Arg("id") id: number) {
-    const categoryService = new CategoryService();
-
     try {
-      await categoryService.deleteCategory(id);
+      await this.categoryService.deleteCategory(id);
       return "The Category has been deleted";
     } catch (error) {
       console.error("Error deleting category:", error);

@@ -1,12 +1,9 @@
 import { validate } from "class-validator";
-import { Repository } from "typeorm";
-import datasource from "../../config/datasource";
-import {
-  Category,
-  InputCreateProduct,
-  InputUpdateProduct,
-  Product,
-} from "../entities";
+import { ILike, Repository } from "typeorm";
+import datasource from "../config/datasource";
+import { Category, Product } from "../entities";
+import { redisClient } from "../index";
+import { InputCreateProduct, InputUpdateProduct } from "../inputs";
 import CategoryService from "../services/category.service";
 
 export default class ProductService {
@@ -17,7 +14,7 @@ export default class ProductService {
     this.dbCategory = datasource.getRepository(Category);
   }
 
-  async list() {
+  async list(_ctx: any) {
     return this.db.find({
       relations: {
         category: true,
@@ -30,6 +27,34 @@ export default class ProductService {
       where: { id },
       relations: { category: true },
     });
+  }
+
+  async getAllProductsByKeyword(keyword: string): Promise<Product[]> {
+    if (keyword.length < 3 || keyword.length > 12) return [];
+
+    const lowerKeyword = keyword.toLowerCase();
+
+    const cacheResult = await redisClient.get(lowerKeyword);
+    if (cacheResult !== null) {
+      console.log("From cache");
+      return JSON.parse(cacheResult);
+    } else {
+      const dbResult = await Product.find({
+        where: { name: ILike(`%${lowerKeyword}%`) },
+      });
+
+      redisClient.set(lowerKeyword, JSON.stringify(dbResult), { EX: 60 });
+
+      return dbResult;
+    }
+  }
+
+  async findProductsByCategoryId(categoryId: number): Promise<Product[]> {
+    const products = await this.db.find({
+      where: { category: { id: categoryId } },
+      relations: ["category"],
+    });
+    return products;
   }
 
   async create(data: InputCreateProduct) {
@@ -45,25 +70,28 @@ export default class ProductService {
     return await this.db.save(newProduct);
   }
 
-  async update(id: number, data: InputUpdateProduct) {
-    const categoryToLink = await new CategoryService().find(data.category);
+  async update(id: number, data: InputUpdateProduct): Promise<Product> {
+    const categoryToLink = await new CategoryService().find(+data.category);
     if (!categoryToLink) {
-      throw new Error("category doesnt exist");
+      throw new Error(`Category with ID ${data.category} not found`);
     }
+
     const productToUpdate = await this.findById(id);
     if (!productToUpdate) {
-      throw new Error("Product doesnt exist");
+      throw new Error(`Product with ID ${id} not found`);
     }
-    const producToSave = this.db.merge(productToUpdate, {
+
+    const updatedProduct = this.db.merge(productToUpdate, {
       ...data,
       category: categoryToLink,
     });
-    const errors = await validate(producToSave);
-    if (errors.length !== 0) {
-      console.log(errors);
-      throw new Error("Error when validate");
+    const errors = await validate(updatedProduct);
+    if (errors.length > 0) {
+      console.error("Validation errors:", errors);
+      throw new Error("Product data validation failed");
     }
-    return await this.db.save(producToSave);
+
+    return await this.db.save(updatedProduct);
   }
 
   async deleteProduct(id: number) {

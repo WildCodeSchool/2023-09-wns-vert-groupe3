@@ -1,0 +1,55 @@
+version: "1.1"
+
+services:
+  backend:
+    build: ./backend
+    healthcheck:
+      test: 'curl --fail --request POST --header ''content-type: application/json'' --url ''http://localhost:4000'' --data ''{"query":"query { __typename }"}'' || exit 1'
+      retries: 10
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    env_file: .env.test
+    healthcheck:
+      test: "curl --fail --request GET --header 'content-type: application/json' --url 'http://localhost:3000/api/healthcheck' || exit 1"
+      retries: 10
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  e2e:
+    build: ./e2e
+    volumes:
+      - ./e2e/playwright-report:/app/playwright-report
+      - ./e2e/test-results:/app/test-results
+    depends_on:
+      frontend:
+        condition: service_healthy
+
+  imagesupload:
+    build: ./imagesupload
+    # volumes:
+    #   - ./imagesupload/uploads:/app/uploads
+
+  adminer:
+    image: adminer
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: wildrent
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      retries: 10
+    # volumes:
+    #   - pgdata_new1:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+  redis-commander:
+    image: rediscommander/redis-commander
+    environment:
+      - REDIS_HOSTS=redis

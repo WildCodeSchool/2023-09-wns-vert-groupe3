@@ -1,21 +1,26 @@
-import { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
+
+// Page de test à supprimer
 
 const UploadPage = () => {
   const [file, setFile] = useState<File>();
-  const [imageURL, setImageURL] = useState<String>();
+  const [imageURL, setImageURL] = useState<string>();
   return (
     <div>
       <form
         onSubmit={async (event) => {
           event.preventDefault();
           if (file) {
-            const url = "http://localhost:8000/upload";
+            const url = "http://localhost:8000/uploads";
+            // const url = "/upload";
             const formData = new FormData();
             formData.append("file", file, file.name);
             try {
               const response = await axios.post(url, formData);
-              setImageURL(response.data.filename);
+              setImageURL(`http://localhost:8000${response.data.filename}`);
+              //   setImageURL(response.data.filename);
+              console.log("response data filename : ", response.data.filename);
             } catch (err) {
               console.log("error", err);
             }
@@ -35,14 +40,12 @@ const UploadPage = () => {
         />
         <button type="submit">Upload Image</button>
       </form>
+
       {imageURL ? (
         <>
+          {console.log("image URL : ", imageURL)}
           <br />
-          <img
-            width={"500"}
-            alt="uploadedImg"
-            src={"http://localhost:8000" + imageURL}
-          />
+          <img width={500} alt="uploadedImg" src={imageURL} />
           <br />
         </>
       ) : null}

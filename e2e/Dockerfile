@@ -1,13 +1,13 @@
-FROM mcr.microsoft.com/playwright as base
+FROM mcr.microsoft.com/playwright
+
 RUN corepack enable pnpm
+RUN corepack prepare pnpm@8.15.4 --activate
 WORKDIR /app
 
-FROM base as deps
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
-    --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
+COPY package.json package.json
 
-FROM deps as build
+RUN pnpm i
+
 COPY . .
-CMD ["pnpx", "playwright", "test"]
+CMD pnpm playwright test
+# CMD pnpm playwright test --headed
