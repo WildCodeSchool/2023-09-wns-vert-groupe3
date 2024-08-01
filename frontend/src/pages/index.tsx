@@ -3,6 +3,7 @@ import HomeHotProductsSection from "containers/public/home/hot-products-section"
 import HomeIntroSection from "containers/public/home/intro-section";
 import SummerProductsSection from "containers/public/home/summer-products";
 
+
 export default function Home() {
 
    // TODO: Toast à implementer lors de la connexion réussie et de la redirection vers la page d'accueil

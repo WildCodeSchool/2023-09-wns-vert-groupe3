@@ -1,9 +1,9 @@
 import { useQuery } from "@apollo/client";
-import DisplayProd from "components/DisplayProd";
 import { GET_PRODUCTS } from "lib/graphql/queries";
 import { HiPlusCircle } from "react-icons/hi";
 
 import CardProductSkeleton from "components/cards/product-rent/CardProductSkeleton";
+import DisplayProd from "components/DisplayProd";
 import { useEffect } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from "styles/pages/ProductsPage.module.scss";
