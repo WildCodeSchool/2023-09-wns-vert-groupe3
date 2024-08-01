@@ -7,7 +7,7 @@ import BadAuthorization from "components/ui/BadAuthorization";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { UserContext } from "contexts/UserContext";
 import { ADD_PRODUCT } from "lib/graphql/mutations";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CiWarning } from "react-icons/ci";
 import { toast } from "react-toastify";
@@ -15,15 +15,16 @@ import { InputCreateProduct } from "types/inputCreateProduct";
 import styles from "../../styles/pages/ProductsAddPage.module.scss";
 
 const ProductsAddPage = () => {
+   
    const authInfo = useContext(UserContext);
    const userRole = authInfo.role;
    const isLoggedIn = authInfo.isLoggedIn;
    const userEmail = authInfo.email;
-
+   
    console.log(userRole);
    console.log(isLoggedIn);
    console.log(userEmail);
-
+   
    const [files, setFiles] = useState<File[]>([]);
    const [imageURLs, setImageURLs] = useState<string[]>([]);
    const {
@@ -31,10 +32,19 @@ const ProductsAddPage = () => {
       handleSubmit,
       reset,
       setValue,
+      setError,
       formState: { errors },
+      clearErrors
    } = useForm<InputCreateProduct>();
    const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
    const [selectedCategoryName, setSelectedCategoryName] = useState<string>("");
+   
+   // Handle category error
+   useEffect(() => {
+      if (selectedCategoryId != "" && selectedCategoryName != ""){
+         clearErrors('category')
+      }
+   }, [selectedCategoryId, selectedCategoryName, clearErrors])
 
    const handleCategoryChange = (categoryId: string, categoryName: string) => {
       setSelectedCategoryId(categoryId);
@@ -82,7 +92,10 @@ const ProductsAddPage = () => {
    const onSubmit = async (formData: InputCreateProduct) => {
       try {
          if (selectedCategoryName === '') {
-            setCategoryError('Veuillez sélectionner une catégorie !')
+            setError('category', {
+               message: 'Veuillez sélectionner une catégorie !'
+            })
+            // setCategoryError('Veuillez sélectionner une catégorie !')
             // throw new Error("Missing a category")
             return
          }
@@ -126,6 +139,8 @@ const ProductsAddPage = () => {
          setSelectedCategoryName("");
          setCategoryError("")
          setImageURLs([]);
+         // setError('category', {type: 'manual', message: ''})
+         clearErrors('category')
       } catch (err) {
          console.error("Error creating product:", err);
          toast.error("Erreur lors de la création du produit");
@@ -230,9 +245,9 @@ const ProductsAddPage = () => {
                   selectedCategoryName={selectedCategoryName}
                   onCategoryChange={handleCategoryChange}
                />
-               {categoryError && (
+               {errors.category && (
                   <p className="mt-1 flex items-center text-red-500">
-                     <CiWarning className="mr-1 text-xl" /> {categoryError}
+                     <CiWarning className="mr-1 text-xl" /> {errors.category.message}
                   </p>
                )}
             </label>
