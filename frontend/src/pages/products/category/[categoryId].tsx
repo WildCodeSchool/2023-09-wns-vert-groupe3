@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import DisplayProd from "components/DisplayProd";
+import BackNavigation from "components/ui/BackNavigation";
 import LoadingProgress from "components/ui/LoadingProgress";
 import { useRouter } from "next/router";
 import { GET_PRODUCTS_BY_CATEGORY_ID } from "../../../lib/graphql/queries";
@@ -21,8 +22,11 @@ const FilterPage = () => {
   const productsByCategory = data.getProductsByCategoryId;
   const categoryName = productsByCategory[0]?.category?.name;
 
+  const navigation = "../";
+
   return (
     <main className={styles.productsPage}>
+      <BackNavigation navigation={navigation} />
       <div>
         <h3 className="mb-16 mt-0.5 text-2xl">
           Voici les produits correspondants pour la catégorie :

@@ -1,7 +1,8 @@
 services:
-
   backend:
-    build: ./backend
+    build:
+      context: ./backend # Fait référence au fichier nommé DockerFile par défaut du répertoire courant. Exécute les instructions à l'intérieur.
+      dockerfile: Dockerfile # Indication explicite que l'on cible le fichier nommé Dockerfile.
     ports:
       - 4000:4000
     volumes:
@@ -11,12 +12,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    env_file: .env.apikey
     depends_on:
       db:
         condition: service_healthy
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend # Fait référence au fichier nommé DockerFile par défaut du répertoire courant. Exécute les instructions à l'intérieur.
+      dockerfile: Dockerfile # Indication explicite que l'on cible le fichier nommé Dockerfile.
     restart: always
     environment:
       - NODE_ENV=development
@@ -45,8 +49,12 @@ services:
       retries: 20
     volumes:
       - pgdata_new1:/var/lib/postgresql/data
+
   imagesupload:
     build: ./imagesupload
+    # build:
+    #   context: ./imagesupload
+    #   dockerfile: Dockerfile
     volumes:
       - ./imagesupload/src:/app/src
       - ./imagesupload/uploads:/app/uploads
@@ -57,6 +65,15 @@ services:
     image: adminer
     ports:
       - 8080:8080
-      
+
+  redis:
+    image: redis
+  redis-commander:
+    image: rediscommander/redis-commander
+    environment:
+      - REDIS_HOSTS=redis
+    ports:
+      - "8081:8081"
+
 volumes:
   pgdata_new1:

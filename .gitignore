@@ -9,3 +9,9 @@ node_modules
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+.env
+.env.apikey
+
+logs
+# Fait référence aux logs générés par le service ou container gateway (nginx)
+uploads

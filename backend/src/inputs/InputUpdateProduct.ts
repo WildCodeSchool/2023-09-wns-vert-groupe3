@@ -2,21 +2,30 @@ import { Field, InputType } from "type-graphql";
 
 @InputType()
 export class InputUpdateProduct {
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   name: string;
 
-  @Field({ nullable: true })
-  description: string;
+  @Field(() => String, { nullable: true })
+  description_short: string;
 
-  @Field({ nullable: true })
-  picture: string;
+  @Field(() => String, { nullable: true })
+  description_long: string;
 
-  @Field({ nullable: true })
-  price: number;
+  @Field(() => [String], { nullable: true })
+  picture: string[];
 
-  @Field({ nullable: true })
+  @Field(() => Number, { nullable: true })
+  price_fixed: number;
+
+  @Field(() => Number, { nullable: true })
+  price_daily: number;
+
+  @Field(() => Number, { nullable: true })
+  discount?: number;
+
+  @Field(() => Number, { nullable: true })
   quantity: number;
 
-  @Field({ nullable: true })
+  @Field(() => Number, { nullable: true })
   category: number;
 }

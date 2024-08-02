@@ -1,19 +1,19 @@
-import { IsDate, IsInt, Length, Min } from "class-validator";
+import { IsDate, IsInt, Length, MinLength } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
 import {
-   BaseEntity,
-   Column,
-   CreateDateColumn,
-   Entity,
-   ManyToOne,
-   PrimaryGeneratedColumn,
-   UpdateDateColumn,
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { Category } from "./category.entity";
 
 @ObjectType()
 @Entity()
-export class Product extends BaseEntity{
+export class Product extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,17 +25,33 @@ export class Product extends BaseEntity{
 
   @Field()
   @Column()
-  description: string;
+  @Length(5, 150, {
+    message: "Short description have to be between 5 and 150 characters",
+  })
+  description_short: string;
 
   @Field()
   @Column()
-  picture: string;
+  @MinLength(100, {
+    message: "Long description have to be above 150 characters",
+  })
+  description_long: string;
 
-  @Field(() => Number)
+  @Field(() => [String])
+  @Column("text", { array: true })
+  picture: string[];
+
+  @Field()
   @Column()
-  @IsInt()
-  @Min(0, { message: "price have to be positive" })
-  price: number;
+  price_fixed: number;
+
+  @Field()
+  @Column()
+  price_daily: number;
+
+  @Field(() => Number, { nullable: true })
+  @Column({ nullable: true })
+  discount?: number;
 
   @Field(() => Number)
   @Column()

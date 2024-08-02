@@ -22,7 +22,6 @@
 **/.settings
 **/*.*proj.user
 
-**/.env
 **/secrets.dev.yaml
 **/values.dev.yaml
 

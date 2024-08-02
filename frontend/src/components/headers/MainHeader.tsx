@@ -1,20 +1,41 @@
+import DropdownMenu from "components/ui/DropdownMenu";
+import DropdownMenuProfile from "components/ui/DropdownMenuProfile";
+import SearchInput from "components/ui/SearchInput";
+import { useCart } from "contexts/CartContext";
+import { UserContext } from "contexts/UserContext";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { FaPlus, FaTimes } from "react-icons/fa";
-import { IoMdSearch } from "react-icons/io";
-
+import { useContext, useEffect, useState } from "react";
+import { FaShoppingBag, FaUserCircle } from "react-icons/fa";
+import { RiListSettingsLine } from "react-icons/ri";
 import styles from "../../styles/components/MainHeader.module.scss";
 
 export default function MainHeader() {
-  const [searchActive, setSearchActive] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+const authinfo = useContext(UserContext)
+const isAdmin = authinfo.role === "admin"
+const isLoggedIn = authinfo.isLoggedIn
 
-  const toggleSearch = () => setSearchActive(!searchActive);
+  useEffect(() => {
+    authinfo.refetchLogin();
+  }, [authinfo]);
 
-  const handleInputChange = (e: any) => {
-    setSearchValue(e.target.value);
-  };
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [menuProfileVisible, setMenuProfileVisible] = useState(false);
+
+  const { cart } = useCart();
+
+  const cartItemCount = cart.reduce(
+    (total, product) => total + product.quantity,
+    0,
+  );
+
+//   const toggleSearch = () => setSearchActive(!searchActive);
+//   const toggleMenu = () => setMenuVisible(!menuVisible);
+//   const toggleMenuProfile = () => setMenuProfileVisible(!menuProfileVisible);
+
+//   const handleInputChange = (e: any) => {
+//     setSearchValue(e.target.value);
+//   };
 
   return (
     <main className={styles.mainHeader}>
@@ -30,6 +51,7 @@ export default function MainHeader() {
                 width={56}
                 height={56}
                 className="h-full w-full object-cover"
+                priority
               />
             </div>
             <h1 className="text-3xl font-bold uppercase">Wildrent</h1>
@@ -37,65 +59,64 @@ export default function MainHeader() {
         </div>
         <div className="relative flex items-center">
           <div className="flex items-center">
-            <input
-              type="text"
-              placeholder={searchActive ? "Rechercher..." : ""}
-              value={searchActive ? searchValue : ""}
-              onChange={handleInputChange}
-              readOnly={!searchActive}
-              className={`${
-                searchActive ? "w-60 pl-8 pr-7" : "w-9"
-              }  overflow-hidden rounded-full	border text-black transition-all duration-300 focus:border-blue-500 focus:outline-none ${
-                styles.searchInput
-              } ${!searchActive && "cursor-pointer"}`}
-              style={{
-                borderRadius: "10px",
-                borderColor: "#5461fc",
-                borderWidth: "2px",
-              }}
-            />
-            <div
-              className="absolute inset-y-0 left-0 flex items-center pl-2.5"
-              onClick={toggleSearch}
-            >
-              <IoMdSearch className="cursor-pointer stroke-2 text-black" />
-            </div>
-            {searchActive && (
-              <div
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                onClick={() => {
-                  setSearchActive(false);
-                  setSearchValue("");
-                }}
-              >
-                <FaTimes className="cursor-pointer text-black" />
-              </div>
-            )}
+            <SearchInput />
           </div>
         </div>
         <div className={styles.rightLinks}>
-          <Link href="/products">
-            <span className={styles.allArticles}>Tous les articles</span>
+          <Link href="/products" className={styles.allArticles}>
+            <span>Tous les articles</span>
           </Link>
-          <Link href="/products/add">
-            <FaPlus className="text-black" size={35} />
-          </Link>
-          <Link href="/cart">
-            <Image
-              src="/images/header/cart.svg"
-              alt="cart"
-              width={30}
-              height={30}
-            />
-          </Link>
-          <Link href="/profile">
-            <Image
-              src="/images/header/avatar.webp"
-              alt="avatar"
-              width={40}
-              height={40}
-            />
-          </Link>
+
+          {(isAdmin) && (
+            <div
+              className="relative"
+              onMouseEnter={() => setMenuVisible(true)}
+              onMouseLeave={() => setMenuVisible(false)}
+            >
+              <RiListSettingsLine
+                className="cursor-pointer text-white ease-out hover:text-indigo-500"
+                size={32}
+              />
+              {menuVisible && <DropdownMenu />}
+            </div>
+          )}
+
+         {(!isAdmin) && (
+            <Link href="/cart">
+               <div className="relative ease-out hover:scale-90 hover:text-indigo-500">
+                  <FaShoppingBag size={32} className="relative" />
+                  <div className="absolute -bottom-3 -right-3 flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white">
+                     {cartItemCount}
+                  </div>
+               </div>
+            </Link>)}
+
+          {isLoggedIn ? (
+            <div
+              className="relative"
+              onMouseEnter={() => setMenuProfileVisible(true)}
+              onMouseLeave={() => setMenuProfileVisible(false)}
+            >
+              <FaUserCircle
+                className="text-white ease-out hover:scale-90 hover:text-indigo-500"
+                size={32}
+              />
+              {menuProfileVisible && (
+                <DropdownMenuProfile
+                  setMenuProfileVisible={setMenuProfileVisible}
+                />
+              )}
+            </div>
+          ) : (
+            <Link href="/login">
+              <div>
+                <FaUserCircle
+                  className="text-white ease-out hover:scale-90 hover:text-indigo-500"
+                  size={32}
+                />
+              </div>
+            </Link>
+          )}
         </div>
       </header>
     </main>

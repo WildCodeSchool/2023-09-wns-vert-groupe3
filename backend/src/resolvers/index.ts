@@ -1,7 +1,6 @@
-import ProductResolver from './product.resolver';
-import CategoryResolver from './category.resolver';
+import CategoryResolver from "./category.resolver";
+import CheckoutResolver from "./checkout.resolver";
+import ProductResolver from "./product.resolver";
+import UserResolver from "./user.resolver";
 
-export {
-  ProductResolver,
-  CategoryResolver,
-};
+export { CategoryResolver, CheckoutResolver, ProductResolver, UserResolver };

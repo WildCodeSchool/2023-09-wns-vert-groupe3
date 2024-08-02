@@ -1,4 +1,4 @@
-version: "1.0"
+version: "1.1"
 
 services:
   backend:
@@ -9,20 +9,16 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - 4000:4000
 
   frontend:
     build: ./frontend
-    env_file: .env.dev
+    env_file: .env.test
     healthcheck:
-      test: 'curl --fail --request GET --header ''content-type: application/json'' --url ''http://localhost:3000/api/healthcheck'' || exit 1'      
+      test: "curl --fail --request GET --header 'content-type: application/json' --url 'http://localhost:3000/api/healthcheck' || exit 1"
       retries: 10
     depends_on:
       backend:
         condition: service_healthy
-    ports:
-      - 3000:3000
 
   e2e:
     build: ./e2e
@@ -32,32 +28,28 @@ services:
     depends_on:
       frontend:
         condition: service_healthy
-        
+
   imagesupload:
     build: ./imagesupload
-    volumes:
-      - ./imagesupload/uploads:/app/uploads
-    ports:
-      - 8000:8000
+    # volumes:
+    #   - ./imagesupload/uploads:/app/uploads
 
   adminer:
     image: adminer
-    ports:
-      - 8080:8080
 
   db:
     image: postgres
-    restart: always
-    ports:
-      - "5434:5432"
     environment:
       POSTGRES_PASSWORD: wildrent
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
       retries: 10
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+    # volumes:
+    #   - pgdata_new1:/var/lib/postgresql/data
 
-volumes:
-  pgdata:
-
+  redis:
+    image: redis
+  redis-commander:
+    image: rediscommander/redis-commander
+    environment:
+      - REDIS_HOSTS=redis

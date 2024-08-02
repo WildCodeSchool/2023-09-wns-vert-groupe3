@@ -1,14 +1,21 @@
-import React from 'react'
-import styles from "../styles/pages/CartPage.module.scss"
+import CartPage from "components/cart1/CartPage";
+import { UserContext } from "contexts/UserContext";
+import { useRouter } from "next/router";
+import { useContext } from "react";
 
-const CartPage = () => {
-   return (
-      <main className={styles.cartPage}>
-         <div>
-            cart page !
-         </div>
-      </main>
-   )
-}
+const Cart = () => {
+  const authInfo = useContext(UserContext);
 
-export default CartPage
+  const router = useRouter();
+  if (authInfo.isLoggedIn === false) {
+    router.push("/login");
+  }
+
+  return (
+    <main>
+      <CartPage />
+    </main>
+  );
+};
+
+export default Cart;

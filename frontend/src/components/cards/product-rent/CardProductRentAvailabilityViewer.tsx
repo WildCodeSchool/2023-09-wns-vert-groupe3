@@ -1,34 +1,39 @@
 "use client";
 
-import React from "react";
-import { useState } from "react";
-
 import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { useState } from "react";
 import { FaArrowLeft, FaArrowRight, FaEye } from "react-icons/fa6";
 
+import { useUserDatesResearch } from "contexts/UserDatesResearchContext";
+
 import {
-  daysInMonth,
-  getMonthsBetweenDates,
-  getPrevAndNextDates,
+    daysInMonth,
+    getMonthsBetweenDates,
+    getPrevAndNextDates,
 } from "utils/date";
-import {
-  PRODUCT_UNAVAILABLE_DATES,
-  USER_REQUESTED_RENT_DATES,
-} from "data/fakeData";
+
+import { PRODUCT_UNAVAILABLE_DATES } from "data/fakeData";
 
 import Tooltip from "components/ui/Tooltip";
 
 // Function to get the month view for the rent availability viewer
-function getRentMonthView(dateRange?: { start: Date; end: Date }) {
-  if (!dateRange?.start || !dateRange?.end) return new Date();
-  const monthsBetweenDates = getMonthsBetweenDates(dateRange);
+function getRentMonthView(dateRange: { //STOP HERE
+  start?: Date;
+  end?: Date;
+}) {
+  if (dateRange.start && dateRange.end) {
+    const monthsBetweenDates = getMonthsBetweenDates(dateRange.start, dateRange.end);
+    return monthsBetweenDates[0];
+  }
 
-  return monthsBetweenDates[0];
+  return new Date();
 }
 
 export default function CardProductRentAvailabilityViewer() {
+  const { dates: userRequestedRentDates } = useUserDatesResearch();
+
   const [monthView, setMonthView] = useState<Date>(
-    getRentMonthView(USER_REQUESTED_RENT_DATES),
+    getRentMonthView(userRequestedRentDates),
   );
 
   const daysInActiveMonth: number = daysInMonth(
@@ -46,7 +51,7 @@ export default function CardProductRentAvailabilityViewer() {
 
   const goToASpecificMonth = (date: Date) => {
     setMonthView(date);
-  }
+  };
 
   return (
     <>
@@ -54,20 +59,20 @@ export default function CardProductRentAvailabilityViewer() {
         <div className="flex grow flex-col gap-2">
           <div className="flex gap-1">
             <button
-              className="flex aspect-square w-8 items-center justify-center rounded bg-neutral-200 text-hightcontrast hover:opacity-50 transition-opacity"
+              className="flex aspect-square w-8 items-center justify-center rounded bg-neutral-200 text-hightcontrast transition-opacity hover:opacity-50"
               onClick={() => handlePrevMonth()}
             >
               <FaArrowLeft />
             </button>
-            <ul className="grow flex min-h-9 items-center justify-start gap-1">
+            <ul className="flex min-h-9 grow items-center justify-start gap-1">
               <TooltipProvider delayDuration={100} skipDelayDuration={100}>
                 {Array.from({ length: daysInActiveMonth }, (_, i) => i + 1).map(
                   (day, index) => {
-                  //   console.log(
-                  //     monthView.toLocaleDateString("fr-FR", {
-                  //       month: "long",
-                  //     }),
-                  //   );
+                      // console.log(
+                      //   monthView.toLocaleDateString("fr-FR", {
+                      //     month: "long",
+                      //   }),
+                      // );
 
                     const date = new Date(
                       monthView.getFullYear(),
@@ -85,10 +90,11 @@ export default function CardProductRentAvailabilityViewer() {
                     );
 
                     // Check if the date is in the user requested rent dates
-                    const isRequested = USER_REQUESTED_RENT_DATES
-                      ? date >= USER_REQUESTED_RENT_DATES.start &&
-                        date <= USER_REQUESTED_RENT_DATES.end
-                      : false;
+                    const isRequested =
+                      userRequestedRentDates.start && userRequestedRentDates.end
+                        ? date.getDate() >= userRequestedRentDates.start.getDate() &&
+                          date.getDate() <= userRequestedRentDates.end.getDate()
+                        : false;
 
                     return (
                       <Tooltip
@@ -134,7 +140,7 @@ export default function CardProductRentAvailabilityViewer() {
               </TooltipProvider>
             </ul>
             <button
-              className="flex aspect-square w-8 items-center justify-center rounded bg-neutral-200 text-hightcontrast hover:opacity-50 transition-opacity"
+              className="flex aspect-square w-8 items-center justify-center rounded bg-neutral-200 text-hightcontrast transition-opacity hover:opacity-50"
               onClick={() => handleNextMonth()}
             >
               <FaArrowRight />
@@ -149,15 +155,33 @@ export default function CardProductRentAvailabilityViewer() {
                 year: "numeric",
               })}
             </p>
-            <div className="grow flex justify-center items-center">
-              {monthView.toLocaleDateString("fr-FR", { month: "long", year: "numeric" }) != getRentMonthView(USER_REQUESTED_RENT_DATES).toLocaleDateString("fr-FR", { month: "long", year: "numeric" }) && (
-                <div className="flex justify-center items-center gap-1 opacity-50 hover:opacity-20 transition-opacity">
-                  <FaEye />
-                  <button className="text-xs" onClick={() => goToASpecificMonth(getRentMonthView(USER_REQUESTED_RENT_DATES))}>Re-centrer</button>
-                </div>
-              )}
-            </div>
-            <p className="basis-40 border-r-2 border-hightcontrast px-2 py-1 text-xs font-semibold capitalize text-hightcontrast text-right opacity-70">
+            {userRequestedRentDates && (
+              <div className="flex grow items-center justify-center">
+                {monthView.toLocaleDateString("fr-FR", {
+                  month: "long",
+                  year: "numeric",
+                }) !=
+                  getRentMonthView(userRequestedRentDates).toLocaleDateString(
+                    "fr-FR",
+                    { month: "long", year: "numeric" },
+                  ) && (
+                  <div className="flex items-center justify-center gap-1 opacity-50 transition-opacity hover:opacity-20">
+                    <FaEye />
+                    <button
+                      className="text-xs"
+                      onClick={() =>
+                        goToASpecificMonth(
+                          getRentMonthView(userRequestedRentDates),
+                        )
+                      }
+                    >
+                      Re-centrer
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+            <p className="basis-40 border-r-2 border-hightcontrast px-2 py-1 text-right text-xs font-semibold capitalize text-hightcontrast opacity-70">
               {getPrevAndNextDates(monthView).next.toLocaleDateString("fr-FR", {
                 month: "long",
               })}{" "}
