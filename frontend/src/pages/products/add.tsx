@@ -70,12 +70,15 @@ const ProductsAddPage = () => {
     setFiles(files);
   };
 
+  console.log(`NODE ENV : ${process.env.NODE_ENV}`);
+  console.log(`URL PROD : ${process.env.URL_PROD_DEV}`);
+
   const uploadImages = async () => {
     // const urlPost = "http://localhost:8000/upload";
     const urlPost =
       process.env.NODE_ENV === "production"
         ? `${process.env.URL_PROD_DEV}/upload`
-        : `${process.env.NEXT_PUBLIC_FRONTEND_URL}/upload`;
+        : "http://localhost:8000/upload";
     const uploadPromises = files.map((singleFile) => {
       const formData = new FormData();
       formData.append("file", singleFile, singleFile.name);
@@ -114,7 +117,7 @@ const ProductsAddPage = () => {
         console.log("filename : ", filename);
         return process.env.NODE_ENV === "production"
           ? `${process.env.URL_PROD_DEV}/${filename}`
-          : `${process.env.NEXT_PUBLIC_FRONTEND_URL}/${filename}`;
+          : `http://localhost:8000${filename}`;
         // return `http://localhost:8000${filename}`;
       });
 
