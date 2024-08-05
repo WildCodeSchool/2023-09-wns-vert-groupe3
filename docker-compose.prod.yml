@@ -53,6 +53,7 @@ services:
       - pgdata_new1:/var/lib/postgresql/data
 
   imagesupload:
+    image: imagesupload
     build:
       context: ./imagesupload
       dockerfile: Dockerfile.prod
