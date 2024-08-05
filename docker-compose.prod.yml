@@ -3,6 +3,8 @@ services:
     image: wildrent9/wildrent-back
     # ports:
     #   - 4000:4000
+    environment:
+      - NODE_ENV=production
     volumes:
       - ./backend/src:/app/src
     healthcheck:
@@ -19,7 +21,7 @@ services:
     image: wildrent9/wildrent-front
     # restart: always
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
     # env_file: .env.dev
@@ -47,7 +49,7 @@ services:
       - pgdata_new1:/var/lib/postgresql/data
 
   imagesupload:
-    build: 
+    build:
       context: ./imagesupload
       dockerfile: Dockerfile.prod
     # build: ./imagesupload
