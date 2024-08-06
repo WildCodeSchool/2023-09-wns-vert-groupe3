@@ -18,7 +18,7 @@ services:
         condition: service_healthy
 
   frontend:
-    image: wildrent9/wildrent-front${IMAGE_TAG}
+    image: wildrent9/wildrent-front:${IMAGE_TAG}
     # restart: always
     environment:
       - NODE_ENV=development
