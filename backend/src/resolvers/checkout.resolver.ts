@@ -12,14 +12,14 @@ export default class CheckoutResolver {
     console.log(`URL local : ${process.env.NEXT_PUBLIC_FRONTEND_URL}`);
     console.log(`URL prod : ${process.env.URL_PROD_DEV}`);
     const successUrl =
-      process.env.NODE_ENV === "production"
-        ? `${process.env.URL_PROD_DEV}/stripe/success`
-        : `${process.env.NEXT_PUBLIC_FRONTEND_URL}/stripe/success`;
+      process.env.NODE_ENV === "development"
+        ? `${process.env.NEXT_PUBLIC_FRONTEND_URL}/stripe/success`
+        : `${process.env.URL_PROD_DEV}/stripe/success`;
 
     const cancelUrl =
-      process.env.NODE_ENV === "production"
-        ? `${process.env.URL_PROD_DEV}/cart`
-        : `${process.env.NEXT_PUBLIC_FRONTEND_URL}/cart`;
+      process.env.NODE_ENV === "development"
+        ? `${process.env.NEXT_PUBLIC_FRONTEND_URL}/cart`
+        : `${process.env.URL_PROD_DEV}/cart`;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],

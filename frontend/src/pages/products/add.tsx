@@ -75,9 +75,9 @@ const ProductsAddPage = () => {
   const uploadImages = async () => {
     // const urlPost = "http://localhost:8000/upload";
     const urlPost =
-      process.env.NODE_ENV === "production"
-        ? `https://0923-vert-3.wns.wilders.dev/upload`
-        : "http://localhost:8000/upload";
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:8000/upload"
+        : `https://0923-vert-3.wns.wilders.dev/upload`;
     const uploadPromises = files.map((singleFile) => {
       const formData = new FormData();
       formData.append("file", singleFile, singleFile.name);
@@ -114,9 +114,9 @@ const ProductsAddPage = () => {
       const uploadedImages = await uploadImages();
       const imageUrls = uploadedImages.map((filename) => {
         console.log("filename : ", filename);
-        return process.env.NODE_ENV === "production"
-          ? `https://0923-vert-3.wns.wilders.dev/${filename}`
-          : `http://localhost:8000${filename}`;
+        return process.env.NODE_ENV === "development"
+          ? `http://localhost:8000${filename}`
+          : `https://0923-vert-3.wns.wilders.dev/${filename}`;
         // return `http://localhost:8000${filename}`;
       });
 
