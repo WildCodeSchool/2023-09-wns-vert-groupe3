@@ -3,8 +3,6 @@ services:
     build:
       context: ./backend # Fait référence au fichier nommé DockerFile par défaut du répertoire courant. Exécute les instructions à l'intérieur.
       dockerfile: Dockerfile # Indication explicite que l'on cible le fichier nommé Dockerfile.
-    environment:
-      - NODE_ENV=development
     ports:
       - 4000:4000
     volumes:
@@ -32,7 +30,9 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
     env_file:
+      - .env.apikey
       - .env.prod
+      - .env.dev
     ports:
       - 3000:3000
     volumes:
