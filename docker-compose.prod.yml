@@ -3,8 +3,6 @@ services:
     image: wildrent9/wildrent-back
     # ports:
     #   - 4000:4000
-    environment:
-      - NODE_ENV=production
     volumes:
       - ./backend/src:/app/src
     healthcheck:
@@ -28,7 +26,9 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
     env_file:
+      - .env.apikey
       - .env.prod
+      - .env.dev
     # ports:
     #   - 3000:3000
     volumes:
@@ -62,8 +62,8 @@ services:
     volumes:
       # - ./imagesupload/src:/app/src
       - ./imagesupload/uploads:/app/uploads
-    ports:
-      - 8000:8000
+    # ports:
+    #  - 8000:8000
 
   gateway:
     image: nginx
