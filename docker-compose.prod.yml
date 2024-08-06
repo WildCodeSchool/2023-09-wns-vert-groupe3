@@ -1,6 +1,8 @@
+version: '1.0'
+
 services:
   backend:
-    image: wildrent9/wildrent-back
+    image: wildrent9/wildrent-back:${IMAGE_TAG}
     # ports:
     #   - 4000:4000
     volumes:
@@ -16,7 +18,7 @@ services:
         condition: service_healthy
 
   frontend:
-    image: wildrent9/wildrent-front
+    image: wildrent9/wildrent-front${IMAGE_TAG}
     # restart: always
     environment:
       - NODE_ENV=development
