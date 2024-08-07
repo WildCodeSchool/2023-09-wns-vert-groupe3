@@ -49,6 +49,7 @@ services:
       - pgdata_new1:/var/lib/postgresql/data
 
   imagesupload:
+    image: imagesupload
     build: 
       context: ./imagesupload
       dockerfile: Dockerfile.prod
@@ -57,8 +58,8 @@ services:
     volumes:
       # - ./imagesupload/src:/app/src
       - ./imagesupload/uploads:/app/uploads
-    ports:
-      - 8000:8000
+    # ports:
+    #   - 8000:8000
 
   gateway:
     image: nginx
