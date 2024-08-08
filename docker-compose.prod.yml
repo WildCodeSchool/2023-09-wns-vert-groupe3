@@ -1,6 +1,6 @@
 services:
   backend:
-    image: wildrent9/wildrent-back
+    image: wildrent9/backtest
     # ports:
     #   - 4000:4000
     environment:
@@ -21,7 +21,7 @@ services:
         condition: service_healthy
 
   frontend:
-    image: wildrent9/wildrent-front
+    image: wildrent9/fronttest
     # restart: always
     environment:
       - NODE_ENV=production
