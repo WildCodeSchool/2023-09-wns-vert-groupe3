@@ -3,6 +3,8 @@ services:
     image: wildrent9/wildrent-back
     # ports:
     #   - 4000:4000
+    environment:
+      - NODE_ENV=production
     volumes:
       - ./backend/src:/app/src
     healthcheck:
@@ -22,7 +24,7 @@ services:
     image: wildrent9/wildrent-front
     # restart: always
     environment:
-      #  - NODE_ENV=production
+      - NODE_ENV=production
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
     env_file:
