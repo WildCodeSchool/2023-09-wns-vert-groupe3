@@ -16,6 +16,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
 
   frontend:
     build:
@@ -68,12 +70,22 @@ services:
 
   redis:
     image: redis
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   redis-commander:
     image: rediscommander/redis-commander
     environment:
       - REDIS_HOSTS=redis
     ports:
       - "8081:8081"
+    depends_on:
+      redis:
+        condition: service_healthy
 
 volumes:
   pgdata_new1:
