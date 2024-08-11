@@ -5,11 +5,11 @@ FROM node:${NODE_VERSION}-alpine as builder
 RUN corepack enable pnpm
 RUN corepack prepare pnpm@8.15.4 --activate
 WORKDIR /app
-COPY package.json package.json
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm i
 COPY . .
 RUN pnpm run build
-
+RUN ls -la /app/dist
 
 
 FROM node:${NODE_VERSION}-alpine as runner
@@ -20,8 +20,9 @@ RUN corepack prepare pnpm@8.15.4 --activate
 WORKDIR /app
 
 COPY --from=builder /app/dist/ /app/dist/
+RUN ls -la /app/dist/
 
 COPY package.json package.json
-RUN pnpm i --omit-dev
+RUN pnpm install --prod
 
-CMD pnpm dev
+CMD pnpm run startprod

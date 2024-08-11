@@ -5,6 +5,7 @@
    "main": "index.js",
    "scripts": {
       "start": "docker compose -f docker-compose.yml up --build",
+      "nocache": "docker compose build --no-cache",
       "start-d": "docker compose -f docker-compose.yml up --build -d",
       "startprod": "docker compose -f docker-compose.prod.yml up --build",
       "startprod-d": "docker compose -f docker-compose.prod.yml up --build -d",
