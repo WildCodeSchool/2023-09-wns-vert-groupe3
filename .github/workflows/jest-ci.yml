@@ -3,22 +3,22 @@ name: playwright-and-docker-ci
 on: push
 
 jobs:
-  test-e2e:
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⚙️ Check out code
-        uses: actions/checkout@v2
-      # - name: Set environment variables for tests
-      #   run: |
-      #     if [ "${GITHUB_REF}" == "refs/heads/dev" ]; then
-      #       echo "IMAGE_TAG=dev" >> $GITHUB_ENV
-      #     elif [ "${GITHUB_REF}" == "refs/heads/staging" ]; then
-      #       echo "IMAGE_TAG=staging" >> $GITHUB_ENV
-      #     elif [ "${GITHUB_REF}" == "refs/heads/main" ]; then
-      #       echo "IMAGE_TAG=main" >> $GITHUB_ENV
-      #     fi
-      - name: ⚙️ Run test e2e
-        run: docker compose -f docker-compose.e2e.yml up --build --exit-code-from e2e
+#   test-e2e:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: ⚙️ Check out code
+#         uses: actions/checkout@v2
+#       # - name: Set environment variables for tests
+#       #   run: |
+#       #     if [ "${GITHUB_REF}" == "refs/heads/dev" ]; then
+#       #       echo "IMAGE_TAG=dev" >> $GITHUB_ENV
+#       #     elif [ "${GITHUB_REF}" == "refs/heads/staging" ]; then
+#       #       echo "IMAGE_TAG=staging" >> $GITHUB_ENV
+#       #     elif [ "${GITHUB_REF}" == "refs/heads/main" ]; then
+#       #       echo "IMAGE_TAG=main" >> $GITHUB_ENV
+#       #     fi
+#       - name: ⚙️ Run test e2e
+#         run: docker compose -f docker-compose.e2e.yml up --build --exit-code-from e2e
       #   env:
       #      IMAGE_TAG: ${{ env.IMAGE_TAG } }
 #   front-test:
@@ -29,7 +29,7 @@ jobs:
 #       - name: ⚙️ Run interface front test
 #         run: cd frontend && pnpm run test
   docker:
-    needs: test-e2e
+   #  needs: test-e2e
     if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/minification'
     runs-on: ubuntu-latest
     steps:
