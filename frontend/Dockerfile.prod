@@ -1,17 +1,25 @@
 ARG NODE_VERSION=20.11.0
 
-FROM node:${NODE_VERSION}-alpine as base
+FROM node:${NODE_VERSION}-alpine as builder
+
+WORKDIR /app
+COPY package.json package.json
+RUN pnpm i
+COPY . .
+RUN pnpm run build
 
 
-# RUN apk --no-cache add curl
+
+FROM node:${NODE_VERSION}-alpine as runner
 RUN apk add --no-cache libc6-compat curl
 RUN corepack enable pnpm
 RUN corepack prepare pnpm@8.15.4 --activate
+
 WORKDIR /app
 
+COPY --from=builder /app/dist/ /app/dist/
+
 COPY package.json package.json
+RUN pnpm i --omit-dev
 
-RUN pnpm i
-
-COPY . .
 CMD pnpm dev
