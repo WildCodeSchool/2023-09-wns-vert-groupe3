@@ -22,7 +22,7 @@ services:
     image: wildrent9/wildrent-front
     # restart: always
     environment:
-      #  - NODE_ENV=production
+      #  - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
     env_file:
