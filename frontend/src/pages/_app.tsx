@@ -1,8 +1,8 @@
 import {
-   ApolloClient,
-   ApolloProvider,
-   InMemoryCache,
-   createHttpLink,
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import Layout from "components/Layout";
@@ -14,47 +14,53 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "styles/globals.css";
 
+let httpUri;
+
+process.env.NODE_ENV === "development"
+  ? (httpUri = process.env.NEXT_PUBLIC_BACKEND_URL)
+  : (httpUri = "https://0923-vert-3.wns.wilders.dev/graphql");
+
 const httpLink = createHttpLink({
-   uri: process.env.NEXT_PUBLIC_BACKEND_URL,
+  uri: httpUri,
 });
 
 const authLink = setContext((_, { headers }) => {
-   // get the authentication token from local storage if it exists
-   const token = localStorage.getItem("jwt");
-   // return the headers to the context so httpLink can read them
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem("jwt");
+  // return the headers to the context so httpLink can read them
 
-   const timeoutToken = 24 * 60 * 60 * 1000
-   setTimeout(() => {
-      localStorage.removeItem("jwt");
-      console.log("Token supprimé du local storage après 24 heures");
-   }, (timeoutToken));
+  const timeoutToken = 24 * 60 * 60 * 1000;
+  setTimeout(() => {
+    localStorage.removeItem("jwt");
+    console.log("Token supprimé du local storage après 24 heures");
+  }, timeoutToken);
 
-   return {
-      headers: {
-         ...headers,
-         authorization: token ? `Bearer ${token}` : "",
-      },
-   };
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
 });
 
 const client = new ApolloClient({
-   link: authLink.concat(httpLink),
-   cache: new InMemoryCache(),
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
 });
 
 function App({ Component, pageProps: { ...pageProps } }: AppProps) {
-   return (
-      <ApolloProvider client={client}>
-         <CartProvider>
-            <Layout>
-               <UserDatesResearchProvider>
-                  <Component {...pageProps} />
-               </UserDatesResearchProvider>
-               <ToastContainer />
-            </Layout>
-         </CartProvider>
-      </ApolloProvider>
-   );
+  return (
+    <ApolloProvider client={client}>
+      <CartProvider>
+        <Layout>
+          <UserDatesResearchProvider>
+            <Component {...pageProps} />
+          </UserDatesResearchProvider>
+          <ToastContainer />
+        </Layout>
+      </CartProvider>
+    </ApolloProvider>
+  );
 }
 
 // Disabling SSR

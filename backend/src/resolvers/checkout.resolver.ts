@@ -9,7 +9,7 @@ export default class CheckoutResolver {
   async createCheckoutSession(
     @Arg("products", () => [InputCartProduct]) products: InputCartProduct[]
   ) {
-    console.log(`URL local : ${process.env.NEXT_PUBLIC_FRONTEND_URL}`);
+    console.log(`URL local front : ${process.env.NEXT_PUBLIC_FRONTEND_URL}`);
     console.log(`URL prod : ${process.env.URL_PROD_DEV}`);
     const successUrl =
       process.env.NODE_ENV === "development"
